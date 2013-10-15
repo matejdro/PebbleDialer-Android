@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:key="cat_dialer"
+        android:title="Dialer" >
+        <Preference
+            android:key="displayedGroups"
+            android:summary="Select which contact groups will be displayed on Pebble"
+            android:title="Displayed contact groups" />
+
+        <CheckBoxPreference
+            android:key="skipGroupFiltering"
+            android:summary="Should dialer skip filtering when you pick group instead of all contacts"
+            android:title="Skip filtering contact groups" />
+        
+                <Preference
+            android:key="help"
+            android:title="Help and Tips" />
+        
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="cat_call"
+        android:title="Call screen" >
+        <CheckBoxPreference
+            android:key="launchGlance"
+            android:title="Launch glance after call" />
+        <CheckBoxPreference
+            android:key="rootMode"
+            android:summary="Check this if some in-call features (like answer or mic mute) do not work for you. NEEDS ROOT!"
+            android:title="Root mode" />
+    </PreferenceCategory>
+</PreferenceScreen>

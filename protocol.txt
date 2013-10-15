@@ -1,0 +1,125 @@
+First byte (dictionary entry 0) is always uint8 representing packet id
+
+Pebble --> Phone
+
+	Packet 0 - Init packet
+	Sent from Pebble when app is opened. After that, phone will send either packet 0 or packet 5.
+	No additional data
+	
+	Packet 1 - Request names of menu groups
+	Sent from pebble when menu opens and after android packet 1 until all names are sent.
+	Additional data:
+		1 = From which id should Phone start sending those names (for example if this is 1, phone will send groups 1-3) - uint8.
+		
+	Packet 2 - Menu item selected
+	When item is selected in main menu
+	Additional data:
+		1 = position of item selected (first item is 0 for example) - uint8
+		
+	Packet 3 - Request filtered contacts
+	Sent from pebble when requesting filtered contacts.
+	Additional data:
+		1 = From which id should Phone start sending those names (for example if this is 1, phone will send contacts 1-3) - uint8.
+	
+	Packet 4 - Filtering button pressed
+	When in filtering mode, button is pressed
+	Additional data:
+		1 = Which button is pressed (0 = UP, 1 = SELECT, 2 = DOWN) - uint8.
+		
+	Packet 5 - Request contacts
+	Sent from pebble when requesting contact names. Same as packet 3, but not used when filtering.
+	Additional data:
+		1 = From which id should Phone start sending those names (for example if this is 1, phone will send contacts 1-3) - uint16.
+	
+	Packet 6 - Picked contact
+	Sent from pebble when user picks contact.
+	Additional data:
+		1 = Index of contact picked on Pebble - int16.
+		
+		
+	Packet 7 - In call action
+	Sent when button is pressed on call screen
+	Additional data:
+		1 = Which button is pressed (0 = UP, 1 = SELECT, 2 = DOWN) - uint8.
+		
+	Packet 8 - Request contact numbers
+	Sent from pebble when requesting numbers. Same as packet 5, but for requesting numbers of specific contact.
+	Additional data:
+		1 = From which id should Phone start sending those numbers (for example if this is 1, phone will send numbers 1-2) - uint16.
+	
+	Packet 9 - Picked number
+	Sent from pebble when user picks number.
+	Additional data:
+		1 = Index of number picked on Pebble - int16.
+	
+	Packet 10 - Request call log entries
+	Sent from pebble when requesting numbers. Same as packet 8, but for requesting call log data.
+	Additional data:
+		1 = From which id should Phone start sending entries (for example if this is 1, phone will send entries 1-2) - uint16.
+	
+	Packet 11 - Picked call log entry
+	Sent from pebble when user call log entry.
+	Additional data:
+		1 = Index of number picked on Pebble - int16.
+		2 = Should I call number or retrieve other numbers of specified contact (0 or 1) - uint8
+	
+	
+Phone --> Pebble
+
+	Packet 0 - Menu packet
+	Informs Pebble that no call takes place and it should display dialer menu.
+	Additional data:
+		1 = Number of contact groups displayed in the menu (uint8)
+		2 = Should I skip filtering with contact groups (1 or 0) - uint8
+
+	Packet 1 - Menu groups data
+	Names of contact groups displayed in dialer menu. It can transfer up to 3 names. 
+	If list is not yet complete, Pebble will send Packet 1 for another gorup
+	Additional data:
+		1 = ID of the first group in this packet (uint8)
+		2 = Name of the group (cstring, up to 20 characters)
+		3 = Name of the group (cstring, up to 20 characters)
+		4 = Name of the group (cstring, up to 20 characters)
+		
+	Packet 2 - contacts received
+		Names of contacts in the list
+		Additional data:
+		1 = ID of the first contact in this packet (uint16)
+		2 = Number of all filtering contacts (uint16)
+		2 = Name of the contact (cstring, up to 20 characters)
+		3 = Name of the contact (cstring, up to 20 characters)
+		4 = Name of the contact (cstring, up to 20 characters)
+		
+	Packet 3 - numbers received
+		Types and numbers in the list
+		Additional data:
+		1 = ID of the first contact in this packet (uint16)
+		2 = Number of all filtering contacts (uint16)
+		3 = Number type (cstring, up to 15 characters)
+		4 = Number type (cstring, up to 15 characters)
+		5 = Number (cstring, up to 15 characters)
+		6 = Number (cstring, up to 15 characters)
+	
+	Packet 4 - call log received
+		Received one entry of the call log
+		Additional data:
+		1 = ID of the first log entry in this packet (uint16)
+		2 = Number of all call log entries (uint16)
+		3 = Log entry type (1 =  incoming, 2 = outgoing, 3 = missed)
+		4 = Contact name (cstring, up to 20 characters)
+		5 = Date (cstring, up to 20 characters)
+		6 = Number (cstring, up to 20 characters)
+		
+	Packet 5 - Call info
+	When app receives this packet, it will display in-call screen
+	Additional data:
+		1 = Contact name (cstring - up to 20 characters. Can be missing if 4[3] is 1, see below)
+		2 = Number Type (cstring - up to 20 characters)
+		3 = Number (cstring - up to 20 characters)
+		4 = Various flags (byte array, 4 bytes)
+			[0] = If in call (0 = incoming call, 1 = call connected)
+			[1] = Is speaker muted (0 = ringer is muted / speakerphone is off, 1 = ringer is not muted / speakerphone is on)
+			[2] = Is mic muted (0 = mic is not muted, 1 = mic is muted)
+			[3] = Is contact name known. If this is 0, contact number will be displayed instead of its name in the center.
+		5 = Elapsed seconds. Only sent when in call, not when ringing. (uint16)
+	
