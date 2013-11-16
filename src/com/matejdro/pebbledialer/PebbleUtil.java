@@ -3,8 +3,8 @@ package com.matejdro.pebbledialer;
 public class PebbleUtil {	
 	public static String replaceInvalidCharacters(String data)
 	{
-		data = data.replace("è", "c");
-		data = data.replace("È", "C");
+		data = data.replace("\u010D", "c");
+		data = data.replace("\u010C", "C");
 		
 		return data;
 	}
