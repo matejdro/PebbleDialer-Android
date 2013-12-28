@@ -35,7 +35,11 @@ public class PebbleUtil {
 			text = text + "...";
 
 		}
-		text = replaceInvalidCharacters(text);		
+		text = replaceInvalidCharacters(text);
+		
+		if (RTLUtility.getInstance().isRTL(text)){
+			text = RTLUtility.getInstance().format(text, 15);
+		}
 		
 		return text;
 
