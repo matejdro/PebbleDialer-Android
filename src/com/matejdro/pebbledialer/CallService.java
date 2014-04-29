@@ -1,9 +1,5 @@
 package com.matejdro.pebbledialer;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.UUID;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -17,16 +13,26 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
-
 import com.android.internal.telephony.ITelephony;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
+import com.matejdro.pebbledialer.util.PebbleDeveloperConnection;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.util.UUID;
 
 public class CallService extends Service {
-	public static CallService instance;
+    private static final UUID SYSTEM_UUID = UUID.fromString("0a7575eb-e5b9-456b-8701-3eacb62d74f1");
+
+
+    public static CallService instance;
 
 	private SharedPreferences settings;
-	
+	private PebbleDeveloperConnection developerConnection;
+    private UUID previousApp;
+
 	private String number = "Outgoing Call";
 	private String name = null;
 	private String type = null;
@@ -44,16 +50,37 @@ public class CallService extends Service {
 		return null;
 	}
 
-	@Override
-	public void onDestroy() {
-		instance = null;
-	}
-	
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		instance = this;
-		settings = PreferenceManager.getDefaultSharedPreferences(this);
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
 
+        instance = this;
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
+
+        try
+        {
+            developerConnection = new PebbleDeveloperConnection();
+            developerConnection.connectBlocking();
+        } catch (URISyntaxException e)
+        {
+            e.printStackTrace();
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        instance = null;
+
+        developerConnection.close();
+    }
+
+
+    @Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (intent != null)
 		{
 			Intent startingIntent = intent.getParcelableExtra("callIntent");
@@ -102,20 +129,44 @@ public class CallService extends Service {
 		{
 			inCall();
 		}
-
-
 	}
 
 	private void callEnded()
 	{
-		//Launch glance
-		if (settings.getBoolean("launchGlance", false))
-			PebbleKit.startAppOnPebble(this, UUID.fromString("4B760064-1488-4044-967A-1B1D3AB30574"));
-		else
-			PebbleKit.closeAppOnPebble(this, DataReceiver.dialerUUID);
+		closePebbleApp();
 
 		stopSelf();
 	}
+
+    private void openPebbleApp()
+    {
+        if (settings.getBoolean("closeToLastApp", false))
+        {
+            UUID currentApp = developerConnection.getCurrentRunningApp();
+
+            if (currentApp != null && !(currentApp.getLeastSignificantBits() == 0 && currentApp.getMostSignificantBits() == 0) && !currentApp.equals(DataReceiver.dialerUUID) && !currentApp.equals(SYSTEM_UUID))
+            {
+                previousApp = currentApp;
+            }
+
+            System.out.println(currentApp);
+        }
+
+        PebbleKit.startAppOnPebble(this, DataReceiver.dialerUUID);
+    }
+
+    private void closePebbleApp()
+    {
+        if (previousApp != null)
+        {
+            PebbleKit.startAppOnPebble(this, previousApp);
+            previousApp = null;
+        }
+        else
+        {
+            PebbleKit.closeAppOnPebble(this, DataReceiver.dialerUUID);
+        }
+    }
 
 	private void inCall()
 	{
@@ -123,7 +174,7 @@ public class CallService extends Service {
 		inCall = true;
 		
 		updatePebble();
-		PebbleKit.startAppOnPebble(this, DataReceiver.dialerUUID);
+        openPebbleApp();
 
 		//toggleSpeakerphone();
 	}

@@ -13,8 +13,10 @@
             android:key="skipGroupFiltering"
             android:summary="Should dialer skip filtering when you pick group instead of all contacts"
             android:title="Skip filtering contact groups" />
-        
-                <Preference
+
+
+
+        <Preference
             android:key="help"
             android:title="Help and Tips" />
         
@@ -23,8 +25,9 @@
         android:key="cat_call"
         android:title="Call screen" >
         <CheckBoxPreference
-            android:key="launchGlance"
-            android:title="Launch glance after call" />
+                android:key="closeToLastApp"
+                android:summary="When call ends, close to last used app on Pebble. NEEDS DEVELOPER CONNECTION ENABLED INSIDE PEBBLE APP!"
+                android:title="Close to last app" />
         <CheckBoxPreference
             android:key="rootMode"
             android:summary="Check this if some in-call features (like answer or mic mute) do not work for you. NEEDS ROOT!"
