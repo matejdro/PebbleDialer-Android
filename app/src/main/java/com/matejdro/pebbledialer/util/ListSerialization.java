@@ -1,4 +1,4 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.util;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.util;
 
 import android.content.Context;
 import android.content.Intent;

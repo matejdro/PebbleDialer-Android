@@ -1,4 +1,4 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.ui;
 
 import java.io.File;
 import java.io.FileOutputStream;

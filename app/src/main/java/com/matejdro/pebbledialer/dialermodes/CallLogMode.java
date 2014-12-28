@@ -1,21 +1,23 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.dialermodes;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract.PhoneLookup;
-import android.util.Log;
 
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
+import com.matejdro.pebbledialer.util.ContactUtils;
+import com.matejdro.pebbledialer.DataReceiver;
+import com.matejdro.pebbledialer.DialerService;
+import com.matejdro.pebbledialer.util.TextUtil;
 
 public class CallLogMode extends DialerMode {	
 	private List<String> names;
@@ -90,7 +92,7 @@ public class CallLogMode extends DialerMode {
 
 		String name = names.get(offset);
 		if (name == null)
-			name = PebbleUtil.prepareString(numbers.get(offset));		
+			name = TextUtil.prepareString(numbers.get(offset));
 		
 		data.addString(4, name);
 
@@ -121,7 +123,7 @@ public class CallLogMode extends DialerMode {
 			if (numberSet.contains(number))
 				continue;
 
-			String name = PebbleUtil.prepareString(cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME)), 16);
+			String name = TextUtil.prepareString(cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME)), 16);
 			int type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
 			long date = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE));
 			int numberType = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.CACHED_NUMBER_TYPE));
@@ -131,7 +133,7 @@ public class CallLogMode extends DialerMode {
 			dates.add(getFormattedDate(date));
 			logTypes.add(type);
 			numbers.add(number);
-			numberTypes.add(PebbleUtil.prepareString(ContactUtils.convertNumberType(numberType, customLabel)));
+			numberTypes.add(TextUtil.prepareString(ContactUtils.convertNumberType(numberType, customLabel)));
 			numberSet.add(number);			
 		}		
 
@@ -146,7 +148,7 @@ public class CallLogMode extends DialerMode {
 
 		String dateS = dateFormat.format(dateO) + " " + timeFormat.format(dateO);
 
-		return PebbleUtil.prepareString(dateS);
+		return TextUtil.prepareString(dateS);
 	}
 	
 	private int getContactId(String number)

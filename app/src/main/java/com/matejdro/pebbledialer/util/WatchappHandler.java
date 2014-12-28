@@ -1,4 +1,4 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
+
+import com.matejdro.pebbledialer.R;
 
 public class WatchappHandler {
 

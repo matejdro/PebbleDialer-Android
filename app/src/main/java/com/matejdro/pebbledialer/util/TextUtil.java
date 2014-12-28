@@ -1,6 +1,8 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.util;
 
-public class PebbleUtil {	
+import com.matejdro.pebbledialer.util.RTLUtility;
+
+public class TextUtil {
 	public static String replaceInvalidCharacters(String data)
 	{
 		data = data.replace("\u010D", "c");

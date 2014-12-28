@@ -31,7 +31,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="SettingsActivity" >
+        <activity android:name=".ui.SettingsActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,14 +39,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LicenseActivity">kaj</activity>
+        <activity android:name=".ui.LicenseActivity">kaj</activity>
 
         <service android:name="DialerService" >
         </service>
         <service android:name="CallService" >
         </service>
 
-        <activity android:name="HelpActivity" >
+        <activity android:name=".ui.HelpActivity" >
         </activity>
     </application>
 

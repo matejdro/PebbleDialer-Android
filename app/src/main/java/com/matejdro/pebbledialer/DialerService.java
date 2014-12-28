@@ -7,6 +7,10 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 
 import com.getpebble.android.kit.util.PebbleDictionary;
+import com.matejdro.pebbledialer.dialermodes.CallLogMode;
+import com.matejdro.pebbledialer.dialermodes.ContactsMode;
+import com.matejdro.pebbledialer.dialermodes.DialerMode;
+import com.matejdro.pebbledialer.dialermodes.MenuMode;
 
 public class DialerService extends Service {
 

@@ -1,9 +1,13 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.dialermodes;
 
 import java.util.List;
 
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
+import com.matejdro.pebbledialer.DataReceiver;
+import com.matejdro.pebbledialer.DialerService;
+import com.matejdro.pebbledialer.util.ListSerialization;
+import com.matejdro.pebbledialer.util.TextUtil;
 
 public class MenuMode extends DialerMode {
 
@@ -25,7 +29,7 @@ public class MenuMode extends DialerMode {
 			if (listPos >= contactGroups.size())
 				break;
 			
-			data.addString(i + 2, PebbleUtil.prepareString(contactGroups.get(listPos)));
+			data.addString(i + 2, TextUtil.prepareString(contactGroups.get(listPos)));
 		}
 				
 		PebbleKit.sendDataToPebble(service, DataReceiver.dialerUUID, data);

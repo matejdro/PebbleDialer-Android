@@ -1,7 +1,5 @@
 package com.matejdro.pebbledialer;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,17 +11,17 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import com.android.internal.telephony.ITelephony;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
+import com.matejdro.pebbledialer.util.ContactUtils;
 import com.matejdro.pebbledialer.util.PebbleDeveloperConnection;
+import com.matejdro.pebbledialer.util.TextUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
-import java.util.Random;
 import java.util.UUID;
 
 import timber.log.Timber;
@@ -212,11 +210,11 @@ public class CallService extends Service {
 
 		if (name != null)
 		{
-			data.addString(1, PebbleUtil.prepareString(name));
-			data.addString(2, PebbleUtil.prepareString(type));
+			data.addString(1, TextUtil.prepareString(name));
+			data.addString(2, TextUtil.prepareString(type));
 		}
 		
-		data.addString(3, PebbleUtil.prepareString(number));
+		data.addString(3, TextUtil.prepareString(number));
 
 		byte[] parameters = new byte[4];
 		parameters[0] = (byte) (inCall ? 1 : 0);

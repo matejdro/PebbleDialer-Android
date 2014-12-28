@@ -1,8 +1,10 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
+
+import com.matejdro.pebbledialer.R;
 
 public class LicenseActivity extends Activity {
     private WebView webView;

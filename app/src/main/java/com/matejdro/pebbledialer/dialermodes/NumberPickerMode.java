@@ -1,4 +1,4 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.dialermodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,9 @@ import android.util.Log;
 
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
+import com.matejdro.pebbledialer.util.ContactUtils;
+import com.matejdro.pebbledialer.DataReceiver;
+import com.matejdro.pebbledialer.util.TextUtil;
 
 public class NumberPickerMode extends DialerMode {
 	private DialerMode parent;
@@ -37,7 +40,7 @@ public class NumberPickerMode extends DialerMode {
 			String type = ContactUtils.convertNumberType(typeId, label);
 
 			phoneNumbers.add(number);
-			phoneTitles.add(PebbleUtil.prepareString(type));
+			phoneTitles.add(TextUtil.prepareString(type));
 		}
 
 	}
@@ -81,7 +84,7 @@ public class NumberPickerMode extends DialerMode {
 				break;
 
 			data.addString(i + 3, phoneTitles.get(i + offset));
-			data.addString(i + 5, PebbleUtil.prepareString(phoneNumbers.get(i + offset)));
+			data.addString(i + 5, TextUtil.prepareString(phoneNumbers.get(i + offset)));
 
 		}
 

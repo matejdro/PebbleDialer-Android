@@ -1,4 +1,4 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.ui;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -30,6 +30,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.matejdro.pebbledialer.util.ListSerialization;
+import com.matejdro.pebbledialer.R;
+import com.matejdro.pebbledialer.util.WatchappHandler;
 
 public class SettingsActivity extends PreferenceActivity {
 	private SharedPreferences settings;

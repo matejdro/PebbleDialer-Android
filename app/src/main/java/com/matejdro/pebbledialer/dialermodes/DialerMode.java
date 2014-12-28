@@ -1,6 +1,7 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.dialermodes;
 
 import com.getpebble.android.kit.util.PebbleDictionary;
+import com.matejdro.pebbledialer.DialerService;
 
 public abstract class DialerMode {
 	protected DialerService service;

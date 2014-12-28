@@ -1,4 +1,4 @@
-package com.matejdro.pebbledialer;
+package com.matejdro.pebbledialer.dialermodes;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +13,9 @@ import android.util.Log;
 
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
+import com.matejdro.pebbledialer.DataReceiver;
+import com.matejdro.pebbledialer.DialerService;
+import com.matejdro.pebbledialer.util.TextUtil;
 
 public class ContactsMode extends DialerMode {
 
@@ -168,7 +171,7 @@ public class ContactsMode extends DialerMode {
 			if (idSet.contains(id))
 				continue;
 			
-			names.add(PebbleUtil.prepareString(name));
+			names.add(TextUtil.prepareString(name));
 
 			ids.add(id);
 			idSet.add(id);
