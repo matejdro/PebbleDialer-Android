@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.PhoneLookup;
-import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -118,17 +117,6 @@ public class CallService extends Service {
 		}
 
 		String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-
-        if (settings.getBoolean("debugNotifications", false))
-        {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-            builder.setContentTitle("PebbleDialer DEBUG");
-            builder.setContentText(state);
-            builder.setSmallIcon(R.drawable.icon);
-            Notification notification = builder.build();
-            NotificationManager notifyService = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            notifyService.notify(new Random().nextInt(), notification);
-        }
 
 		if (state.equals(TelephonyManager.EXTRA_STATE_RINGING))
 		{

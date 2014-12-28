@@ -20,11 +20,6 @@
             android:key="help"
             android:title="Help and Tips" />
 
-        <CheckBoxPreference
-                android:key="debugNotifications"
-                android:summary="Check this if told so, it creates notifications for debugging."
-                android:title="Debug notifications" />
-
     </PreferenceCategory>
     <PreferenceCategory
         android:key="cat_call"

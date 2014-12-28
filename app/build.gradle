@@ -19,5 +19,4 @@ android {
 }
 
 dependencies {
-    compile files('libs/android-support-v13.jar')
 }

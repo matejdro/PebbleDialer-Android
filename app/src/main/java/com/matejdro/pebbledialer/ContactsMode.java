@@ -23,7 +23,7 @@ public class ContactsMode extends DialerMode {
 
 	private int group = -1;;
 
-	public static final String queries[] = {"[^GHIghi4JKLjkl6MNOmno6PQRSpqrs7TUVtuv8wWXYZxyz9]", "[GHIghi4JKLjkl6MNOmno6 ]", "[PQRSäpqrsö7TUVtuv8wWXYZéxyzû9 ]"}; 
+	public static final String queries[] = {"[^GHIghi4JKLjkl6MNOmno6PQRSpqrs7TUVtuv8wWXYZxyz9]", "[GHIghi4JKLjkl6MNOmno6 ]", "[PQRS≈†pqrs≈°7TUVtuv8wWXYZ≈Ωxyz≈æ9 ]"};
 
 	private boolean filterMode;
 
