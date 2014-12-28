@@ -97,7 +97,9 @@ public class CallService extends Service {
 
 	private void intentDelivered(Intent intent)
 	{
-		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL))
+        Timber.d("Intent " + intent.getAction());
+
+        if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL))
 		{
 			Timber.d("Outgoing intent");
 			number =  intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
@@ -141,6 +143,8 @@ public class CallService extends Service {
 
     private void openPebbleApp()
     {
+        Timber.d("openApp");
+
         if (settings.getBoolean("closeToLastApp", false))
         {
             UUID currentApp = developerConnection.getCurrentRunningApp();
@@ -158,6 +162,8 @@ public class CallService extends Service {
 
     private void closePebbleApp()
     {
+        Timber.d("closeApp");
+
         if (previousApp != null)
         {
             PebbleKit.startAppOnPebble(this, previousApp);
@@ -371,6 +377,8 @@ public class CallService extends Service {
 	
 	private void updateNumberData()
 	{
+        Timber.d("Updating number...");
+
 		if (number == null)
 		{
 			name = null;
@@ -391,14 +399,13 @@ public class CallService extends Service {
 			type = ContactUtils.convertNumberType(typeId, label);
 			if (type == null)
 				type = "Other";
-
-			Timber.d("Name " + name + " " + type);
 		}
 	}
 
 	public static void onCall(final Context context, final Intent intent)
 	{
 		Timber.d("onCall");
+
 		CallService service = CallService.instance;
 
 		if (service == null)
