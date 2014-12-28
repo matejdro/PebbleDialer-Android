@@ -12,9 +12,6 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
 public class PebbleDeveloperConnection extends WebSocketClient {
-	
-	
-	
 	private UUID receivedUUID;
 	private HandlerThread timeoutThread;
 	private Handler timeoutThreadHandler;

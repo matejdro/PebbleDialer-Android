@@ -99,8 +99,6 @@ public class CallLogMode extends DialerMode {
 			numType = "";
 		data.addString(6, numType);
 
-		Log.d("PebbleDialer", "send log " + offset);
-
 		PebbleKit.sendDataToPebble(service, DataReceiver.dialerUUID, data);
 	}
 

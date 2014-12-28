@@ -26,6 +26,8 @@ import java.net.URISyntaxException;
 import java.util.Random;
 import java.util.UUID;
 
+import timber.log.Timber;
+
 public class CallService extends Service {
     private static final UUID SYSTEM_UUID = UUID.fromString("0a7575eb-e5b9-456b-8701-3eacb62d74f1");
 
@@ -99,14 +101,14 @@ public class CallService extends Service {
 	{
 		if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL))
 		{
-			Log.d("PebbleCallService", "Outgoing intent");
+			Timber.d("Outgoing intent");
 			number =  intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 			updateNumberData();
 
 			return;
 		}
 		
-		Log.d("PebbleCallService", "phone state intent " + intent.getStringExtra(TelephonyManager.EXTRA_STATE));
+		Timber.d("phone state intent " + intent.getStringExtra(TelephonyManager.EXTRA_STATE));
 
 		if (previousMuteMode != -1)
 		{
@@ -184,7 +186,7 @@ public class CallService extends Service {
 	{
 		inCall = false;
 		number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-		Log.d("PebbleCallService", "Ringing " + number);
+		Timber.d("Ringing " + number);
 
 		updateNumberData();
 		updatePebble();
@@ -232,7 +234,7 @@ public class CallService extends Service {
 			data.addUint16(5, (short) Math.min(65000, (System.currentTimeMillis() - callStart) / 1000));
 		
 		PebbleKit.sendDataToPebble(this, DataReceiver.dialerUUID, data);
-		Log.d("PebbleCallService", "UpdatePebble");
+		Timber.d("UpdatePebble");
 	}
 
 	public void pebbleAction(int button)
@@ -314,7 +316,7 @@ public class CallService extends Service {
 				ITelephony iTelephony = (ITelephony) getITelephonyMethod.invoke(this.getSystemService(TELEPHONY_SERVICE), (Object[]) null);
 				iTelephony.endCall();
 			} catch (Exception e) {
-				Log.e(this.getClass().getName(), "endCallError", e);
+				Timber.e(e, "endCallError");
 			} 
 		}
 	}
@@ -392,13 +394,13 @@ public class CallService extends Service {
 			if (type == null)
 				type = "Other";
 
-			Log.d("PebbleCallService", "Name " + name + " " + type);
+			Timber.d("Name " + name + " " + type);
 		}
 	}
 
 	public static void onCall(final Context context, final Intent intent)
 	{
-		Log.d("PebbleCallService", "onCall");
+		Timber.d("onCall");
 		CallService service = CallService.instance;
 
 		if (service == null)

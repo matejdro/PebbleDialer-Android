@@ -33,4 +33,20 @@
             android:summary="Check this if some in-call features (like answer or mic mute) do not work for you. NEEDS ROOT!"
             android:title="Root mode" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="About" >
+        <Preference
+            android:key="version"
+            android:title="Installed version"/>
+        <CheckBoxPreference
+            android:key="enableLogWriter"
+            android:title="Enable debug logging"
+            android:summary="Enable logging to PebbleDialer\\log.txt. Use when debugging." />
+        <Preference
+            android:key="license"
+            android:title="Open source Licenses" />
+        <Preference
+            android:key="donateButton"
+            android:title="Donate"
+            android:summary="Buy me a Coke if you really like my app!"/>
+    </PreferenceCategory>
 </PreferenceScreen>

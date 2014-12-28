@@ -15,7 +15,9 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -145,8 +147,40 @@ public class SettingsActivity extends PreferenceActivity {
 			}
 		});
 
-		PebbleUtil.prepareString("Тулупченко Василий");
-	}
+        Preference notifierLicenseButton = findPreference("license");
+        notifierLicenseButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                Intent intent = new Intent(SettingsActivity.this, LicenseActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        try
+        {
+            findPreference("version").setSummary( getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+
+        }
+
+        findPreference("donateButton").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+        {
+            @Override
+            public boolean onPreferenceClick(Preference preference)
+            {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5HV63YFE6SW44"));
+                startActivity(intent);
+                return true;
+            }
+        });
+
+    }
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
