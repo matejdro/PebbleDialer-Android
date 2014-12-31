@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -47,8 +48,9 @@ public class SettingsActivity extends PreferenceActivity {
         
 		settings = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = settings.edit();
-		
-		if (WatchappHandler.isFirstRun(settings))
+
+
+        if (WatchappHandler.isFirstRun(settings))
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			
@@ -61,8 +63,14 @@ public class SettingsActivity extends PreferenceActivity {
 						}
 					}).show();
 		}
-		
-		Preference displayedGroups = findPreference("displayedGroups");
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && isFirstLollipopRun(settings))
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.lollipopNotice).setPositiveButton("OK", null).show();
+        }
+
+
+        Preference displayedGroups = findPreference("displayedGroups");
 		displayedGroups.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			
 			@Override
@@ -184,6 +192,16 @@ public class SettingsActivity extends PreferenceActivity {
             }
         });
 
+        findPreference("enableServiceButton").setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                    startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                else
+                    startActivity(new Intent("android.settings.ACTION_ACCESSIBILITY_SETTINGS"));
+                return true;
+            }
+        });
     }
 	
 	@Override
@@ -214,7 +232,7 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		return groups;
 	}
-	
+
 	private static boolean hasRoot()
 	{
 		try {
@@ -233,5 +251,19 @@ public class SettingsActivity extends PreferenceActivity {
 			return false;
 		}
 	}
-	
+
+    public static boolean isFirstLollipopRun(SharedPreferences settings)
+    {
+        boolean firstRun = settings.getBoolean("FirstLollipopRun", true);
+
+        if (firstRun)
+        {
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("FirstLollipopRun", false);
+            editor.apply();
+        }
+        return firstRun;
+    }
+
+
 }

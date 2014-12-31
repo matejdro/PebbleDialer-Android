@@ -8,18 +8,13 @@
             android:key="displayedGroups"
             android:summary="Select which contact groups will be displayed on Pebble"
             android:title="Displayed contact groups" />
-
         <CheckBoxPreference
             android:key="skipGroupFiltering"
             android:summary="Should dialer skip filtering when you pick group instead of all contacts"
             android:title="Skip filtering contact groups" />
-
-
-
         <Preference
             android:key="help"
             android:title="Help and Tips" />
-
     </PreferenceCategory>
     <PreferenceCategory
         android:key="cat_call"
@@ -32,6 +27,22 @@
             android:key="rootMode"
             android:summary="Check this if some in-call features (like answer or mic mute) do not work for you. NEEDS ROOT!"
             android:title="Root mode" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="cat_notify"
+        android:title="Notification answer">
+        <Preference
+            android:key="enableServiceButton"
+            android:title="Enable notification service"
+            android:summary="Notification answer function allows you to gain rootless answer/decline ability by hooking into call notification. If your phone displays notification with Answer and/or Decline buttons, it will likely work."/>
+        <EditTextPreference
+            android:key="callNotificationAnswerButton"
+            android:title="Answer button text"
+            android:defaultValue="Answer"/>
+        <EditTextPreference
+            android:key="callNotificationDeclineButton"
+            android:title="Decline button text"
+            android:defaultValue="Dismiss" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About" >
         <Preference

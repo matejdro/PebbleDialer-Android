@@ -91,13 +91,6 @@ public class DataReceiver extends BroadcastReceiver {
 	
 
 	public void onReceive(final Context context, final Intent intent) {
-		
-		if (intent.getAction().equals("android.intent.action.PHONE_STATE") || intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL))
-		{
-			CallService.onCall(context, intent);
-			return;
-		}
-		
 		final UUID receivedUuid = (UUID) intent.getSerializableExtra(APP_UUID);
 
 		// Pebble-enabled apps are expected to be good citizens and only inspect broadcasts containing their UUID

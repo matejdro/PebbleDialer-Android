@@ -1,5 +1,6 @@
 package com.matejdro.pebbledialer;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -27,8 +28,10 @@ import java.util.UUID;
 import timber.log.Timber;
 
 public class CallService extends Service {
-    private static final UUID SYSTEM_UUID = UUID.fromString("0a7575eb-e5b9-456b-8701-3eacb62d74f1");
+    public static final String INTENT_CALL_STATUS = "CallStatus";
+    public static final String INTENT_ACTION_FROM_NOTIFICATION = "ActionFromNotification";
 
+    private static final UUID SYSTEM_UUID = UUID.fromString("0a7575eb-e5b9-456b-8701-3eacb62d74f1");
 
     public static CallService instance;
 
@@ -48,6 +51,10 @@ public class CallService extends Service {
 
 	long callStart;
 
+    private PendingIntent answerIntent;
+    private PendingIntent declineIntent;
+
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -56,9 +63,10 @@ public class CallService extends Service {
     @Override
     public void onCreate()
     {
+        instance = this;
+
         super.onCreate();
 
-        instance = this;
         settings = PreferenceManager.getDefaultSharedPreferences(this);
 
         try
@@ -77,18 +85,32 @@ public class CallService extends Service {
     @Override
     public void onDestroy() {
         instance = null;
-
         developerConnection.close();
     }
 
 
     @Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		if (intent != null)
+		if (intent != null && intent.getAction() != null)
 		{
-			Intent startingIntent = intent.getParcelableExtra("callIntent");
-			if (startingIntent != null)
-				intentDelivered(startingIntent);
+			if (intent.getAction().equals(INTENT_CALL_STATUS))
+            {
+                Intent callIntent = intent.getParcelableExtra("callIntent");
+                intentDelivered(callIntent);
+            }
+            else if (intent.getAction().equals(INTENT_ACTION_FROM_NOTIFICATION))
+            {
+                int actionType = intent.getIntExtra("actionType", 0);
+                PendingIntent actionIntent = intent.getParcelableExtra("action");
+
+                Timber.d("Got action from notification " + actionType + " " + actionIntent);
+
+                if (actionType == 0)
+                    answerIntent = actionIntent;
+                else
+                    declineIntent = actionIntent;
+            }
+
 		}
 		
 
@@ -269,7 +291,7 @@ public class CallService extends Service {
 				answerCall();
 				break;
 			case 2:
-				endCall();
+				declineCall();
 				break;
 			}
 		}
@@ -287,17 +309,39 @@ public class CallService extends Service {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-		else
-		{
-			Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON);              
-			buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
-			this.sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");		
 
+            return;
 		}
-		
-		
+
+        if (answerIntent != null)
+        {
+            try {
+                answerIntent.send();
+            } catch (PendingIntent.CanceledException e) {
+            }
+            return;
+        }
+
+        Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
+        buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
+        this.sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
 	}
+
+    public void declineCall()
+    {
+        if (declineIntent != null)
+        {
+            try {
+                declineIntent.send();
+            } catch (PendingIntent.CanceledException e) {
+            }
+        }
+        else
+        {
+            endCall();
+        }
+
+    }
 
 	public void endCall()	
 	{
@@ -399,25 +443,6 @@ public class CallService extends Service {
 			type = ContactUtils.convertNumberType(typeId, label);
 			if (type == null)
 				type = "Other";
-		}
-	}
-
-	public static void onCall(final Context context, final Intent intent)
-	{
-		Timber.d("onCall");
-
-		CallService service = CallService.instance;
-
-		if (service == null)
-		{
-			Intent startIntent = new Intent(context, CallService.class);
-			startIntent.putExtra("callIntent", intent);
-
-			context.startService(startIntent);
-		}
-		else
-		{
-			service.intentDelivered(intent);
 		}
 	}
 

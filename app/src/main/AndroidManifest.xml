@@ -23,6 +23,9 @@
             <intent-filter>
                 <action android:name="com.getpebble.action.app.RECEIVE" />n
             </intent-filter>
+        </receiver>
+
+        <receiver android:name=".CallStatusReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
@@ -30,6 +33,29 @@
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name="com.matejdro.pebbledialer.notifications.JellybeanNotificationListener"
+            android:enabled="@bool/supportsNotificationCenter"
+            android:label="PebbleDialer"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".notifications.AccesibilityNotificationListener"
+            android:enabled="@bool/useAccesibility"
+            android:label="PebbleDialer"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_config" />
+
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+        </service>
 
         <activity android:name=".ui.SettingsActivity" >
             <intent-filter>
