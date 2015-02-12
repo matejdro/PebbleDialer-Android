@@ -15,7 +15,8 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.service.notification.StatusBarNotification;
 
-import com.matejdro.pebbledialer.CallService;
+import com.matejdro.pebbledialer.PebbleTalkerService;
+import com.matejdro.pebbledialer.modules.CallModule;
 
 import java.lang.reflect.Field;
 
@@ -52,8 +53,8 @@ public class NotificationHandler {
 
             if (answerIntent != null)
             {
-                Intent intent = new Intent(context, CallService.class);
-                intent.setAction(CallService.INTENT_ACTION_FROM_NOTIFICATION);
+                Intent intent = new Intent(context, PebbleTalkerService.class);
+                intent.setAction(CallModule.INTENT_ACTION_FROM_NOTIFICATION);
                 intent.putExtra("actionType", 0);
                 intent.putExtra("action", answerIntent);
                 context.startService(intent);
@@ -61,8 +62,8 @@ public class NotificationHandler {
 
             if (declineIntent != null)
             {
-                Intent intent = new Intent(context, CallService.class);
-                intent.setAction(CallService.INTENT_ACTION_FROM_NOTIFICATION);
+                Intent intent = new Intent(context, PebbleTalkerService.class);
+                intent.setAction(CallModule.INTENT_ACTION_FROM_NOTIFICATION);
                 intent.putExtra("actionType", 1);
                 intent.putExtra("action", declineIntent);
                 context.startService(intent);

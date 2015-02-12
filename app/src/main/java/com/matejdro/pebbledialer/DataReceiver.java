@@ -13,104 +13,76 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.getpebble.android.kit.Constants;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
+
+import timber.log.Timber;
 
 
 public class DataReceiver extends BroadcastReceiver {
 
 	public final static UUID dialerUUID = UUID.fromString("158A074D-85CE-43D2-AB7D-14416DDC1058");
-	
-	public void initDialer(Context context)
-	{
-		CallService call = CallService.instance;
-		if (call != null)
-		{
-			call.updatePebble();
-			return;
-		}
-		
-		DialerService service = DialerService.instance;
-		if (service == null)
-		{
-			context.startService(new Intent(context, DialerService.class));
-		}
-		else
-		{
-			service.initialize();
-		}
-	}
-		
-	public void inCallAction(Context context, PebbleDictionary input)
-	{
-		int buttonId = input.getUnsignedInteger(1).intValue() & 0xFF;		
-		
-		CallService service = CallService.instance;
-		if (service != null)
-		{
-			service.pebbleAction(buttonId);
-		}
-	}
-	
-	public void dialerAction(int packet, Context context, PebbleDictionary input)
-	{
-		DialerService service = DialerService.instance;
-		if (service == null)
-		{
-			//Something went horribly wrong here
-			Log.wtf("PebbleDialer", "Got packet without running service! " + input.toJsonString());
-		}
-		else
-		{
-			service.gotPacket(packet, input);
-		}
-	}
-	
-	public void receiveData(final Context context, final int transactionId, final PebbleDictionary data)
-	{
-		PebbleKit.sendAckToPebble(context, transactionId);
 
-		int id = data.getUnsignedInteger(0).intValue() & 0xFF;
+    public void receiveData(final Context context, final int transactionId, final String jsonPacket)
+    {
+        PebbleKit.sendAckToPebble(context, transactionId);
 
-		Log.d("PebbleDialer", "Got packet " + id);
+        Intent intent = new Intent(context, PebbleTalkerService.class);
+        intent.setAction(PebbleTalkerService.INTENT_PEBBLE_PACKET);
+        intent.putExtra("packet", jsonPacket);
+        context.startService(intent);
+    }
 
-		switch (id)
-		{
-		case 0:
-			initDialer(context);
-			break;
-		case 7:
-			inCallAction(context, data);
-			break;
-		default:
-			dialerAction(id, context, data);
-			break;
-		}
-	}
-	
-	
+    public void receivedAck(Context context, int transactionId)
+    {
+        Intent intent = new Intent(context, PebbleTalkerService.class);
+        intent.setAction(PebbleTalkerService.INTENT_PEBBLE_ACK);
+        intent.putExtra("transactionId", transactionId);
+        context.startService(intent);
+    }
 
-	public void onReceive(final Context context, final Intent intent) {
-		final UUID receivedUuid = (UUID) intent.getSerializableExtra(APP_UUID);
+    public void receivedNack(Context context, int transactionId)
+    {
+        Intent intent = new Intent(context, PebbleTalkerService.class);
+        intent.setAction(PebbleTalkerService.INTENT_PEBBLE_NACK);
+        intent.putExtra("transactionId", transactionId);
+        context.startService(intent);
+    }
 
-		// Pebble-enabled apps are expected to be good citizens and only inspect broadcasts containing their UUID
-		if (!receivedUuid.equals(dialerUUID)) {
-			return;
-		}
+    public void onReceive(final Context context, final Intent intent) {
+        final int transactionId = intent.getIntExtra(TRANSACTION_ID, -1);
 
-		final int transactionId = intent.getIntExtra(TRANSACTION_ID, -1);
-		final String jsonData = intent.getStringExtra(MSG_DATA);
-		if (jsonData == null || jsonData.isEmpty()) {
-			return;
-		}
+        if ("com.getpebble.action.app.RECEIVE_ACK".equals(intent.getAction()))
+        {
+            receivedAck(context, transactionId);
+            return;
+        }
+        if ("com.getpebble.action.app.RECEIVE_NACK".equals(intent.getAction()))
+        {
+            receivedNack(context, transactionId);
+            return;
+        }
 
-		try {
-			final PebbleDictionary data = PebbleDictionary.fromJson(jsonData);
-			receiveData(context, transactionId, data);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return;
-		}
-	}
+        final UUID receivedUuid = (UUID) intent.getSerializableExtra(APP_UUID);
 
+        // Pebble-enabled apps are expected to be good citizens and only inspect broadcasts containing their UUID
+        if (!dialerUUID.equals(receivedUuid)) {
+            return;
+        }
+
+        final String jsonData = intent.getStringExtra(MSG_DATA);
+        if (jsonData == null || jsonData.isEmpty()) {
+            return;
+        }
+
+        receiveData(context, transactionId, jsonData);
+
+        try {
+            final PebbleDictionary data = PebbleDictionary.fromJson(jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
 }

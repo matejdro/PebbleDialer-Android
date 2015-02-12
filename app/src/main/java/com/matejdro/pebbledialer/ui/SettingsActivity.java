@@ -1,5 +1,6 @@
 package com.matejdro.pebbledialer.ui;
 
+import com.crashlytics.android.Crashlytics;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -43,7 +44,6 @@ public class SettingsActivity extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         addPreferencesFromResource(R.xml.settings);
         
 		settings = PreferenceManager.getDefaultSharedPreferences(this);
