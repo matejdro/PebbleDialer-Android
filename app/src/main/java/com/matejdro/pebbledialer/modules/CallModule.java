@@ -30,6 +30,7 @@ public class CallModule extends CommModule
     public static int MODULE_CALL = 1;
 
     private boolean updateRequired;
+    private boolean callerNameUpdateRequired;
 
     private String number = "Outgoing Call";
     private String name = null;
@@ -52,6 +53,9 @@ public class CallModule extends CommModule
 
         service.registerIntent(INTENT_CALL_STATUS, this);
         service.registerIntent(INTENT_ACTION_FROM_NOTIFICATION, this);
+
+        updateRequired = false;
+        callerNameUpdateRequired = false;
     }
 
     @Override
@@ -308,6 +312,12 @@ public class CallModule extends CommModule
             return true;
         }
 
+        if (callerNameUpdateRequired)
+        {
+            sendCallerName();
+            return true;
+        }
+
         return false;
     }
 
@@ -320,11 +330,11 @@ public class CallModule extends CommModule
 
         if (name != null)
         {
-            data.addString(2, TextUtil.prepareString(name));
-            data.addString(3, TextUtil.prepareString(type));
+            data.addString(2, TextUtil.prepareString(type, 30));
+            callerNameUpdateRequired = true;
         }
 
-        data.addString(4, TextUtil.prepareString(number));
+        data.addString(3, TextUtil.prepareString(number, 30));
 
         byte[] parameters = new byte[4];
         parameters[0] = (byte) (callState == CallState.ESTABLISHED ? 1 : 0);
@@ -336,10 +346,10 @@ public class CallModule extends CommModule
         parameters[2] = (byte) (micMuted ? 0 : 1);
         parameters[3] = (byte) (name != null ? 1 : 0);
 
-        data.addBytes(5, parameters);
+        data.addBytes(4, parameters);
 
         if (callState == CallState.ESTABLISHED)
-            data.addUint16(6, (short) Math.min(65000, (System.currentTimeMillis() - callStart) / 1000));
+            data.addUint16(5, (short) Math.min(65000, (System.currentTimeMillis() - callStart) / 1000));
 
         data.addUint8(999, (byte) 1);
 
@@ -347,6 +357,23 @@ public class CallModule extends CommModule
         Timber.d("Sent Call update packet...");
 
         updateRequired = false;
+    }
+
+    private void sendCallerName()
+    {
+        PebbleDictionary data = new PebbleDictionary();
+
+        data.addUint8(0, (byte) 1);
+        data.addUint8(1, (byte) 1);
+
+        data.addString(2, TextUtil.prepareString(name, 100));
+
+        data.addString(3, TextUtil.prepareString(type));
+
+        getService().getPebbleCommunication().sendToPebble(data);
+        Timber.d("Sent Caller name packet...");
+
+        callerNameUpdateRequired = false;
     }
 
     public void gotMessagePebbleAction(PebbleDictionary data)

@@ -108,15 +108,20 @@ Phone --> Pebble
 	
 		Packet 0 - Call info
 		Additional data:
-			2 = Contact name (cstring - up to 20 characters. Can be missing if 4[3] is 1, see below)
-			3 = Number Type (cstring - up to 20 characters)
-			4 = Number (cstring - up to 20 characters)
-			5 = Various flags (byte array, 4 bytes)
+			2 = Number Type (cstring - up to 30 characters)
+			3 = Number (cstring - up to 30 characters)
+			4 = Various flags (byte array, 4 bytes)
 				[0] = If in call (0 = incoming call, 1 = call connected)
 				[1] = Is speaker muted (0 = ringer is muted / speakerphone is off, 1 = ringer is not muted / speakerphone is on)
 				[2] = Is mic muted (0 = mic is not muted, 1 = mic is muted)
 				[3] = Is contact name known. If this is 0, contact number will be displayed instead of its name in the center.
 			6 = Elapsed seconds. Only sent when in call, not when ringing. (uint16)
+			
+		Packet 1 - Caller name
+		Sent after Call info packet
+		Additional data:
+			2 = Name (cstring - up to 100 characters)
+		
 
 	MODULE 2 - CALL LOG
 			
