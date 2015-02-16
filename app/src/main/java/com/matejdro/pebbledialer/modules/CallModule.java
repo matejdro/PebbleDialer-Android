@@ -260,7 +260,7 @@ public class CallModule extends CommModule
         if (getService().getGlobalSettings().getBoolean("rootMode", false))
         {
             try {
-                Runtime.getRuntime().exec(new String[] {"su", "-c", "input keyevent 91"});
+                Runtime.getRuntime().exec(new String[] {"su", "-c", "input keyevent 79"});
             } catch (IOException e) {
                 e.printStackTrace();
             }
