@@ -75,54 +75,7 @@ public class SettingsActivity extends PreferenceActivity {
 			
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				List<String> existingSettings = ListSerialization.loadList(settings, "displayedGroupsList");
-				
-				final String[] contactGroups = getAllContactGroups(SettingsActivity.this).toArray(new String[0]);
-				boolean[] checkedItems = new boolean[contactGroups.length];
-				
-				for (int i = 0; i < contactGroups.length; i++)
-				{
-					if (existingSettings.contains(contactGroups[i]))
-					{
-						checkedItems[i] = true;
-					}
-				}
-				
-				final boolean[] newItemState = checkedItems.clone();
-				
-				AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
-				builder.setMultiChoiceItems(contactGroups, checkedItems, new OnMultiChoiceClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-						
-						newItemState[which] = isChecked;
-					}
-				}).setPositiveButton("OK", new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						List<String> checkedGroups = new ArrayList<String>();
-						int numChecked = 0;
-						
-						for (int i = 0; i < contactGroups.length; i++)
-						{
-							if (newItemState[i])
-							{
-								numChecked++;
-								if (numChecked > 20)
-								{
-									Toast.makeText(SettingsActivity.this, "Sorry, you can only pick up to 20 groups.", Toast.LENGTH_SHORT).show();
-									break;
-								}
-
-								checkedGroups.add(contactGroups[i]);
-							}
-						}
-						
-						ListSerialization.saveList(editor, checkedGroups, "displayedGroupsList");
-					}
-				}).setNegativeButton("Cancel", null).setTitle("Displayed contact groups").show();
-				
+				new ContactGroupsPickerDialog(SettingsActivity.this, settings, editor).show();
 				return false;
 			}
 		});
@@ -216,22 +169,6 @@ public class SettingsActivity extends PreferenceActivity {
 	    WatchappHandler.install(this, editor);
 	    return true;
 	}
-	
-	private static List<String> getAllContactGroups(Context context)
-	{
-		List<String> groups = new ArrayList<String>();
-		
-		ContentResolver resolver = context.getContentResolver();
-		
-		Cursor cursor = resolver.query(ContactsContract.Groups.CONTENT_SUMMARY_URI, new String[] { ContactsContract.Groups.TITLE, ContactsContract.Groups.SUMMARY_COUNT}, ContactsContract.Groups.SUMMARY_COUNT + " > 0", null, null);
-		
-		while (cursor.moveToNext())
-		{
-			groups.add(cursor.getString(0));
-		}
-		
-		return groups;
-	}
 
 	private static boolean hasRoot()
 	{
@@ -264,6 +201,4 @@ public class SettingsActivity extends PreferenceActivity {
         }
         return firstRun;
     }
-
-
 }

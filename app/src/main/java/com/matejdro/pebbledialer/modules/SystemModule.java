@@ -7,6 +7,7 @@ import com.getpebble.android.kit.util.PebbleDictionary;
 import com.matejdro.pebbledialer.DataReceiver;
 import com.matejdro.pebbledialer.PebbleTalkerService;
 import com.matejdro.pebbledialer.pebble.PebbleCommunication;
+import com.matejdro.pebbledialer.ui.ContactGroupsPickerDialog;
 import com.matejdro.pebbledialer.util.ListSerialization;
 import com.matejdro.pebbledialer.util.WatchappHandler;
 
@@ -29,7 +30,7 @@ public class SystemModule extends CommModule
     private Callable<Boolean> runOnNext;
     private UUID currentRunningApp;
 
-    private List<String> contactGroups;
+    private List<ContactGroupsPickerDialog.ContactGroup> pickedContactGroups;
     private int nextGroupNameToSend = -1;
 
     private int closeTries = 0;
@@ -73,7 +74,7 @@ public class SystemModule extends CommModule
 
     private void sendGroupNames()
     {
-        if (nextGroupNameToSend >= contactGroups.size())
+        if (nextGroupNameToSend >= pickedContactGroups.size())
         {
             nextGroupNameToSend = -1;
             return;
@@ -84,10 +85,10 @@ public class SystemModule extends CommModule
         packet.addUint8(1, (byte) 2);
         packet.addUint8(2, (byte) nextGroupNameToSend);
 
-        int num = Math.min(nextGroupNameToSend + 3, contactGroups.size() - 1) - nextGroupNameToSend;
+        int num = Math.min(nextGroupNameToSend + 3, pickedContactGroups.size() - 1) - nextGroupNameToSend;
         for (int i = 0; i <= num; i++)
         {
-            packet.addString(3 + i, contactGroups.get(nextGroupNameToSend + i));
+            packet.addString(3 + i, pickedContactGroups.get(nextGroupNameToSend + i).getName());
         }
 
         nextGroupNameToSend += 3;
@@ -99,7 +100,8 @@ public class SystemModule extends CommModule
     {
         PebbleDictionary data = new PebbleDictionary();
 
-        contactGroups = ListSerialization.loadList(getService().getGlobalSettings(), "displayedGroupsList");
+        List<Integer> pickedGroupIds = ListSerialization.loadIntegerList(getService().getGlobalSettings(), "displayedGroupsListNew");
+        pickedContactGroups = ContactGroupsPickerDialog.getSpecificContactGroups(getService(), pickedGroupIds);
 
         byte[] configBytes = new byte[13];
         configBytes[0] = (byte) (WatchappHandler.SUPPORTED_PROTOCOL >>> 0x08);
@@ -113,7 +115,7 @@ public class SystemModule extends CommModule
         flags |= (byte) (getService().getGlobalSettings().getBoolean("skipGroupFiltering", false) ? 0x04 : 0);
 
         configBytes[2] = flags;
-        configBytes[3] = (byte) contactGroups.size();
+        configBytes[3] = (byte) pickedContactGroups.size();
 
         data.addUint8(0, (byte) 0);
         data.addUint8(1, (byte) 0);
@@ -123,7 +125,7 @@ public class SystemModule extends CommModule
 
         getService().getPebbleCommunication().sendToPebble(data);
 
-        if (!callWaiting && contactGroups.size() > 0)
+        if (!callWaiting && pickedContactGroups.size() > 0)
             nextGroupNameToSend = 0;
     }
 
@@ -260,17 +262,17 @@ public class SystemModule extends CommModule
         if (entry == 0) //Call log
             CallLogModule.get(getService()).beginSending();
         else if (entry == 1) //All contacts
-            ContactsModule.get(getService()).beginSending(null);
+            ContactsModule.get(getService()).beginSending(-1);
         else //Groups
         {
             int groupId = entry - 2;
-            if (groupId < 0 || groupId >= contactGroups.size())
+            if (groupId < 0 || groupId >= pickedContactGroups.size())
             {
                 Timber.w("Got invalid group ID from main menu!");
                 return;
             }
 
-            String group = contactGroups.get(groupId);
+            int group = pickedContactGroups.get(groupId).getId();
             ContactsModule.get(getService()).beginSending(group);
         }
     }

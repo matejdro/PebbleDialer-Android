@@ -48,13 +48,13 @@ public class ContactsModule extends CommModule
 
 	private boolean filterMode;
 
-	public void beginSending(String contactGroup) {
+	public void beginSending(int contactGroup) {
         filters.clear();
 
-        this.group = getGroupId(contactGroup);
+        this.group = contactGroup;
         Timber.d("Group " + group);
 
-        filterMode = contactGroup == null || !getService().getGlobalSettings().getBoolean("skipGroupFiltering", false);
+        filterMode = contactGroup == -1 || !getService().getGlobalSettings().getBoolean("skipGroupFiltering", false);
 
         openWindow = true;
         refreshContacts();
@@ -158,22 +158,6 @@ public class ContactsModule extends CommModule
 		refreshContacts();
 		queueSendEntries(0);
 	}
-
-	private int getGroupId(String group)
-	{
-        if (group == null)
-            return -1;
-
-		ContentResolver resolver = getService().getContentResolver();
-
-		Cursor cursor = resolver.query(ContactsContract.Groups.CONTENT_SUMMARY_URI, new String[] { ContactsContract.Groups._ID, ContactsContract.Groups.SUMMARY_COUNT}, ContactsContract.Groups.TITLE + " = ? AND " + ContactsContract.Groups.SUMMARY_COUNT + " > 0", new String[] { group }, null);
-
-		if (!cursor.moveToNext())
-			return -1;
-
-		return cursor.getInt(0);
-	}
-
 
     @Override
     public boolean sendNextMessage() {
