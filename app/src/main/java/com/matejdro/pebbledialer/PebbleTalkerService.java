@@ -17,7 +17,7 @@ import com.matejdro.pebbledialer.pebble.PebbleCommunication;
 import com.matejdro.pebbledialer.modules.CallModule;
 import com.matejdro.pebbledialer.modules.CommModule;
 import com.matejdro.pebbledialer.modules.SystemModule;
-import com.matejdro.pebbledialer.util.PebbleDeveloperConnection;
+import com.matejdro.pebbledialer.pebble.PebbleDeveloperConnection;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;

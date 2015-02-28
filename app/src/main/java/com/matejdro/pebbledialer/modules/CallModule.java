@@ -1,24 +1,26 @@
 package com.matejdro.pebbledialer.modules;
 
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
-import android.view.KeyEvent;
+import android.util.SparseArray;
 
-import com.android.internal.telephony.ITelephony;
 import com.getpebble.android.kit.util.PebbleDictionary;
 import com.matejdro.pebbledialer.PebbleTalkerService;
+import com.matejdro.pebbledialer.callactions.AnswerCallAction;
+import com.matejdro.pebbledialer.callactions.AnswerCallWithSpeakerAction;
+import com.matejdro.pebbledialer.callactions.CallAction;
+import com.matejdro.pebbledialer.callactions.DummyAction;
+import com.matejdro.pebbledialer.callactions.EndCallAction;
+import com.matejdro.pebbledialer.callactions.ToggleMicrophoneAction;
+import com.matejdro.pebbledialer.callactions.ToggleRingerAction;
+import com.matejdro.pebbledialer.callactions.ToggleSpeakerAction;
 import com.matejdro.pebbledialer.pebble.PebbleCommunication;
 import com.matejdro.pebbledialer.util.ContactUtils;
 import com.matejdro.pebbledialer.util.TextUtil;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
 
 import timber.log.Timber;
 
@@ -29,6 +31,8 @@ public class CallModule extends CommModule
 
     public static int MODULE_CALL = 1;
 
+    private SparseArray<CallAction> actions = new SparseArray<CallAction>();
+
     private boolean updateRequired;
     private boolean callerNameUpdateRequired;
 
@@ -38,13 +42,10 @@ public class CallModule extends CommModule
 
     private CallState callState = CallState.NO_CALL;
 
-    private int previousMuteMode = -1;
-    private boolean micMuted = false;
-    private boolean speakerphoneEnabled = false;
+    private boolean vibrating;
 
-    long callStart;
+    long callStartTime;
 
-    private PendingIntent answerIntent;
     private PendingIntent declineIntent;
 
     public CallModule(PebbleTalkerService service)
@@ -54,9 +55,30 @@ public class CallModule extends CommModule
         service.registerIntent(INTENT_CALL_STATUS, this);
         service.registerIntent(INTENT_ACTION_FROM_NOTIFICATION, this);
 
+        registerCallAction(new AnswerCallAction(this), AnswerCallAction.ANSWER_ACTION_ID);
+        registerCallAction(new EndCallAction(this), EndCallAction.END_CALL_ACTION_ID);
+        registerCallAction(new ToggleRingerAction(this), ToggleRingerAction.TOGGLE_RINGER_ACTION_ID);
+        registerCallAction(new ToggleMicrophoneAction(this), ToggleMicrophoneAction.TOGGLE_MICROPHONE_ACTION_ID);
+
+        registerCallAction(new ToggleSpeakerAction(this), ToggleSpeakerAction.TOGGLE_SPEAKER_ACTION_ID);
+        registerCallAction(new AnswerCallWithSpeakerAction(this), AnswerCallWithSpeakerAction.ANSWER_WITH_SPEAKER_ACTION_ID);
+
+        registerCallAction(new DummyAction(this), DummyAction.DUMMY_ACTION_ID);
+
         updateRequired = false;
         callerNameUpdateRequired = false;
     }
+
+    private void registerCallAction(CallAction action, int id)
+    {
+        actions.put(id, action);
+    }
+
+    public CallAction getCallAction(int id)
+    {
+        return actions.get(id);
+    }
+
 
     @Override
     public void gotIntent(Intent intent) {
@@ -73,9 +95,9 @@ public class CallModule extends CommModule
             Timber.d("Got action from notification " + actionType + " " + actionIntent);
 
             if (actionType == 0)
-                answerIntent = actionIntent;
+                AnswerCallAction.get(this).registerNotificationAnswerIntent(actionIntent);
             else
-                declineIntent = actionIntent;
+                EndCallAction.get(this).registerNotificationEndCallIntent(actionIntent);
         }
     }
 
@@ -93,14 +115,6 @@ public class CallModule extends CommModule
         }
 
         Timber.d("phone state intent " + intent.getStringExtra(TelephonyManager.EXTRA_STATE));
-
-        if (previousMuteMode != -1)
-        {
-            AudioManager audioManager = (AudioManager) getService().getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setRingerMode(previousMuteMode);
-
-            previousMuteMode = -1;
-        }
 
         String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 
@@ -122,30 +136,43 @@ public class CallModule extends CommModule
     {
         SystemModule.get(getService()).startClosing();
         callState = CallState.NO_CALL;
+
+        for (int i = 0; i < actions.size(); i++)
+            actions.valueAt(i).onCallEnd();
     }
 
     private void callEstablished()
     {
-        callStart = System.currentTimeMillis();
+        callStartTime = System.currentTimeMillis();
         callState = CallState.ESTABLISHED;
 
         updatePebble();
+
         SystemModule.get(getService()).openApp();
+
+        for (int i = 0; i < actions.size(); i++)
+            actions.valueAt(i).onPhoneOffhook();
     }
 
     private void ringingStarted(Intent intent)
     {
+        Timber.d("Ringing " + number);
+
         callState = CallState.RINGING;
         number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-        Timber.d("Ringing " + number);
+        vibrating = true;
 
         updateNumberData();
         updatePebble();
 
         SystemModule.get(getService()).openApp();
+
+        for (int i = 0; i < actions.size(); i++)
+            actions.valueAt(i).onCallRinging();
+
     }
 
-    private void updatePebble()
+    public void updatePebble()
     {
         updateRequired = true;
 
@@ -154,126 +181,9 @@ public class CallModule extends CommModule
         communication.sendNext();
     }
 
-    private void answerCall()
+    public void setVibration(boolean vibrating)
     {
-        if (callState != CallState.RINGING)
-            return;
-
-        if (getService().getGlobalSettings().getBoolean("rootMode", false))
-        {
-            try {
-                Runtime.getRuntime().exec(new String[] {"su", "-c", "input keyevent 5"});
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return;
-        }
-
-        if (answerIntent != null)
-        {
-            try {
-                answerIntent.send();
-            } catch (PendingIntent.CanceledException e) {
-            }
-            return;
-        }
-
-        Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
-        getService().sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
-    }
-
-    private void declineCall()
-    {
-        if (declineIntent != null)
-        {
-            try {
-                declineIntent.send();
-            } catch (PendingIntent.CanceledException e) {
-            }
-        }
-        else
-        {
-            endCall();
-        }
-
-    }
-
-    private void endCall()
-    {
-        if (getService().getGlobalSettings().getBoolean("rootMode", false))
-        {
-            try {
-                Runtime.getRuntime().exec(new String[] {"su", "-c", "input keyevent 6"});
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            //iTelephony
-            Class<TelephonyManager> c = TelephonyManager.class;
-            Method getITelephonyMethod = null;
-            try {
-                getITelephonyMethod = c.getDeclaredMethod("getITelephony",(Class[]) null);
-                getITelephonyMethod.setAccessible(true);
-                ITelephony iTelephony = (ITelephony) getITelephonyMethod.invoke(getService().getSystemService(Context.TELEPHONY_SERVICE), (Object[]) null);
-                iTelephony.endCall();
-            } catch (Exception e) {
-                Timber.e(e, "endCallError");
-            }
-        }
-    }
-
-    private void toggleRingerMute()
-    {
-        if (callState != CallState.RINGING)
-            return;
-
-        AudioManager audioManager = (AudioManager) getService().getSystemService(Context.AUDIO_SERVICE);
-
-        if (previousMuteMode == -1)
-        {
-            previousMuteMode = audioManager.getRingerMode();
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-        }
-        else
-        {
-            audioManager.setRingerMode(previousMuteMode);
-            previousMuteMode = -1;
-        }
-    }
-
-    private void toggleSpeakerphone() {
-        if (callState != CallState.ESTABLISHED)
-            return;
-
-        AudioManager audioManager = (AudioManager) getService().getSystemService(Context.AUDIO_SERVICE);
-
-        speakerphoneEnabled = !speakerphoneEnabled;
-        audioManager.setSpeakerphoneOn(speakerphoneEnabled);
-    }
-
-    private void toggleMicrophoneMute()
-    {
-        if (callState != CallState.ESTABLISHED)
-            return;
-        micMuted = !micMuted;
-
-        if (getService().getGlobalSettings().getBoolean("rootMode", false))
-        {
-            try {
-                Runtime.getRuntime().exec(new String[] {"su", "-c", "input keyevent 79"});
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            AudioManager audioManager = (AudioManager) getService().getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setMicrophoneMute(micMuted);
-        }
+        this.vibrating = vibrating;
     }
 
     private void updateNumberData()
@@ -301,6 +211,8 @@ public class CallModule extends CommModule
             if (type == null)
                 type = "Other";
         }
+
+        cursor.close();
     }
 
     @Override
@@ -336,20 +248,19 @@ public class CallModule extends CommModule
 
         data.addString(3, TextUtil.prepareString(number, 30));
 
-        byte[] parameters = new byte[4];
+        byte[] parameters = new byte[6];
         parameters[0] = (byte) (callState == CallState.ESTABLISHED ? 1 : 0);
-        if (callState == CallState.ESTABLISHED)
-            parameters[1] = (byte) (speakerphoneEnabled ? 1 : 0);
-        else
-            parameters[1] = (byte) (previousMuteMode > 0 ? 0 : 1);
+        parameters[1] = (byte) (name != null ? 1 : 0);
+        parameters[5] = (byte) (vibrating ? 1 : 0);
 
-        parameters[2] = (byte) (micMuted ? 0 : 1);
-        parameters[3] = (byte) (name != null ? 1 : 0);
+        parameters[2] = (byte) getCallAction(getUserSelectedAction(getExtendedButtonId("Up"))).getIcon();
+        parameters[3] = (byte) getCallAction(getUserSelectedAction(getExtendedButtonId("Select"))).getIcon();
+        parameters[4] = (byte) getCallAction(getUserSelectedAction(getExtendedButtonId("Down"))).getIcon();
 
         data.addBytes(4, parameters);
 
         if (callState == CallState.ESTABLISHED)
-            data.addUint16(5, (short) Math.min(65000, (System.currentTimeMillis() - callStart) / 1000));
+            data.addUint16(5, (short) Math.min(65000, (System.currentTimeMillis() - callStartTime) / 1000));
 
         data.addUint8(999, (byte) 1);
 
@@ -379,37 +290,11 @@ public class CallModule extends CommModule
     public void gotMessagePebbleAction(PebbleDictionary data)
     {
         int button = data.getUnsignedIntegerAsLong(2).intValue();
+        String extendedButton = getExtendedButtonFromPebbleButton(button);
+        int action = getUserSelectedAction(extendedButton);
 
-        if (callState == CallState.ESTABLISHED)
-        {
-            switch (button)
-            {
-                case 0:
-                    toggleMicrophoneMute();
-                    break;
-                case 1:
-                    toggleSpeakerphone();
-                    break;
-                case 2:
-                    endCall();
-                    break;
-            }
-        }
-        else
-        {
-            switch (button)
-            {
-                case 0:
-                    toggleRingerMute();
-                    break;
-                case 1:
-                    answerCall();
-                    break;
-                case 2:
-                    declineCall();
-                    break;
-            }
-        }
+        getCallAction(action).executeAction();
+
     }
 
 
@@ -437,6 +322,95 @@ public class CallModule extends CommModule
             PebbleCommunication communication = getService().getPebbleCommunication();
             communication.queueModulePriority(this);
         }
+    }
+
+    private int getUserSelectedAction(String button)
+    {
+        return Integer.parseInt(getService().getGlobalSettings().getString("callButton" + button, Integer.toString(getDefaultAction(button))));
+    }
+
+    private String getExtendedButtonId(String button)
+    {
+        switch (callState)
+        {
+            case RINGING:
+                return "Ring" + button;
+            case ESTABLISHED:
+                return "Established" + button;
+            default:
+                return "Invalid";
+        }
+    }
+
+    private static int getDefaultAction(String button)
+    {
+        switch (button)
+        {
+            case "RingUp":
+                return  ToggleRingerAction.TOGGLE_RINGER_ACTION_ID;
+            case "RingSelect":
+                return  AnswerCallAction.ANSWER_ACTION_ID;
+            case "RingDown":
+                return  EndCallAction.END_CALL_ACTION_ID;
+            case "RingUpHold":
+                return  999;
+            case "RingSelectHold":
+                return  5;
+            case "RingDownHold":
+                return  999;
+            case "RingShake":
+                return  ToggleRingerAction.TOGGLE_RINGER_ACTION_ID;
+            case "EstablishedUp":
+                return ToggleMicrophoneAction.TOGGLE_MICROPHONE_ACTION_ID;
+            case "EstablishedSelect":
+                return  ToggleSpeakerAction.TOGGLE_SPEAKER_ACTION_ID;
+            case "EstablishedDown":
+                return  EndCallAction.END_CALL_ACTION_ID;
+            case "EstablishedUpHold":
+                return 999;
+            case "EstablishedSelectHold":
+                return  999;
+            case "EstablishedDownHold":
+                return  999;
+            case "EstablishedShake":
+                return  ToggleSpeakerAction.TOGGLE_SPEAKER_ACTION_ID;
+            default:
+                return 999;
+        }
+    }
+
+    private String getExtendedButtonFromPebbleButton(int pebbleButtonId)
+    {
+        String button;
+
+        switch (pebbleButtonId)
+        {
+            case 0:
+                button = "Up";
+                break;
+            case 1:
+                button = "Select";
+                break;
+            case 2:
+                button = "Down";
+                break;
+            case 3:
+                button = "UpHold";
+                break;
+            case 4:
+                button = "SelectHold";
+                break;
+            case 5:
+                button = "SelectDown";
+                break;
+            case 6:
+                button = "Shake";
+                break;
+            default:
+                button = "Invalid";
+        }
+
+        return getExtendedButtonId(button);
     }
 
     public CallState getCallState()

@@ -23,7 +23,7 @@ Pebble --> Phone
 		Packet 0 - In call action
 		Sent when action is executed on call screen
 		Additional data:
-			2 = Action ID (0 = UP press, 1 = UP hold, 2 = SELECT press, 3 = SELECT hold, 4 = DOWN press, 5 = DOWN hold, 6 = Shake) - uint8.
+			2 = Action ID (0 = UP press, 1 = SELECT press, 2 = DOWN press, 3 = UP hold, 4 = SELECT hold, 5 = DOWN hold, 6 = Shake) - uint8.
 
 	MODULE 2 - CALL LOG
 			
@@ -112,9 +112,11 @@ Phone --> Pebble
 			3 = Number (cstring - up to 30 characters)
 			4 = Various flags (byte array, 4 bytes)
 				[0] = If in call (0 = incoming call, 1 = call connected)
-				[1] = Is speaker muted (0 = ringer is muted / speakerphone is off, 1 = ringer is not muted / speakerphone is on)
-				[2] = Is mic muted (0 = mic is not muted, 1 = mic is muted)
-				[3] = Is contact name known. If this is 0, contact number will be displayed instead of its name in the center.
+				[1] = Is contact name known. If this is 0, contact number will be displayed instead of its name in the center.
+				[2] = Top action bar icon ID
+				[3] = Middle action bar icon If
+				[4] = Bottom action bar icon ID
+				[5] = Should I vibrate on incoming call screen (1 = yes, 0 = no)
 			6 = Elapsed seconds. Only sent when in call, not when ringing. (uint16)
 			
 		Packet 1 - Caller name

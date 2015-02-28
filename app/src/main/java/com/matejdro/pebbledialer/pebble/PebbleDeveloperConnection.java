@@ -1,4 +1,4 @@
-package com.matejdro.pebbledialer.util;
+package com.matejdro.pebbledialer.pebble;
 
 import android.os.Handler;
 import android.os.HandlerThread;

@@ -1,23 +1,16 @@
 package com.matejdro.pebbledialer.ui;
 
-import com.crashlytics.android.Crashlytics;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,15 +20,13 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.matejdro.pebbledialer.util.ListSerialization;
 import com.matejdro.pebbledialer.R;
-import com.matejdro.pebbledialer.util.WatchappHandler;
+import com.matejdro.pebbledialer.pebble.WatchappHandler;
 
 public class SettingsActivity extends PreferenceActivity {
 	private SharedPreferences settings;

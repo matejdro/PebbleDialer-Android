@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="actionsRingingNames">
+        <item>Nothing</item>
+        <item>Answer call</item>
+        <item>Decline call</item>
+        <item>Mute ringer</item>
+        <item>Answer and enable speakerphone</item>
+    </string-array>
+    <string-array name="actionsRingingValues">
+        <item>999</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="actionsCallEstablishedNames">
+        <item>Nothing</item>
+        <item>Toggle microphone</item>
+        <item>Toggle speakerphone</item>
+        <item>End call</item>
+    </string-array>
+    <string-array name="actionsCallEstablishedValues">
+        <item>999</item>
+        <item>3</item>
+        <item>4</item>
+        <item>1</item>
+    </string-array>
+</resources>

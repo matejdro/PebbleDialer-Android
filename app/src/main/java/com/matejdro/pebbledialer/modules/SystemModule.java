@@ -9,9 +9,8 @@ import com.matejdro.pebbledialer.PebbleTalkerService;
 import com.matejdro.pebbledialer.pebble.PebbleCommunication;
 import com.matejdro.pebbledialer.ui.ContactGroupsPickerDialog;
 import com.matejdro.pebbledialer.util.ListSerialization;
-import com.matejdro.pebbledialer.util.WatchappHandler;
+import com.matejdro.pebbledialer.pebble.WatchappHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;

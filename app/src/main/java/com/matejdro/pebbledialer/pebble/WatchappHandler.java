@@ -1,4 +1,4 @@
-package com.matejdro.pebbledialer.util;
+package com.matejdro.pebbledialer.pebble;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +21,7 @@ import android.net.Uri;
 import com.matejdro.pebbledialer.R;
 
 public class WatchappHandler extends BroadcastReceiver {
-    public static final int SUPPORTED_PROTOCOL = 4;
+    public static final int SUPPORTED_PROTOCOL = 5;
     public static final String INTENT_UPDATE_WATCHAPP = "com.matejdro.pebbledialer.UPDATE_WATCHAPP";
 
     public static final String WATCHAPP_URL = "https://dl.dropboxusercontent.com/u/6999250/dialer/beta/PebbleDialer.pbw";
