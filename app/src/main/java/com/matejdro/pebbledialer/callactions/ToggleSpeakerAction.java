@@ -50,7 +50,7 @@ public class ToggleSpeakerAction extends CallAction
     @Override
     public int getIcon()
     {
-        return CallAction.ICON_BUTTON_ANSWER;
+        return speakerphoneEnabled ? ICON_BUTTON_SPEKAER_ON : ICON_BUTTON_SPEAKER_OFF;
     }
 
     public static ToggleSpeakerAction get(CallModule callModule)

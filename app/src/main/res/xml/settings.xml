@@ -100,50 +100,50 @@
             android:key="callButtonEstablishedUp"
             android:title="UP button press while call is established"
             android:summary="Action that will be performing when you press UP button on Pebble while there is call established."
-            android:entries="@array/actionsRingingNames"
-            android:entryValues="@array/actionsRingingValues"
+            android:entries="@array/actionsCallEstablishedNames"
+            android:entryValues="@array/actionsCallEstablishedValues"
             android:defaultValue="3"/>
         <ListPreference
             android:key="callButtonEstablishedSelect"
             android:title="SELECT button press while call is established"
             android:summary="Action that will be performing when you press SELECT button on Pebble while there is call established."
-            android:entries="@array/actionsRingingNames"
-            android:entryValues="@array/actionsRingingValues"
+            android:entries="@array/actionsCallEstablishedNames"
+            android:entryValues="@array/actionsCallEstablishedValues"
             android:defaultValue="4"/>
         <ListPreference
             android:key="callButtonEstablishedDown"
             android:title="DOWN button press while call is established"
             android:summary="Action that will be performing when you press DOWN button on Pebble while there is call established."
-            android:entries="@array/actionsRingingNames"
-            android:entryValues="@array/actionsRingingValues"
+            android:entries="@array/actionsCallEstablishedNames"
+            android:entryValues="@array/actionsCallEstablishedValues"
             android:defaultValue="1"/>
         <ListPreference
             android:key="callButtonEstablishedUpHold"
             android:title="UP button hold when call is established"
             android:summary="Action that will be performing when you hold UP button on Pebble while there is call established."
-            android:entries="@array/actionsRingingNames"
-            android:entryValues="@array/actionsRingingValues"
+            android:entries="@array/actionsCallEstablishedNames"
+            android:entryValues="@array/actionsCallEstablishedValues"
             android:defaultValue="999"/>
         <ListPreference
             android:key="callButtonEstablishedSelectHold"
             android:title="SELECT button hold when call is established"
             android:summary="Action that will be performing when you hold SELECT button on Pebble while there is call established."
-            android:entries="@array/actionsRingingNames"
-            android:entryValues="@array/actionsRingingValues"
+            android:entries="@array/actionsCallEstablishedNames"
+            android:entryValues="@array/actionsCallEstablishedValues"
             android:defaultValue="999"/>
         <ListPreference
             android:key="callButtonEstablishedDownHold"
             android:title="DOWN button hold when call is established"
             android:summary="Action that will be performing when you hold DOWN button on Pebble while there is call established."
-            android:entries="@array/actionsRingingNames"
-            android:entryValues="@array/actionsRingingValues"
+            android:entries="@array/actionsCallEstablishedNames"
+            android:entryValues="@array/actionsCallEstablishedValues"
             android:defaultValue="999"/>
         <ListPreference
             android:key="callButtonEstablishedShake"
             android:title="Shake when call is established"
             android:summary="Action that will be performing when you shake your Pebble while there is call established."
-            android:entries="@array/actionsRingingNames"
-            android:entryValues="@array/actionsRingingValues"
+            android:entries="@array/actionsCallEstablishedNames"
+            android:entryValues="@array/actionsCallEstablishedValues"
             android:defaultValue="4"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="About">
