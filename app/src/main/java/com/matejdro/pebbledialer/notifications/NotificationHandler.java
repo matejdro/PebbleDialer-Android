@@ -26,7 +26,7 @@ public class NotificationHandler {
 	@TargetApi(Build.VERSION_CODES.KITKAT)
     public static void newNotification(Context context, String pkg, Notification notification)
 	{
-        if (pkg.contains("dialer") || pkg.contains("phone"))
+        if (pkg.contains("dialer") || pkg.contains("phone") || pkg.contains("call"))
         {
             Timber.d("Found potentially useful notification from " + pkg);
 

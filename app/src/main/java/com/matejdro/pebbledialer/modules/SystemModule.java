@@ -318,6 +318,7 @@ public class SystemModule extends CommModule
 
     public void openApp()
     {
+        updateCurrentlyRunningApp();
         PebbleKit.startAppOnPebble(getService(), DataReceiver.dialerUUID);
     }
 
