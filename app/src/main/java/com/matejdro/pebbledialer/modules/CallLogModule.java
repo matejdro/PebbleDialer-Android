@@ -73,6 +73,9 @@ public class CallLogModule extends CommModule
 
 	public void sendEntriesPacket(int offset)
 	{
+        if (logTypes.size() <= offset)
+            return;
+
 		PebbleDictionary data = new PebbleDictionary();
 
 		data.addUint8(0, (byte) 2);

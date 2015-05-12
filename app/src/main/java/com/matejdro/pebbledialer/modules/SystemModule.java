@@ -265,7 +265,7 @@ public class SystemModule extends CommModule
         else //Groups
         {
             int groupId = entry - 2;
-            if (groupId < 0 || groupId >= pickedContactGroups.size())
+            if (pickedContactGroups == null || groupId < 0 || groupId >= pickedContactGroups.size())
             {
                 Timber.w("Got invalid group ID from main menu!");
                 return;

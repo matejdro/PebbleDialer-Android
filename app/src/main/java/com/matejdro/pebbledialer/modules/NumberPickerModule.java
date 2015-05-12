@@ -130,6 +130,8 @@ public class NumberPickerModule extends CommModule
                 break;
             case 1:
                 offset = message.getInteger(2).intValue();
+                if (offset >= phoneNumbers.size())
+                    break;
                 ContactUtils.call(phoneNumbers.get(offset), getService());
                 break;
         }
