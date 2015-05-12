@@ -76,7 +76,8 @@ public class SettingsActivity extends PreferenceActivity {
 			
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				Intent intent = new Intent(SettingsActivity.this, HelpActivity.class);
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse("https://docs.google.com/document/d/12EUvuYrydLCrfdAb6wLLvWn-v4C0HfI1f6WP2CT3bCE/pub"));
 				startActivity(intent);
 		        return false;
 			}
