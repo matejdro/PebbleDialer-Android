@@ -277,9 +277,8 @@ public class CallModule extends CommModule
         data.addUint8(0, (byte) 1);
         data.addUint8(1, (byte) 1);
 
-        data.addString(2, TextUtil.prepareString(name, 100));
-
-        data.addString(3, TextUtil.prepareString(type));
+        String name = TextUtil.prepareString(this.name, 100);
+        data.addString(2, name == null ? "" : name);
 
         getService().getPebbleCommunication().sendToPebble(data);
         Timber.d("Sent Caller name packet...");
