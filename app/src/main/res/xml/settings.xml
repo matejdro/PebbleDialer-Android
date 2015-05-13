@@ -14,7 +14,7 @@
             android:title="Displayed contact groups"/>
         <CheckBoxPreference
             android:key="skipGroupFiltering"
-            android:summary="Should dialer skip filtering when you pick group instead of all contacts"></CheckBoxPreference>
+            android:summary="Should dialer skip filtering when you pick group instead of all contacts" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="cat_call"
@@ -33,7 +33,7 @@
         android:title="Notification answer">
         <Preference
             android:key="enableServiceButton"
-            android:summary="Notification answer function allows you to gain rootless answer/decline ability by hooking into call notification. If your phone displays notification with Answer and/or Decline buttons, it will likely work."
+            android:summary="Notification answer function allows you to gain rootless answer/decline ability by hooking into call notification. Use help option above for more info."
             android:title="Enable notification service"/>
         <EditTextPreference
             android:defaultValue="Answer"
