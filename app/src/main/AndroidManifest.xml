@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.matejdro.pebbledialer"
-    android:versionCode="15"
-    android:versionName="2.2b5">
+    android:versionCode="16"
+    android:versionName="2.2">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -83,8 +83,6 @@
         </receiver>
 
 
-        <activity android:name=".ui.HelpActivity" >
-        </activity>
         <meta-data android:name="com.crashlytics.ApiKey" android:value="048e0255b748bd3c0abc33c75a2601ff67b550c8"/>
     </application>
 
