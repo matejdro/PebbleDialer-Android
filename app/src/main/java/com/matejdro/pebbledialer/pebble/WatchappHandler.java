@@ -24,7 +24,7 @@ public class WatchappHandler extends BroadcastReceiver {
     public static final int SUPPORTED_PROTOCOL = 5;
     public static final String INTENT_UPDATE_WATCHAPP = "com.matejdro.pebbledialer.UPDATE_WATCHAPP";
 
-    public static final String WATCHAPP_URL = "https://dl.dropboxusercontent.com/u/6999250/dialer/beta/PebbleDialer.pbw";
+    public static final String WATCHAPP_URL = "https://dl.dropboxusercontent.com/u/6999250/dialer/PebbleDialer.pbw";
 
     public static boolean isFirstRun(SharedPreferences settings)
 	{
