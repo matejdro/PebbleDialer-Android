@@ -182,7 +182,7 @@ public class PebbleTalkerService extends Service
         CommModule module = modules.get(destination);
         if (module == null)
         {
-            Crashlytics.logException(new NullPointerException("Destination module does not exist: " + destination));
+            Timber.w("Destination module does not exist: " + destination + " Packet: (" + data.toJsonString() + ").");
             return;
         }
 
