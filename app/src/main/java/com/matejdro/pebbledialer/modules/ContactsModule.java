@@ -90,7 +90,6 @@ public class ContactsModule extends CommModule
 				break;
 
 			data.addString(i + 4, names.get(i + offset));
-
 		}
 
         getService().getPebbleCommunication().sendToPebble(data);
@@ -133,6 +132,9 @@ public class ContactsModule extends CommModule
 
 			if (idSet.contains(id))
 				continue;
+
+            if (name == null)
+                continue;
 
 			names.add(TextUtil.prepareString(name));
 
