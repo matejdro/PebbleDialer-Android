@@ -124,7 +124,10 @@ public class CallLogModule extends CommModule
         int mode = message.getUnsignedIntegerAsLong(3).intValue();
         Timber.d("Picked " + index + " " + mode);
 		if (mode == 0)
-			ContactUtils.call(numbers.get(index), getService());
+        {
+            if (numbers.size() > index)
+                ContactUtils.call(numbers.get(index), getService());
+        }
         else
         {
             int contactId = getContactId(numbers.get(index));
