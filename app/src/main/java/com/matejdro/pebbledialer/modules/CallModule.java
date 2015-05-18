@@ -197,8 +197,16 @@ public class CallModule extends CommModule
             return;
         }
 
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
-        Cursor cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.TYPE, ContactsContract.PhoneLookup.LABEL},null,  null, ContactsContract.PhoneLookup.DISPLAY_NAME + " LIMIT 1");
+        Cursor cursor = null;
+        try
+        {
+            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+            cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.TYPE, ContactsContract.PhoneLookup.LABEL},null,  null, ContactsContract.PhoneLookup.DISPLAY_NAME + " LIMIT 1");
+        }
+        catch (IllegalArgumentException e)
+        {
+            //This is sometimes thrown when number is in invalid format, so phone cannot recognize it.
+        }
 
         name = null;
         if (cursor.moveToNext())
