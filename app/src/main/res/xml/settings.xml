@@ -139,7 +139,7 @@
             android:summary="Action that will be performing when you hold DOWN button on Pebble while there is call established."
             android:title="DOWN button hold when call is established"/>
         <ListPreference
-            android:defaultValue="4"
+            android:defaultValue="999"
             android:entries="@array/actionsCallEstablishedNames"
             android:entryValues="@array/actionsCallEstablishedValues"
             android:key="callButtonEstablishedShake"

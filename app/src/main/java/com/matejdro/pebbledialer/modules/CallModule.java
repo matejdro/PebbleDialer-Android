@@ -372,7 +372,7 @@ public class CallModule extends CommModule
             case "EstablishedDownHold":
                 return  999;
             case "EstablishedShake":
-                return  ToggleSpeakerAction.TOGGLE_SPEAKER_ACTION_ID;
+                return  999;
             default:
                 return 999;
         }
