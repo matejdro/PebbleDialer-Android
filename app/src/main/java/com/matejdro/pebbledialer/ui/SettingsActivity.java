@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -139,12 +140,20 @@ public class SettingsActivity extends PreferenceActivity {
 
         findPreference("enableServiceButton").setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                    startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
-                else
-                    startActivity(new Intent("android.settings.ACTION_ACCESSIBILITY_SETTINGS"));
-                return true;
+            public boolean onPreferenceClick(Preference preference)
+			{
+				try
+				{
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                        startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                    else
+                        startActivity(new Intent("android.settings.ACTION_ACCESSIBILITY_SETTINGS"));
+				}
+				catch (ActivityNotFoundException e)
+				{
+					Toast.makeText(SettingsActivity.this, getString(R.string.open_settings_error), Toast.LENGTH_LONG).show();
+				}
+				return true;
             }
         });
     }
