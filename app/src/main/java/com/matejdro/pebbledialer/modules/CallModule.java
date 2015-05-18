@@ -201,26 +201,28 @@ public class CallModule extends CommModule
         try
         {
             Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
-            cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.TYPE, ContactsContract.PhoneLookup.LABEL},null,  null, ContactsContract.PhoneLookup.DISPLAY_NAME + " LIMIT 1");
-        }
-        catch (IllegalArgumentException e)
+            cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.TYPE, ContactsContract.PhoneLookup.LABEL}, null, null, ContactsContract.PhoneLookup.DISPLAY_NAME + " LIMIT 1");
+        } catch (IllegalArgumentException e)
         {
             //This is sometimes thrown when number is in invalid format, so phone cannot recognize it.
         }
 
         name = null;
-        if (cursor.moveToNext())
+        if (cursor != null)
         {
-            name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-            String label = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.LABEL));
-            int typeId = cursor.getInt(cursor.getColumnIndex(ContactsContract.PhoneLookup.TYPE));
+            if (cursor.moveToNext())
+            {
+                name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+                String label = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.LABEL));
+                int typeId = cursor.getInt(cursor.getColumnIndex(ContactsContract.PhoneLookup.TYPE));
 
-            type = ContactUtils.convertNumberType(typeId, label);
-            if (type == null)
-                type = "Other";
+                type = ContactUtils.convertNumberType(typeId, label);
+                if (type == null)
+                    type = "Other";
+            }
+
+            cursor.close();
         }
-
-        cursor.close();
     }
 
     @Override
