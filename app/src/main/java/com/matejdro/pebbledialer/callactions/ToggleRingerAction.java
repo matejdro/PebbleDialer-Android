@@ -9,7 +9,7 @@ public class ToggleRingerAction extends CallAction
 {
     public static final int TOGGLE_RINGER_ACTION_ID = 2;
 
-    private int previousMuteMode = -1;
+    private boolean isRingerMuted = false;
 
     public ToggleRingerAction(CallModule callModule)
     {
@@ -24,16 +24,16 @@ public class ToggleRingerAction extends CallAction
 
         AudioManager audioManager = (AudioManager) getCallModule().getService().getSystemService(Context.AUDIO_SERVICE);
 
-        if (previousMuteMode == -1)
+        if (!isRingerMuted)
         {
-            previousMuteMode = audioManager.getRingerMode();
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+            isRingerMuted = true;
+            audioManager.setStreamSolo(AudioManager.STREAM_MUSIC, true);
             getCallModule().setVibration(false);
         }
         else
         {
-            audioManager.setRingerMode(previousMuteMode);
-            previousMuteMode = -1;
+            isRingerMuted = false;
+            audioManager.setStreamSolo(AudioManager.STREAM_MUSIC, false);
             getCallModule().setVibration(true);
         }
 
@@ -43,12 +43,11 @@ public class ToggleRingerAction extends CallAction
     @Override
     public void onCallEnd()
     {
-        if (previousMuteMode != -1)
+        if (isRingerMuted)
         {
             AudioManager audioManager = (AudioManager) getCallModule().getService().getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setRingerMode(previousMuteMode);
-
-            previousMuteMode = -1;
+            isRingerMuted = false;
+            audioManager.setStreamSolo(AudioManager.STREAM_MUSIC, false);
             getCallModule().setVibration(true);
         }
 
@@ -57,7 +56,7 @@ public class ToggleRingerAction extends CallAction
     @Override
     public int getIcon()
     {
-        return previousMuteMode == -1 ? CallAction.ICON_BUTTON_SPEKAER_ON : CallAction.ICON_BUTTON_SPEAKER_OFF;
+        return isRingerMuted ? CallAction.ICON_BUTTON_SPEAKER_OFF : CallAction.ICON_BUTTON_SPEKAER_ON;
     }
 
     public static ToggleRingerAction get(CallModule callModule)
