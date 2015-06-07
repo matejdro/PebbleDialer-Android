@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.matejdro.pebbledialer"
-    android:versionCode="17"
-    android:versionName="2.21">
+    android:versionCode="18"
+    android:versionName="2.22">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -28,6 +28,12 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="com.getpebble.action.app.RECEIVE_ACK" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.getpebble.action.app.NACK" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.getpebble.action.app.ACK" />
             </intent-filter>
         </receiver>
 

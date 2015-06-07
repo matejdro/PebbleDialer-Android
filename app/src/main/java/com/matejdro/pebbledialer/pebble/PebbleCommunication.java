@@ -14,6 +14,9 @@ import timber.log.Timber;
 
 public class PebbleCommunication
 {
+    public static final int PEBBLE_PLATFORM_APLITE = 0;
+    public static final int PEBBLE_PLATFORM_BASSALT = 1;
+
     private Context context;
 
     private Deque<CommModule> queuedModules;
@@ -22,6 +25,8 @@ public class PebbleCommunication
 
     private PebbleDictionary lastPacket;
     private boolean retriedNack;
+
+    private int connectedPebblePlatform;
 
     public PebbleCommunication(Context context)
     {
@@ -124,5 +129,15 @@ public class PebbleCommunication
             queuedModules.remove(module);
 
         queuedModules.addFirst(module);
+    }
+
+    public int getConnectedPebblePlatform()
+    {
+        return connectedPebblePlatform;
+    }
+
+    public void setConnectedPebblePlatform(int connectedPebblePlatform)
+    {
+        this.connectedPebblePlatform = connectedPebblePlatform;
     }
 }

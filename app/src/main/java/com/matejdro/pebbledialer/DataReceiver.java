@@ -53,6 +53,8 @@ public class DataReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, final Intent intent) {
         final int transactionId = intent.getIntExtra(TRANSACTION_ID, -1);
 
+        Timber.d("GotIntent " + intent.getAction() + " " + transactionId);
+
         if ("com.getpebble.action.app.RECEIVE_ACK".equals(intent.getAction()))
         {
             receivedAck(context, transactionId);
@@ -63,6 +65,9 @@ public class DataReceiver extends BroadcastReceiver {
             receivedNack(context, transactionId);
             return;
         }
+
+        else if (!"com.getpebble.action.app.RECEIVE".equals(intent.getAction()))
+            return;
 
         final UUID receivedUuid = (UUID) intent.getSerializableExtra(APP_UUID);
 

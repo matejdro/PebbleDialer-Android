@@ -8,6 +8,7 @@ Pebble --> Phone
 		Sent from Pebble when app is opened. Phone should respond to that by sending config.
 		Additional data:
 			2 = Watchapp version - uint16
+            3 = Platform (0 = Aplite, 1 = Basalt) - uint8
 
 		Packet 1 - Menu item picked
 		Sent when user picks entry in main menu
@@ -118,12 +119,15 @@ Phone --> Pebble
 				[4] = Bottom action bar icon ID
 				[5] = Should I vibrate on incoming call screen (1 = yes, 0 = no)
 			6 = Elapsed seconds. Only sent when in call, not when ringing. (uint16)
-			
+			7 = Size of the caller image in bytes (only for Basalt platform. If value is 0, no image will be displayed. uint16).
+            
 		Packet 1 - Caller name
 		Sent after Call info packet
 		Additional data:
 			2 = Name (cstring - up to 100 characters)
-		
+            
+        Packet 2 - Caller image part (Only for Basalt)
+            2 = Image data (byte array, part of PNG image format. Up to 107 bytes.)
 
 	MODULE 2 - CALL LOG
 			

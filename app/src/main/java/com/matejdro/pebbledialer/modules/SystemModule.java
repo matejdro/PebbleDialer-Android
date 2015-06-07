@@ -203,9 +203,9 @@ public class SystemModule extends CommModule
         if (message.contains(2))
             version = message.getUnsignedIntegerAsLong(2).intValue();
 
-        Timber.d("Version " + version);
-
         final int finalVersion = version;
+
+        Timber.d("Version " + version);
 
         if (version == WatchappHandler.SUPPORTED_PROTOCOL)
         {
@@ -218,6 +218,14 @@ public class SystemModule extends CommModule
                     return true;
                 }
             };
+
+            int pebblePlatform = message.getUnsignedIntegerAsLong(3).intValue();
+            getService().getPebbleCommunication().setConnectedPebblePlatform(pebblePlatform);
+            Timber.d("Pebble Platform: " + pebblePlatform);
+
+            SparseArray<CommModule> modules = getService().getAllModules();
+            for (int i = 0 ; i < modules.size(); i++)
+                modules.valueAt(i).pebbleAppOpened();
         }
         else if (version == 0)
         {
@@ -244,9 +252,6 @@ public class SystemModule extends CommModule
             };
         }
 
-        SparseArray<CommModule> modules = getService().getAllModules();
-        for (int i = 0 ; i < modules.size(); i++)
-            modules.valueAt(i).pebbleAppOpened();
 
         PebbleCommunication communication = getService().getPebbleCommunication();
         communication.queueModulePriority(this);

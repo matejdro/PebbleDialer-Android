@@ -145,9 +145,9 @@ public class PebbleTalkerService extends Service
         try
         {
             devConn = new PebbleDeveloperConnection();
-            devConn.connectBlocking();
-        } catch (InterruptedException e)
-        {
+           // devConn.connectBlocking();
+       /* } catch (InterruptedException e)
+        {*/
         } catch (URISyntaxException e)
         {
         }

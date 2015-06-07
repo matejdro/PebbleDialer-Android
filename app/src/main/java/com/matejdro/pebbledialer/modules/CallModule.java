@@ -3,8 +3,10 @@ package com.matejdro.pebbledialer.modules;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.SparseArray;
 
@@ -19,8 +21,11 @@ import com.matejdro.pebbledialer.callactions.ToggleMicrophoneAction;
 import com.matejdro.pebbledialer.callactions.ToggleRingerAction;
 import com.matejdro.pebbledialer.callactions.ToggleSpeakerAction;
 import com.matejdro.pebbledialer.pebble.PebbleCommunication;
+import com.matejdro.pebbledialer.pebble.PebbleImageToolkit;
 import com.matejdro.pebbledialer.util.ContactUtils;
 import com.matejdro.pebbledialer.util.TextUtil;
+
+import java.io.IOException;
 
 import timber.log.Timber;
 
@@ -29,24 +34,29 @@ public class CallModule extends CommModule
     public static final String INTENT_CALL_STATUS = "CallStatus";
     public static final String INTENT_ACTION_FROM_NOTIFICATION = "ActionFromNotification";
 
+    public static final int MAX_CALLER_IMAGE_WIDTH = 144 - 30;
+    public static final int MAX_CALLER_IMAGE_HEIGHT = 168 - 16;
+    public static final int CALLER_IMAGE_BYTES_PER_MESSAGE = 124 - 8;
+
     public static int MODULE_CALL = 1;
 
     private SparseArray<CallAction> actions = new SparseArray<CallAction>();
 
     private boolean updateRequired;
     private boolean callerNameUpdateRequired;
+    private int callerImageNextByte = -1;
 
     private String number = "Outgoing Call";
     private String name = null;
     private String type = null;
+    private Bitmap callerImage = null;
+    private byte[] callerImageBytes;
 
     private CallState callState = CallState.NO_CALL;
 
     private boolean vibrating;
 
     long callStartTime;
-
-    private PendingIntent declineIntent;
 
     public CallModule(PebbleTalkerService service)
     {
@@ -162,6 +172,9 @@ public class CallModule extends CommModule
         number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
         vibrating = true;
 
+        updateRequired = true;
+        callerNameUpdateRequired = true;
+
         updateNumberData();
         updatePebble();
 
@@ -201,7 +214,7 @@ public class CallModule extends CommModule
         try
         {
             Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
-            cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.TYPE, ContactsContract.PhoneLookup.LABEL}, null, null, ContactsContract.PhoneLookup.DISPLAY_NAME + " LIMIT 1");
+            cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.TYPE, ContactsContract.PhoneLookup.LABEL, ContactsContract.PhoneLookup.PHOTO_URI}, null, null, ContactsContract.PhoneLookup.DISPLAY_NAME + " LIMIT 1");
         } catch (IllegalArgumentException e)
         {
             //This is sometimes thrown when number is in invalid format, so phone cannot recognize it.
@@ -219,10 +232,31 @@ public class CallModule extends CommModule
                 type = ContactUtils.convertNumberType(typeId, label);
                 if (type == null)
                     type = "Other";
+
+                String photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.PHOTO_URI));
+                if (photoUri != null)
+                {
+                    try
+
+                    {
+                        callerImage = MediaStore.Images.Media.getBitmap(getService().getContentResolver(), Uri.parse(photoUri));
+                        callerImage = PebbleImageToolkit.resizePreservingRatio(callerImage, MAX_CALLER_IMAGE_WIDTH, MAX_CALLER_IMAGE_HEIGHT);
+                    }
+                    catch (IOException e)
+                    {
+                        Timber.w("Unable to load contact image: " + e.getMessage());
+                    }
+                }
             }
 
             cursor.close();
         }
+    }
+
+    private void processContactImage()
+    {
+        PebbleImageToolkit.ditherToPebbleTimeColors(callerImage);
+        callerImageBytes = PebbleImageToolkit.getIndexedPebbleImageBytes(callerImage);
     }
 
     @Override
@@ -237,6 +271,12 @@ public class CallModule extends CommModule
         if (callerNameUpdateRequired)
         {
             sendCallerName();
+            return true;
+        }
+
+        if (callerImageNextByte >= 0)
+        {
+            sendImagePacket();
             return true;
         }
 
@@ -274,6 +314,25 @@ public class CallModule extends CommModule
 
         data.addUint8(999, (byte) 1);
 
+        callerImageNextByte = -1;
+        if (getService().getPebbleCommunication().getConnectedPebblePlatform() == PebbleCommunication.PEBBLE_PLATFORM_BASSALT)
+        {
+            int imageSize = 0;
+
+            if (callerImage != null)
+            {
+                processContactImage();
+                imageSize = callerImageBytes.length;
+            }
+
+            data.addUint16(7, (short) imageSize);
+
+            if (imageSize != 0)
+                callerImageNextByte = 0;
+
+            Timber.d("Image size: " + imageSize);
+        }
+
         getService().getPebbleCommunication().sendToPebble(data);
         Timber.d("Sent Call update packet...");
 
@@ -294,6 +353,29 @@ public class CallModule extends CommModule
         Timber.d("Sent Caller name packet...");
 
         callerNameUpdateRequired = false;
+    }
+
+    private void sendImagePacket()
+    {
+        int bytesToSend = Math.min(callerImageBytes.length - callerImageNextByte, CALLER_IMAGE_BYTES_PER_MESSAGE);
+        byte[] bytes = new byte[bytesToSend];
+        System.arraycopy(callerImageBytes, callerImageNextByte, bytes, 0, bytesToSend);
+
+        PebbleDictionary data = new PebbleDictionary();
+
+        data.addUint8(0, (byte) 1);
+        data.addUint8(1, (byte) 2);
+
+        data.addBytes(2, bytes);
+
+        getService().getPebbleCommunication().sendToPebble(data);
+        Timber.d("Sent image packet " + callerImageNextByte + " / " + callerImageBytes.length);
+
+        callerNameUpdateRequired = false;
+
+        callerImageNextByte += bytesToSend;
+        if (callerImageNextByte >= callerImageBytes.length)
+            callerImageNextByte = -1;
     }
 
     public void gotMessagePebbleAction(PebbleDictionary data)

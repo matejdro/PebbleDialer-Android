@@ -11,6 +11,8 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
+import timber.log.Timber;
+
 public class PebbleDeveloperConnection extends WebSocketClient {
 	private UUID receivedUUID;
 	private HandlerThread timeoutThread;
@@ -31,14 +33,29 @@ public class PebbleDeveloperConnection extends WebSocketClient {
 	public void onMessage(String message) {
 	}
 
+	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	public static String bytesToHex(byte[] bytes) {
+		char[] hexChars = new char[bytes.length * 2];
+		for ( int j = 0; j < bytes.length; j++ ) {
+			int v = bytes[j] & 0xFF;
+			hexChars[j * 2] = hexArray[v >>> 4];
+			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+		}
+		return new String(hexChars);
+	}
+
 	@Override
 	public void onMessage(ByteBuffer bytes) {
-		if (timeoutThread == null || !timeoutThread.isAlive())
+		/*if (timeoutThread == null || !timeoutThread.isAlive())
 			return;
-		
+*/
+
+		Timber.d("DevConn " + bytesToHex(bytes.array()));
+
 		int source = bytes.get();
 		if (source != 0)
 			return;
+
 
 		short size = bytes.getShort();
 		short endpoint = bytes.getShort();
@@ -52,7 +69,7 @@ public class PebbleDeveloperConnection extends WebSocketClient {
 			
 		receivedUUID = new UUID(bytes.getLong(), bytes.getLong());
 		
-		returnId();
+		//returnId();
 	}
 
 	@Override
