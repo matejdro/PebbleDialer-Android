@@ -8,7 +8,7 @@ import com.matejdro.pebbledialer.modules.CallModule;
 
 import java.io.IOException;
 
-import timber.log.Timber;
+import com.matejdro.pebblecommons.log.Timber;
 
 public class AnswerCallAction extends CallAction
 {

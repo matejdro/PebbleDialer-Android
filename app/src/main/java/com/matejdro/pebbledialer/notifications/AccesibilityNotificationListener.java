@@ -5,7 +5,7 @@ import android.app.Notification;
 import android.os.Parcelable;
 import android.view.accessibility.AccessibilityEvent;
 
-import timber.log.Timber;
+import com.matejdro.pebblecommons.log.Timber;
 
 public class AccesibilityNotificationListener extends AccessibilityService {
 

@@ -9,7 +9,7 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.widget.Toast;
 
-import com.matejdro.pebbledialer.util.ListSerialization;
+import com.matejdro.pebblecommons.util.ListSerialization;
 
 import java.util.ArrayList;
 import java.util.List;

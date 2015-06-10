@@ -5,7 +5,7 @@ import android.os.Build;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
-import timber.log.Timber;
+import com.matejdro.pebblecommons.log.Timber;
 
 @TargetApi(value = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class JellybeanNotificationListener extends NotificationListenerService {

@@ -19,23 +19,6 @@
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="Dialer for Pebble" >
-        <receiver android:name=".DataReceiver" >
-            <intent-filter>
-                <action android:name="com.getpebble.action.app.RECEIVE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.getpebble.action.app.RECEIVE_NACK" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.getpebble.action.app.RECEIVE_ACK" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.getpebble.action.app.NACK" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.getpebble.action.app.ACK" />
-            </intent-filter>
-        </receiver>
 
         <receiver android:name=".CallStatusReceiver" >
             <intent-filter>
@@ -46,7 +29,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".PebbleTalkerService" />
+        <service android:name=".DialerTalkerService" />
 
         <service
             android:name="com.matejdro.pebbledialer.notifications.JellybeanNotificationListener"
@@ -79,7 +62,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.LicenseActivity">kaj</activity>
+        <activity android:name=".ui.LicenseActivity" />
 
         <receiver android:name=".pebble.WatchappHandler"
             android:exported="true" >

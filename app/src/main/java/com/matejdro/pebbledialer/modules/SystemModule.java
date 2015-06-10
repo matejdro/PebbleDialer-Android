@@ -4,17 +4,20 @@ import android.util.SparseArray;
 
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
-import com.matejdro.pebbledialer.DataReceiver;
-import com.matejdro.pebbledialer.PebbleTalkerService;
-import com.matejdro.pebbledialer.pebble.PebbleCommunication;
+import com.matejdro.pebblecommons.PebbleCompanionApplication;
+import com.matejdro.pebblecommons.pebble.CommModule;
+import com.matejdro.pebblecommons.pebble.DataReceiver;
+import com.matejdro.pebblecommons.pebble.PebbleCommunication;
+import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
+import com.matejdro.pebblecommons.util.ListSerialization;
+import com.matejdro.pebbledialer.PebbleDialerApplication;
 import com.matejdro.pebbledialer.ui.ContactGroupsPickerDialog;
-import com.matejdro.pebbledialer.util.ListSerialization;
 import com.matejdro.pebbledialer.pebble.WatchappHandler;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import timber.log.Timber;
+import com.matejdro.pebblecommons.log.Timber;
 
 /**
  * Created by Matej on 29.11.2014.
@@ -310,7 +313,7 @@ public class SystemModule extends CommModule
     {
         UUID newApp = getService().getDeveloperConnection().getCurrentRunningApp();
 
-        if (newApp != null && (!newApp.equals(DataReceiver.dialerUUID) || currentRunningApp == null) && !newApp.equals(UNKNOWN_UUID))
+        if (newApp != null && (!newApp.equals(PebbleDialerApplication.WATCHAPP_UUID) || currentRunningApp == null) && !newApp.equals(UNKNOWN_UUID))
         {
             currentRunningApp = newApp;
         }
@@ -324,7 +327,7 @@ public class SystemModule extends CommModule
     public void openApp()
     {
         updateCurrentlyRunningApp();
-        PebbleKit.startAppOnPebble(getService(), DataReceiver.dialerUUID);
+        PebbleKit.startAppOnPebble(getService(), PebbleDialerApplication.WATCHAPP_UUID);
     }
 
     public void closeApp()
@@ -334,7 +337,7 @@ public class SystemModule extends CommModule
         if (getService().getGlobalSettings().getBoolean("closeToLastApp", false) && canCloseToApp(currentRunningApp) && closeTries < 2)
             PebbleKit.startAppOnPebble(getService(), currentRunningApp);
         else
-            PebbleKit.closeAppOnPebble(getService(), DataReceiver.dialerUUID);
+            PebbleKit.closeAppOnPebble(getService(), PebbleDialerApplication.WATCHAPP_UUID);
 
         closeTries++;
     }
@@ -367,7 +370,7 @@ public class SystemModule extends CommModule
 
     private static boolean canCloseToApp(UUID uuid)
     {
-        return uuid != null && !uuid.equals(DataReceiver.dialerUUID) && !uuid.equals(MAIN_MENU_UUID) && !uuid.equals(UNKNOWN_UUID);
+        return uuid != null && !uuid.equals(PebbleDialerApplication.WATCHAPP_UUID) && !uuid.equals(MAIN_MENU_UUID) && !uuid.equals(UNKNOWN_UUID);
     }
 
     public static SystemModule get(PebbleTalkerService service)

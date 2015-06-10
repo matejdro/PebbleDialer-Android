@@ -11,7 +11,12 @@ import android.telephony.TelephonyManager;
 import android.util.SparseArray;
 
 import com.getpebble.android.kit.util.PebbleDictionary;
-import com.matejdro.pebbledialer.PebbleTalkerService;
+import com.matejdro.pebblecommons.pebble.CommModule;
+import com.matejdro.pebblecommons.pebble.PebbleCommunication;
+import com.matejdro.pebblecommons.pebble.PebbleImageToolkit;
+import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
+import com.matejdro.pebblecommons.util.ContactUtils;
+import com.matejdro.pebblecommons.util.TextUtil;
 import com.matejdro.pebbledialer.callactions.AnswerCallAction;
 import com.matejdro.pebbledialer.callactions.AnswerCallWithSpeakerAction;
 import com.matejdro.pebbledialer.callactions.CallAction;
@@ -20,14 +25,10 @@ import com.matejdro.pebbledialer.callactions.EndCallAction;
 import com.matejdro.pebbledialer.callactions.ToggleMicrophoneAction;
 import com.matejdro.pebbledialer.callactions.ToggleRingerAction;
 import com.matejdro.pebbledialer.callactions.ToggleSpeakerAction;
-import com.matejdro.pebbledialer.pebble.PebbleCommunication;
-import com.matejdro.pebbledialer.pebble.PebbleImageToolkit;
-import com.matejdro.pebbledialer.util.ContactUtils;
-import com.matejdro.pebbledialer.util.TextUtil;
 
 import java.io.IOException;
 
-import timber.log.Timber;
+import com.matejdro.pebblecommons.log.Timber;
 
 public class CallModule extends CommModule
 {

@@ -6,21 +6,15 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.service.notification.StatusBarNotification;
 
-import com.matejdro.pebbledialer.PebbleTalkerService;
+import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
 import com.matejdro.pebbledialer.modules.CallModule;
 
 import java.lang.reflect.Field;
 
-import timber.log.Timber;
+import com.matejdro.pebblecommons.log.Timber;
 
 public class NotificationHandler {
 	@TargetApi(Build.VERSION_CODES.KITKAT)

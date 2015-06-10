@@ -1,9 +1,5 @@
 package com.matejdro.pebbledialer.callactions;
 
-import android.content.Intent;
-
-import com.getpebble.android.kit.util.PebbleDictionary;
-import com.matejdro.pebbledialer.PebbleTalkerService;
 import com.matejdro.pebbledialer.modules.CallModule;
 
 public abstract class CallAction

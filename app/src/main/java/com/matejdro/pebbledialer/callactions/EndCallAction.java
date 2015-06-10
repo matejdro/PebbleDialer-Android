@@ -2,9 +2,7 @@ package com.matejdro.pebbledialer.callactions;
 
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.telephony.TelephonyManager;
-import android.view.KeyEvent;
 
 import com.android.internal.telephony.ITelephony;
 import com.crashlytics.android.Crashlytics;
@@ -13,7 +11,7 @@ import com.matejdro.pebbledialer.modules.CallModule;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import timber.log.Timber;
+import com.matejdro.pebblecommons.log.Timber;
 
 public class EndCallAction extends CallAction
 {

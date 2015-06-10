@@ -1,34 +1,25 @@
 package com.matejdro.pebbledialer.modules;
 
-import android.app.PendingIntent;
 import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
-import android.telephony.TelephonyManager;
-import android.view.KeyEvent;
 
-import com.android.internal.telephony.ITelephony;
-import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
-import com.matejdro.pebbledialer.PebbleTalkerService;
-import com.matejdro.pebbledialer.pebble.PebbleCommunication;
-import com.matejdro.pebbledialer.util.ContactUtils;
-import com.matejdro.pebbledialer.util.TextUtil;
+import com.matejdro.pebblecommons.pebble.CommModule;
+import com.matejdro.pebblecommons.pebble.PebbleCommunication;
+import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import timber.log.Timber;
+import com.matejdro.pebblecommons.log.Timber;
+import com.matejdro.pebblecommons.util.ContactUtils;
+import com.matejdro.pebblecommons.util.TextUtil;
 
 public class CallLogModule extends CommModule
 {

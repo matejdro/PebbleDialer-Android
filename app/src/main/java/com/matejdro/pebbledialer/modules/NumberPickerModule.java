@@ -2,26 +2,19 @@ package com.matejdro.pebbledialer.modules;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.net.Uri;
-import android.provider.CallLog;
 import android.provider.ContactsContract;
-import android.util.Log;
 
-import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
-import com.matejdro.pebbledialer.DataReceiver;
-import com.matejdro.pebbledialer.PebbleTalkerService;
-import com.matejdro.pebbledialer.pebble.PebbleCommunication;
-import com.matejdro.pebbledialer.util.ContactUtils;
-import com.matejdro.pebbledialer.util.TextUtil;
+import com.matejdro.pebblecommons.pebble.CommModule;
+import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
+import com.matejdro.pebblecommons.pebble.PebbleCommunication;
+import com.matejdro.pebblecommons.util.ContactUtils;
+import com.matejdro.pebblecommons.util.TextUtil;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
-import timber.log.Timber;
+import com.matejdro.pebblecommons.log.Timber;
 
 public class NumberPickerModule extends CommModule
 {
