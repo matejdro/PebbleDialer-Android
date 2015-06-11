@@ -113,6 +113,8 @@ public class SystemModule extends CommModule
         flags |= (byte) (callWaiting ? 0x01 : 0);
         flags |= (byte) (getService().getGlobalSettings().getBoolean("closeToLastApp", false) ? 0x02 : 0);
         flags |= (byte) (getService().getGlobalSettings().getBoolean("skipGroupFiltering", false) ? 0x04 : 0);
+        flags |= (byte) (getService().getGlobalSettings().getBoolean("lightOnCallWindow", false) ? 0x08 : 0);
+
 
         configBytes[2] = flags;
         configBytes[3] = (byte) pickedContactGroups.size();

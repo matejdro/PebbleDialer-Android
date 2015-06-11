@@ -28,6 +28,11 @@
             android:key="rootMode"
             android:summary="Check this if some in-call features (like answer or mic mute) do not work for you. NEEDS ROOT!"
             android:title="Root mode"/>
+        <CheckBoxPreference
+            android:title="Turn on light on call"
+            android:key="lightOnCallWindow"
+            android:summary="Should I turn backlight on when you receive a call?" />
+
         <PreferenceScreen
             android:key="cat_buttons"
             android:title="Call screen buttons"
