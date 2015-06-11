@@ -36,5 +36,15 @@
     </string>
 
     <string name="lollipopNotice">You appear to be running Android 5.0. Answer and decline functions are not supported by default, but you can gain them using root or using notification answer feature. Use help option for more info.</string>
-    <string name="open_settings_error">Unable to open settings page. Please find it in Settings app and open it manually.</string>
+    <string name="openSettingsError">Unable to open settings page. Please find it in Settings app and open it manually.</string>
+    <string name="noEntries">No entries</string>
+    <string name="add">Add</string>
+    <string name="close">Close</string>
+    <string name="settingCannedResponses">Canned Responses</string>
+    <string name="settingWritingPhrases">Writing Phrases</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
 </resources>

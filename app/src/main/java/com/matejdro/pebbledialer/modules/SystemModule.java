@@ -4,9 +4,7 @@ import android.util.SparseArray;
 
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
-import com.matejdro.pebblecommons.PebbleCompanionApplication;
 import com.matejdro.pebblecommons.pebble.CommModule;
-import com.matejdro.pebblecommons.pebble.DataReceiver;
 import com.matejdro.pebblecommons.pebble.PebbleCommunication;
 import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
 import com.matejdro.pebblecommons.util.ListSerialization;
@@ -17,7 +15,7 @@ import com.matejdro.pebbledialer.pebble.WatchappHandler;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import com.matejdro.pebblecommons.log.Timber;
+import timber.log.Timber;
 
 /**
  * Created by Matej on 29.11.2014.

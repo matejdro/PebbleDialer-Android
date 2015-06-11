@@ -65,7 +65,17 @@ Pebble --> Phone
 		Packet 1 - Picked number
 		Sent from pebble when user picks number.
 		Additional data:
-			2 = Index of number picked on Pebble - int16.				
+			2 = Index of number picked on Pebble - int16.	
+
+	MODULE 5 - SMS Replies
+		Packet 0 - Action list item picked
+		Additional data:
+			2 = index of picked item - uint8	
+
+		Packet 1 - Reply text (from tertiary text)
+		Additional data:
+			2 = text (string)					
+			
 	
 Phone --> Pebble
 
@@ -163,3 +173,12 @@ Phone --> Pebble
 			5 = Number type (cstring, up to 15 characters)
 			6 = Number (cstring, up to 15 characters)
 			7 = Number (cstring, up to 15 characters)
+            
+	MODULE 5 - SMS Replies
+	    Packet 0 - Action list names - Names of items in action list
+	    Additional data:
+	        2 = array of uint8
+	        	[0] = Index of the first canned reponse in this packet
+	        	[1] = Amount of all actions in the list
+	        	[2] = Should I display tertiary text window instead of menu (1 or 0)
+	        3 = Names (up to 4) - multiple null-terminated strings (up to 19 chars each) in one byte array

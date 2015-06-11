@@ -6,6 +6,7 @@
         <item>Decline call</item>
         <item>Mute ringer</item>
         <item>Answer and enable speakerphone</item>
+        <item>Reject with SMS</item>
     </string-array>
     <string-array name="actionsRingingValues">
         <item>999</item>
@@ -13,6 +14,7 @@
         <item>1</item>
         <item>2</item>
         <item>5</item>
+        <item>6</item>
     </string-array>
 
     <string-array name="actionsCallEstablishedNames">

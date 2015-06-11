@@ -22,13 +22,14 @@ import com.matejdro.pebbledialer.callactions.AnswerCallWithSpeakerAction;
 import com.matejdro.pebbledialer.callactions.CallAction;
 import com.matejdro.pebbledialer.callactions.DummyAction;
 import com.matejdro.pebbledialer.callactions.EndCallAction;
+import com.matejdro.pebbledialer.callactions.SMSReplyAction;
 import com.matejdro.pebbledialer.callactions.ToggleMicrophoneAction;
 import com.matejdro.pebbledialer.callactions.ToggleRingerAction;
 import com.matejdro.pebbledialer.callactions.ToggleSpeakerAction;
 
 import java.io.IOException;
 
-import com.matejdro.pebblecommons.log.Timber;
+import timber.log.Timber;
 
 public class CallModule extends CommModule
 {
@@ -56,6 +57,7 @@ public class CallModule extends CommModule
     private CallState callState = CallState.NO_CALL;
 
     private boolean vibrating;
+    private boolean closeAutomaticallyAfterThisCall = true;
 
     long callStartTime;
 
@@ -70,6 +72,7 @@ public class CallModule extends CommModule
         registerCallAction(new EndCallAction(this), EndCallAction.END_CALL_ACTION_ID);
         registerCallAction(new ToggleRingerAction(this), ToggleRingerAction.TOGGLE_RINGER_ACTION_ID);
         registerCallAction(new ToggleMicrophoneAction(this), ToggleMicrophoneAction.TOGGLE_MICROPHONE_ACTION_ID);
+        registerCallAction(new SMSReplyAction(this), SMSReplyAction.SMS_REPLY_ACTION_ID);
 
         registerCallAction(new ToggleSpeakerAction(this), ToggleSpeakerAction.TOGGLE_SPEAKER_ACTION_ID);
         registerCallAction(new AnswerCallWithSpeakerAction(this), AnswerCallWithSpeakerAction.ANSWER_WITH_SPEAKER_ACTION_ID);
@@ -145,7 +148,9 @@ public class CallModule extends CommModule
 
     private void callEnded()
     {
-        SystemModule.get(getService()).startClosing();
+        if (closeAutomaticallyAfterThisCall)
+            SystemModule.get(getService()).startClosing();
+
         callState = CallState.NO_CALL;
 
         for (int i = 0; i < actions.size(); i++)
@@ -163,6 +168,8 @@ public class CallModule extends CommModule
 
         for (int i = 0; i < actions.size(); i++)
             actions.valueAt(i).onPhoneOffhook();
+
+        closeAutomaticallyAfterThisCall = true;
     }
 
     private void ringingStarted(Intent intent)
@@ -184,6 +191,7 @@ public class CallModule extends CommModule
         for (int i = 0; i < actions.size(); i++)
             actions.valueAt(i).onCallRinging();
 
+        closeAutomaticallyAfterThisCall = true;
     }
 
     public void updatePebble()
@@ -198,6 +206,16 @@ public class CallModule extends CommModule
     public void setVibration(boolean vibrating)
     {
         this.vibrating = vibrating;
+    }
+
+    public void setCloseAutomaticallyAfterThisCall(boolean closeAutomaticallyAfterThisCall)
+    {
+        this.closeAutomaticallyAfterThisCall = closeAutomaticallyAfterThisCall;
+    }
+
+    public String getNumber()
+    {
+        return number;
     }
 
     private void updateNumberData()
@@ -447,11 +465,11 @@ public class CallModule extends CommModule
             case "RingUpHold":
                 return  999;
             case "RingSelectHold":
-                return  5;
+                return  AnswerCallWithSpeakerAction.ANSWER_WITH_SPEAKER_ACTION_ID;
             case "RingDownHold":
-                return  999;
+                return  SMSReplyAction.SMS_REPLY_ACTION_ID;
             case "RingShake":
-                return  ToggleRingerAction.TOGGLE_RINGER_ACTION_ID;
+                return  999;
             case "EstablishedUp":
                 return ToggleMicrophoneAction.TOGGLE_MICROPHONE_ACTION_ID;
             case "EstablishedSelect":
@@ -493,7 +511,7 @@ public class CallModule extends CommModule
                 button = "SelectHold";
                 break;
             case 5:
-                button = "SelectDown";
+                button = "DownHold";
                 break;
             case 6:
                 button = "Shake";

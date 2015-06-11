@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import com.matejdro.pebblecommons.log.Timber;
+import timber.log.Timber;
 
 public class ContactsModule extends CommModule
 {

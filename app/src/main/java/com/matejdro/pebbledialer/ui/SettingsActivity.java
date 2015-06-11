@@ -106,16 +106,18 @@ public class SettingsActivity extends PreferenceActivity {
 		});
 
         Preference notifierLicenseButton = findPreference("license");
-        notifierLicenseButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        notifierLicenseButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+		{
 
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
 
-                Intent intent = new Intent(SettingsActivity.this, LicenseActivity.class);
-                startActivity(intent);
-                return true;
-            }
-        });
+				Intent intent = new Intent(SettingsActivity.this, LicenseActivity.class);
+				startActivity(intent);
+				return true;
+			}
+		});
 
         try
         {
@@ -138,24 +140,48 @@ public class SettingsActivity extends PreferenceActivity {
             }
         });
 
-        findPreference("enableServiceButton").setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference)
+        findPreference("enableServiceButton").setOnPreferenceClickListener(new OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
 			{
 				try
 				{
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                        startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
-                    else
-                        startActivity(new Intent("android.settings.ACTION_ACCESSIBILITY_SETTINGS"));
-				}
-				catch (ActivityNotFoundException e)
+						startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+					else
+						startActivity(new Intent("android.settings.ACTION_ACCESSIBILITY_SETTINGS"));
+				} catch (ActivityNotFoundException e)
 				{
-					Toast.makeText(SettingsActivity.this, getString(R.string.open_settings_error), Toast.LENGTH_LONG).show();
+					Toast.makeText(SettingsActivity.this, getString(R.string.openSettingsError), Toast.LENGTH_LONG).show();
 				}
 				return true;
-            }
-        });
+			}
+		});
+
+		findPreference("smsCannedResponsesDialog").setOnPreferenceClickListener(new OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				StringListPopup popup = new StringListPopup(SettingsActivity.this, R.string.settingCannedResponses,  getPreferenceManager().getSharedPreferences(), "smsCannedResponses");
+				popup.show();
+
+				return true;
+			}
+		});
+
+		findPreference("smsWritingPhrasesDialog").setOnPreferenceClickListener(new OnPreferenceClickListener()
+		{
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				StringListPopup popup = new StringListPopup(SettingsActivity.this, R.string.settingWritingPhrases, getPreferenceManager().getSharedPreferences(), "smsWritingPhrases");
+				popup.show();
+
+				return true;
+			}
+		});
     }
 	
 	@Override

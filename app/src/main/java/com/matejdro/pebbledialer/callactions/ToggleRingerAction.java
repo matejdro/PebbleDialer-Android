@@ -40,6 +40,12 @@ public class ToggleRingerAction extends CallAction
         getCallModule().updatePebble();
     }
 
+    public void mute()
+    {
+        if (!isRingerMuted)
+            executeAction();
+    }
+
     @Override
     public void onCallEnd()
     {

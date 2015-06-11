@@ -4,10 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
 import com.matejdro.pebbledialer.modules.CallModule;
 
-import com.matejdro.pebblecommons.log.Timber;
+import timber.log.Timber;
 
 /**
  * Created by Matej on 31.12.2014.

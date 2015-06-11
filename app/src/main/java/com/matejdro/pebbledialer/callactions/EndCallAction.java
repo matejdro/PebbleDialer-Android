@@ -11,7 +11,7 @@ import com.matejdro.pebbledialer.modules.CallModule;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import com.matejdro.pebblecommons.log.Timber;
+import timber.log.Timber;
 
 public class EndCallAction extends CallAction
 {
@@ -42,6 +42,7 @@ public class EndCallAction extends CallAction
     @Override
     public void executeAction()
     {
+        getCallModule().setCloseAutomaticallyAfterThisCall(true);
 
         if (getCallModule().getService().getGlobalSettings().getBoolean("rootMode", false))
         {

@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import com.matejdro.pebblecommons.log.Timber;
+import timber.log.Timber;
 import com.matejdro.pebblecommons.util.ContactUtils;
 import com.matejdro.pebblecommons.util.TextUtil;
 
