@@ -135,18 +135,23 @@
     <PreferenceCategory
         android:title="Decline with SMS">
         <Preference android:key="smsCannedResponsesDialog"
-                    android:title="Canned Responses" />
-        <Preference android:key="smsWritingPhrasesDialog"
-                    android:title="Writing Phrases" />
+                    android:title="Canned Responses"
+                    android:summary="Here you can define list of canned responses that you can send as SMS when declining a call."/>
         <CheckBoxPreference android:key="timeVoice"
                             android:title="Enable Pebble Time voice reply"
-                            android:defaultValue="true"/>
+                            android:defaultValue="true"
+                            android:summary="When this setting is enabled, you can dictate SMS using microphone on Pebble Time (does not work for regular Pebble)" />
         <CheckBoxPreference android:key="phoneVoice"
                             android:title="Enable phone voice reply"
-                            android:defaultValue="true" />
+                            android:defaultValue="true"
+                            android:summary="When this setting is enabled, you can dictate SMS using microphone on the phone or one connected to the phone (BT headset for example)." />
         <CheckBoxPreference android:key="enableSmsWriting"
                             android:title="Enable SMS Writing"
-                            android:defaultValue="true" />
+                            android:defaultValue="true"
+                            android:summary="When this setting is enabled, you can write SMS from scratch on the Pebble." />
+        <Preference android:key="smsWritingPhrasesDialog"
+                    android:title="Writing Phrases"
+                    android:summary="When writing messages on your Pebble you can type letter-by-letter or you can paste whole phrases in. Here you define which phrases will be available to you (You can define up to 19 phrases. Every phrase is limited to 17 characters)." />
 
 
     </PreferenceCategory>
