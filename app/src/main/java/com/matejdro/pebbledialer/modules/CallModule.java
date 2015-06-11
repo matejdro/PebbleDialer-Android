@@ -233,7 +233,7 @@ public class CallModule extends CommModule
         try
         {
             Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
-            cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.TYPE, ContactsContract.PhoneLookup.LABEL, ContactsContract.PhoneLookup.PHOTO_URI}, null, null, ContactsContract.PhoneLookup.DISPLAY_NAME + " LIMIT 1");
+            cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.TYPE, ContactsContract.PhoneLookup.LABEL, ContactsContract.PhoneLookup.PHOTO_URI}, null, null, "contacts_view.last_time_contacted DESC");
         } catch (IllegalArgumentException e)
         {
             //This is sometimes thrown when number is in invalid format, so phone cannot recognize it.
