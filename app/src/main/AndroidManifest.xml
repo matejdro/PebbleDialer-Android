@@ -37,7 +37,7 @@
         <service
             android:name="com.matejdro.pebbledialer.notifications.JellybeanNotificationListener"
             android:enabled="@bool/supportsNotificationCenter"
-            android:label="PebbleDialer"
+            android:label="Dialer for Pebble"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
@@ -46,7 +46,7 @@
         <service
             android:name=".notifications.AccesibilityNotificationListener"
             android:enabled="@bool/useAccesibility"
-            android:label="PebbleDialer"
+            android:label="Dialer for Pebble"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
             <meta-data
                 android:name="android.accessibilityservice"
