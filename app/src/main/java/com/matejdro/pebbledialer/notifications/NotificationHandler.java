@@ -10,6 +10,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
+import com.matejdro.pebbledialer.DialerTalkerService;
 import com.matejdro.pebbledialer.modules.CallModule;
 
 import java.lang.reflect.Field;
@@ -47,7 +48,7 @@ public class NotificationHandler {
 
             if (answerIntent != null)
             {
-                Intent intent = new Intent(context, PebbleTalkerService.class);
+                Intent intent = new Intent(context, DialerTalkerService.class);
                 intent.setAction(CallModule.INTENT_ACTION_FROM_NOTIFICATION);
                 intent.putExtra("actionType", 0);
                 intent.putExtra("action", answerIntent);
@@ -56,7 +57,7 @@ public class NotificationHandler {
 
             if (declineIntent != null)
             {
-                Intent intent = new Intent(context, PebbleTalkerService.class);
+                Intent intent = new Intent(context, DialerTalkerService.class);
                 intent.setAction(CallModule.INTENT_ACTION_FROM_NOTIFICATION);
                 intent.putExtra("actionType", 1);
                 intent.putExtra("action", declineIntent);
