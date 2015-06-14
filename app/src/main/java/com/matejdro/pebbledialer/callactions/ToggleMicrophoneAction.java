@@ -2,6 +2,7 @@ package com.matejdro.pebbledialer.callactions;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Build;
 
 import com.matejdro.pebbledialer.modules.CallModule;
 
@@ -28,8 +29,13 @@ public class ToggleMicrophoneAction extends CallAction
 
         if (getCallModule().getService().getGlobalSettings().getBoolean("rootMode", false))
         {
+            String muteCommand;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                muteCommand = "input keyevent 79";
+            else
+                muteCommand = "input keyevent 91";
             try {
-                Runtime.getRuntime().exec(new String[] {"su", "-c", "input keyevent 79"});
+                Runtime.getRuntime().exec(new String[] {"su", "-c", muteCommand});
             } catch (IOException e) {
                 e.printStackTrace();
             }
