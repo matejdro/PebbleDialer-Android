@@ -76,7 +76,7 @@
                 android:defaultValue="6"
                 android:entries="@array/actionsRingingNames"
                 android:entryValues="@array/actionsRingingValues"
-                android:key="callButto nRingDownHold"
+                android:key="callButtonRingDownHold"
                 android:summary="Action that will be performing when you hold DOWN button on Pebble while there is incoming call."
                 android:title="DOWN button hold when ringing"/>
             <ListPreference
