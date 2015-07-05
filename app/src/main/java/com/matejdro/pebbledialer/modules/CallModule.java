@@ -255,7 +255,7 @@ public class CallModule extends CommModule
                     type = "Other";
 
                 String photoUri = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.PHOTO_URI));
-                if (photoUri != null)
+                if (photoUri != null && getService().getGlobalSettings().getBoolean("displayCallerImage", true))
                 {
                     try
 
@@ -276,7 +276,7 @@ public class CallModule extends CommModule
 
     private void processContactImage()
     {
-        PebbleImageToolkit.ditherToPebbleTimeColors(callerImage);
+        callerImage = PebbleImageToolkit.ditherToPebbleTimeColors(callerImage);
         callerImageBytes = PebbleImageToolkit.getIndexedPebbleImageBytes(callerImage);
     }
 

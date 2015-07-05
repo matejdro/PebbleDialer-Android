@@ -32,7 +32,11 @@
             android:title="Turn on light on call"
             android:key="lightOnCallWindow"
             android:summary="Should I turn backlight on when you receive a call?" />
-
+        <CheckBoxPreference
+            android:title="Display caller image"
+            android:key="displayCallerImage"
+            android:summary="Display image of the caller on the watch. Only for Pebble Time."
+            android:defaultValue="true"/>
         <PreferenceScreen
             android:key="cat_buttons"
             android:title="Call screen buttons"
