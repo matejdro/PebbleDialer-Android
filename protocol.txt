@@ -138,7 +138,7 @@ Phone --> Pebble
 			2 = Name (cstring - up to 100 characters)
             
         Packet 2 - Caller image part (Only for Basalt)
-            2 = Image data (byte array, part of PNG image format. Up to 107 bytes.)
+            2 = Image data (byte array, part of PNG image format. Up to 116 bytes.)
 
 	MODULE 2 - CALL LOG
 			
