@@ -222,6 +222,8 @@ public class CallModule extends CommModule
     {
         Timber.d("Updating number...");
 
+        callerImage = null;
+
         if (number == null)
         {
             name = null;
@@ -402,6 +404,8 @@ public class CallModule extends CommModule
         int button = data.getUnsignedIntegerAsLong(2).intValue();
         String extendedButton = getExtendedButtonFromPebbleButton(button);
         int action = getUserSelectedAction(extendedButton);
+
+        Timber.d("PebbleAction " + button + " " + extendedButton + " " + action);
 
         getCallAction(action).executeAction();
 
