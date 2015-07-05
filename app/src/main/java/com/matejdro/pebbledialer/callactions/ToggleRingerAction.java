@@ -2,6 +2,7 @@ package com.matejdro.pebbledialer.callactions;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Vibrator;
 
 import com.matejdro.pebbledialer.modules.CallModule;
 
@@ -10,6 +11,7 @@ public class ToggleRingerAction extends CallAction
     public static final int TOGGLE_RINGER_ACTION_ID = 2;
 
     private boolean isRingerMuted = false;
+    private int prevRingerMode = AudioManager.RINGER_MODE_NORMAL;
 
     public ToggleRingerAction(CallModule callModule)
     {
@@ -27,13 +29,17 @@ public class ToggleRingerAction extends CallAction
         if (!isRingerMuted)
         {
             isRingerMuted = true;
+            prevRingerMode = audioManager.getRingerMode();
+
             audioManager.setStreamSolo(AudioManager.STREAM_MUSIC, true);
+            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
             getCallModule().setVibration(false);
         }
         else
         {
             isRingerMuted = false;
             audioManager.setStreamSolo(AudioManager.STREAM_MUSIC, false);
+            audioManager.setRingerMode(prevRingerMode);
             getCallModule().setVibration(true);
         }
 
@@ -46,6 +52,8 @@ public class ToggleRingerAction extends CallAction
             executeAction();
     }
 
+
+
     @Override
     public void onCallEnd()
     {
@@ -54,6 +62,7 @@ public class ToggleRingerAction extends CallAction
             AudioManager audioManager = (AudioManager) getCallModule().getService().getSystemService(Context.AUDIO_SERVICE);
             isRingerMuted = false;
             audioManager.setStreamSolo(AudioManager.STREAM_MUSIC, false);
+            audioManager.setRingerMode(prevRingerMode);
             getCallModule().setVibration(true);
         }
 
