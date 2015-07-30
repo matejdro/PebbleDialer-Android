@@ -47,4 +47,7 @@
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="edit">Edit</string>
+    <string name="tasker_change_settings">Change Settings</string>
+    <string name="tasker_change_settings_long">Change Dialer for Pebble Settings</string>
+
 </resources>

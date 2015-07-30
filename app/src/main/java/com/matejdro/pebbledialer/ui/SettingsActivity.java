@@ -20,7 +20,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,8 +36,10 @@ public class SettingsActivity extends PreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
-        
-		settings = PreferenceManager.getDefaultSharedPreferences(this);
+
+		initSuper();
+
+		settings = getPreferenceManager().getSharedPreferences();
 		editor = settings.edit();
 
 
@@ -183,7 +184,12 @@ public class SettingsActivity extends PreferenceActivity {
 			}
 		});
     }
-	
+
+	protected void initSuper()
+	{
+
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
