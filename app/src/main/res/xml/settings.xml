@@ -21,6 +21,16 @@
         android:key="cat_call"
         android:title="Call screen">
         <CheckBoxPreference
+            android:key="popupOnIncoming"
+            android:title="Popup call notification on incoming call"
+            android:summary="Automatically display call notification on your Pebble when call comes. Disabling this effectively disables call notification, but you can still answer call or perform other actions by opening Dialer manually."
+            android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="popupOnOutgoing"
+            android:title="Popup call notification on outgoing call"
+            android:summary="Automatically display call notification on your Pebble when you call someone. Even when disabled, you can still hangup call or perform other actions by opening Dialer manually."
+            android:defaultValue="true"/>
+        <CheckBoxPreference
             android:key="closeToLastApp"
             android:summary="When call ends, close to last used app on Pebble. NEEDS DEVELOPER CONNECTION ENABLED INSIDE PEBBLE APP! This feature does not work on the Pebble Time at the moment."
             android:title="Close to last app"/>

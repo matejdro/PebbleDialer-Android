@@ -125,6 +125,9 @@ public class CallModule extends CommModule
             number =  intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
             updateNumberData();
 
+            if (getService().getGlobalSettings().getBoolean("popupOnOutgoing", true))
+                SystemModule.get(getService()).openApp();
+
             return;
         }
 
@@ -164,8 +167,6 @@ public class CallModule extends CommModule
 
         updatePebble();
 
-        SystemModule.get(getService()).openApp();
-
         for (int i = 0; i < actions.size(); i++)
             actions.valueAt(i).onPhoneOffhook();
 
@@ -186,7 +187,8 @@ public class CallModule extends CommModule
         updateNumberData();
         updatePebble();
 
-        SystemModule.get(getService()).openApp();
+        if (getService().getGlobalSettings().getBoolean("popupOnIncoming", true))
+            SystemModule.get(getService()).openApp();
 
         for (int i = 0; i < actions.size(); i++)
             actions.valueAt(i).onCallRinging();
