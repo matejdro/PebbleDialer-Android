@@ -43,6 +43,10 @@
             android:key="lightOnCallWindow"
             android:summary="Should I turn backlight on when you receive a call?" />
         <CheckBoxPreference
+            android:title="Do not vibrate when charging"
+            android:key="dontVibrateWhenCharging"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
             android:title="Display caller image"
             android:key="displayCallerImage"
             android:summary="Display image of the caller on the watch. Only for Pebble Time."
