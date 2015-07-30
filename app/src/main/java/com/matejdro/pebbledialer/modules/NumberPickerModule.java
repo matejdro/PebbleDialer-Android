@@ -10,8 +10,10 @@ import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
 import com.matejdro.pebblecommons.pebble.PebbleCommunication;
 import com.matejdro.pebblecommons.util.ContactUtils;
 import com.matejdro.pebblecommons.util.TextUtil;
+import com.matejdro.pebbledialer.callactions.SMSReplyAction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;
@@ -20,8 +22,7 @@ public class NumberPickerModule extends CommModule
 {
     public static int MODULE_NUMBER_PICKER = 4;
 
-    private List<String> phoneNumbers;
-    private List<String> phoneTitles;
+    private List<PebbleNumberEntry> phoneNumbers;
 
     private int nextToSend = -1;
     private boolean openWindow = false;
@@ -29,15 +30,11 @@ public class NumberPickerModule extends CommModule
     public NumberPickerModule(PebbleTalkerService service) {
         super(service);
 
-        phoneNumbers = new ArrayList<String>(15);
-        phoneTitles = new ArrayList<String>(15);
-
-
+        phoneNumbers = new ArrayList<PebbleNumberEntry>();
     }
 
     public void showNumberPicker(int contactId) {
         phoneNumbers.clear();
-        phoneTitles.clear();
 
         ContentResolver resolver = getService().getContentResolver();
         Cursor cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC LIMIT 2000");
@@ -50,8 +47,15 @@ public class NumberPickerModule extends CommModule
 
             String type = ContactUtils.convertNumberType(typeId, label);
 
-            phoneNumbers.add(number);
-            phoneTitles.add(TextUtil.prepareString(type));
+            phoneNumbers.add(new PebbleNumberEntry(number, type));
+        }
+
+        int initialAmount = phoneNumbers.size();
+
+        for (int i = 0; i < initialAmount; i++)
+        {
+            PebbleNumberEntry originalEntry = phoneNumbers.get(i);
+            phoneNumbers.add(new PebbleNumberEntry(originalEntry.number, originalEntry.numberType, PebbleNumberEntry.NUMBER_ACTION_SMS));
         }
 
         openWindow = true;
@@ -63,27 +67,34 @@ public class NumberPickerModule extends CommModule
     {
         PebbleDictionary data = new PebbleDictionary();
 
+
         data.addUint8(0, (byte) 4);
         data.addUint8(1, (byte) 0);
 
         data.addUint16(2, (short) offset);
-        data.addUint16(3, (short) phoneTitles.size());
+        data.addUint16(3, (short) phoneNumbers.size());
 
+
+        byte[] numberActions = new byte[2];
         for (int i = 0; i < 2; i++)
         {
             int listPos = offset + i;
-            if (listPos >= phoneTitles.size())
+            if (listPos >= phoneNumbers.size())
                 break;
 
-            data.addString(i + 4, phoneTitles.get(i + offset));
-            data.addString(i + 6, TextUtil.prepareString(phoneNumbers.get(i + offset)));
+            PebbleNumberEntry numberEntry = phoneNumbers.get(listPos);
+
+            data.addString(i + 4, TextUtil.prepareString(numberEntry.numberType));
+            data.addString(i + 6, TextUtil.prepareString(numberEntry.number));
+            numberActions[i] = (byte) numberEntry.numberAction;
         }
+
+        data.addBytes(8, numberActions);
 
         if (openWindow)
             data.addUint8(999, (byte) 1);
 
         Timber.d("sendNumbers " + offset);
-
         getService().getPebbleCommunication().sendToPebble(data);
     }
 
@@ -125,7 +136,12 @@ public class NumberPickerModule extends CommModule
                 offset = message.getInteger(2).intValue();
                 if (offset >= phoneNumbers.size())
                     break;
-                ContactUtils.call(phoneNumbers.get(offset), getService());
+
+                PebbleNumberEntry numberEntry = phoneNumbers.get(offset);
+                if (numberEntry.numberAction == PebbleNumberEntry.NUMBER_ACTION_CALL)
+                    ContactUtils.call(numberEntry.number, getService());
+                else
+                    SMSReplyModule.get(getService()).startSMSProcess(numberEntry.number);
                 break;
         }
     }
@@ -133,5 +149,30 @@ public class NumberPickerModule extends CommModule
     public static NumberPickerModule get(PebbleTalkerService service)
     {
         return (NumberPickerModule) service.getModule(MODULE_NUMBER_PICKER);
+    }
+
+    private static class PebbleNumberEntry
+    {
+        public static final int NUMBER_ACTION_CALL = 0;
+        public static final int NUMBER_ACTION_SMS = 1;
+
+        public String number;
+        public String numberType;
+        public int numberAction;
+
+        public PebbleNumberEntry(String number, String numberType, int numberAction)
+        {
+            this.number = number;
+            this.numberType = numberType;
+            this.numberAction = numberAction;
+        }
+
+        public PebbleNumberEntry(String number, String numberType)
+        {
+            this.number = number;
+            this.numberType = numberType;
+
+            this.numberAction = NUMBER_ACTION_CALL;
+        }
     }
 }

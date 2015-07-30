@@ -166,7 +166,7 @@ Phone --> Pebble
 	MODULE 4 - NUMBERS
 		
 		Packet 0 - numbers received
-			Types and numbers in the list
+			Types and numbers in the list. Sends two numbers per packet.
 			Additional data:
 			2 = ID of the first contact in this packet (uint16)
 			3 = Number of all filtering contacts (uint16)
@@ -174,6 +174,9 @@ Phone --> Pebble
 			5 = Number type (cstring, up to 15 characters)
 			6 = Number (cstring, up to 15 characters)
 			7 = Number (cstring, up to 15 characters)
+            8 = uint8 array
+                [0] = Number action type (0 = Call, 1 = Send SMS)
+                [1] = Number action type (0 = Call, 1 = Send SMS)
             
 	MODULE 5 - SMS Replies
 	    Packet 0 - Action list names - Names of items in action list
