@@ -32,7 +32,7 @@
             android:defaultValue="true"/>
         <CheckBoxPreference
             android:key="closeToLastApp"
-            android:summary="When call ends, close to last used app on Pebble. NEEDS DEVELOPER CONNECTION ENABLED INSIDE PEBBLE APP! This feature does not work on the Pebble Time at the moment."
+            android:summary="When call ends, close to last used app on Pebble. NEEDS DEVELOPER CONNECTION ENABLED INSIDE PEBBLE APP!"
             android:title="Close to last app"/>
         <CheckBoxPreference
             android:key="rootMode"
