@@ -106,7 +106,7 @@ public class CallModule extends CommModule
             int actionType = intent.getIntExtra("actionType", 0);
             PendingIntent actionIntent = intent.getParcelableExtra("action");
 
-            Timber.d("Got action from notification " + actionType + " " + actionIntent);
+            Timber.d("Got action from notification %d %s", actionType, actionIntent);
 
             if (actionType == 0)
                 AnswerCallAction.get(this).registerNotificationAnswerIntent(actionIntent);
@@ -117,8 +117,6 @@ public class CallModule extends CommModule
 
     private void intentDelivered(Intent intent)
     {
-        Timber.d("Intent " + intent.getAction());
-
         if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL))
         {
             Timber.d("Outgoing intent");
@@ -175,7 +173,7 @@ public class CallModule extends CommModule
 
     private void ringingStarted(Intent intent)
     {
-        Timber.d("Ringing " + number);
+        Timber.d("Ringing");
 
         callState = CallState.RINGING;
         number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
@@ -267,7 +265,7 @@ public class CallModule extends CommModule
                     }
                     catch (IOException e)
                     {
-                        Timber.w("Unable to load contact image: " + e.getMessage());
+                        Timber.w("Unable to load contact image!", e);
                     }
                 }
             }
@@ -353,7 +351,7 @@ public class CallModule extends CommModule
             if (imageSize != 0)
                 callerImageNextByte = 0;
 
-            Timber.d("Image size: " + imageSize);
+            Timber.d("Image size: %d", imageSize);
         }
 
         getService().getPebbleCommunication().sendToPebble(data);
@@ -392,7 +390,7 @@ public class CallModule extends CommModule
         data.addBytes(2, bytes);
 
         getService().getPebbleCommunication().sendToPebble(data);
-        Timber.d("Sent image packet " + callerImageNextByte + " / " + callerImageBytes.length);
+        Timber.d("Sent image packet %d / %d", callerImageNextByte, callerImageBytes.length);
 
         callerNameUpdateRequired = false;
 
@@ -407,7 +405,7 @@ public class CallModule extends CommModule
         String extendedButton = getExtendedButtonFromPebbleButton(button);
         int action = getUserSelectedAction(extendedButton);
 
-        Timber.d("PebbleAction " + button + " " + extendedButton + " " + action);
+        Timber.d("PebbleAction %d %s %d", button, extendedButton, action);
 
         getCallAction(action).executeAction();
 
@@ -419,7 +417,7 @@ public class CallModule extends CommModule
     {
         int id = message.getUnsignedIntegerAsLong(1).intValue();
 
-        Timber.d("Incoming call packet " + id);
+        Timber.d("Incoming call packet %d", id);
 
         switch (id)
         {

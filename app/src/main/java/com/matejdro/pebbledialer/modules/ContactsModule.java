@@ -48,7 +48,7 @@ public class ContactsModule extends CommModule
         filters.clear();
 
         this.group = contactGroup;
-        Timber.d("Group " + group);
+        Timber.d("Group %d", group);
 
         filterMode = contactGroup == -1 || !getService().getGlobalSettings().getBoolean("skipGroupFiltering", false);
 
@@ -208,7 +208,7 @@ public class ContactsModule extends CommModule
     private void gotMessageFilter(PebbleDictionary message)
     {
         int button = message.getUnsignedIntegerAsLong(2).intValue();
-        Timber.d("Offset " + button);
+        Timber.d("Offset %d", button);
 
         filterContacts(button);
     }

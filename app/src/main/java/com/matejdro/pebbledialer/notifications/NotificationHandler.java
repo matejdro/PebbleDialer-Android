@@ -23,7 +23,7 @@ public class NotificationHandler {
 	{
         if (pkg.contains("dialer") || pkg.contains("phone") || pkg.contains("call"))
         {
-            Timber.d("Found potentially useful notification from " + pkg);
+            Timber.d("Found potentially useful notification from %s", pkg);
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             String answerText = preferences.getString("callNotificationAnswerButton", "Answer");
@@ -38,7 +38,7 @@ public class NotificationHandler {
 
             for (Notification.Action action : actions)
             {
-                Timber.d("Found action " + action.title);
+                Timber.d("Found action %s", action.title);
 
                 if (action.title.equals(answerText))
                     answerIntent = action.actionIntent;

@@ -113,7 +113,7 @@ public class CallLogModule extends CommModule
     {
         int index = message.getInteger(2).intValue();
         int mode = message.getUnsignedIntegerAsLong(3).intValue();
-        Timber.d("Picked " + index + " " + mode);
+        Timber.d("Picked %d %d", index, mode);
 		if (mode == 0)
         {
             if (numbers.size() > index)
@@ -134,7 +134,7 @@ public class CallLogModule extends CommModule
         {
             case 0: //Request call log entry
                 int offset = message.getUnsignedIntegerAsLong(2).intValue();
-                Timber.d("off " + offset);
+                Timber.d("off %d", offset);
                 queueSendEntries(offset);
                 break;
             case 1:

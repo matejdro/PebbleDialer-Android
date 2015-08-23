@@ -11,6 +11,8 @@ import com.matejdro.pebblecommons.util.LogWriter;
 
 import java.util.UUID;
 
+import timber.log.Timber;
+
 /**
  * Created by Matej on 28.12.2014.
  */
@@ -21,6 +23,7 @@ public class PebbleDialerApplication extends PebbleCompanionApplication
     @Override
     public void onCreate() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Timber.setAppTag("PebbleDialer");
         LogWriter.init(preferences, "PebbleDialer");
 
         boolean isDebuggable =  ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );

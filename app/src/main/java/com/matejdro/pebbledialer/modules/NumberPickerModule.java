@@ -94,7 +94,7 @@ public class NumberPickerModule extends CommModule
         if (openWindow)
             data.addUint8(999, (byte) 1);
 
-        Timber.d("sendNumbers " + offset);
+        Timber.d("sendNumbers %d", offset);
         getService().getPebbleCommunication().sendToPebble(data);
     }
 

@@ -123,7 +123,7 @@ public class SystemModule extends CommModule
         data.addUint8(1, (byte) 0);
         data.addBytes(2, configBytes);
 
-        Timber.d("Sending config... CallWaiting=" + callWaiting);
+        Timber.d("Sending config... CallWaiting=%b", callWaiting);
 
         getService().getPebbleCommunication().sendToPebble(data);
 
@@ -208,7 +208,7 @@ public class SystemModule extends CommModule
 
         final int finalVersion = version;
 
-        Timber.d("Version " + version);
+        Timber.d("Version %d", version);
 
         if (version == WatchappHandler.SUPPORTED_PROTOCOL)
         {
@@ -224,7 +224,7 @@ public class SystemModule extends CommModule
 
             int pebblePlatform = message.getUnsignedIntegerAsLong(3).intValue();
             getService().getPebbleCommunication().setConnectedPebblePlatform(pebblePlatform);
-            Timber.d("Pebble Platform: " + pebblePlatform);
+            Timber.d("Pebble Platform: %d", pebblePlatform);
 
             SparseArray<CommModule> modules = getService().getAllModules();
             for (int i = 0 ; i < modules.size(); i++)
@@ -291,7 +291,7 @@ public class SystemModule extends CommModule
         if (message.contains(1)) //Open message from older Pebble app does not have entry at 1.
             id = message.getUnsignedIntegerAsLong(1).intValue();
 
-        Timber.d("system packet " + id);
+        Timber.d("system packet %d", id);
 
         switch (id)
         {
@@ -332,7 +332,7 @@ public class SystemModule extends CommModule
 
     public void closeApp()
     {
-        Timber.d("CloseApp " + currentRunningApp);
+        Timber.d("CloseApp %s", currentRunningApp);
 
         if (getService().getGlobalSettings().getBoolean("closeToLastApp", false) && canCloseToApp(currentRunningApp) && closeTries < 2)
             PebbleKit.startAppOnPebble(getService(), currentRunningApp);

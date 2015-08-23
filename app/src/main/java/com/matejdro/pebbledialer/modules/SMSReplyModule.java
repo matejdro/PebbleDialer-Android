@@ -178,7 +178,7 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
     public void gotMessageActionItemPicked(PebbleDictionary message)
     {
         int index = message.getUnsignedIntegerAsLong(2).intValue();
-        Timber.d("SMS list picked " + index);
+        Timber.d("SMS list picked %d", index);
 
         if (index == timeVoiceIndex)
             startTimeVoice();
