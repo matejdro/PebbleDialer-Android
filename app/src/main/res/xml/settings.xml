@@ -168,7 +168,7 @@
                             android:title="Enable phone voice reply"
                             android:defaultValue="true"
                             android:summary="When this setting is enabled, you can dictate SMS using microphone on the phone or one connected to the phone (BT headset for example)." />
-        <CheckBoxPreference android:key="enableSmsWriting"
+        <CheckBoxPreference android:key="enableSMSWriting"
                             android:title="Enable SMS Writing"
                             android:defaultValue="true"
                             android:summary="When this setting is enabled, you can write SMS from scratch on the Pebble." />
