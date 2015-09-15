@@ -50,6 +50,8 @@ public class NumberPickerModule extends CommModule
             phoneNumbers.add(new PebbleNumberEntry(number, type));
         }
 
+        cursor.close();
+
         int initialAmount = phoneNumbers.size();
 
         for (int i = 0; i < initialAmount; i++)
