@@ -114,10 +114,16 @@ public class CallLogModule extends CommModule
         int index = message.getInteger(2).intValue();
         int mode = message.getUnsignedIntegerAsLong(3).intValue();
         Timber.d("Picked %d %d", index, mode);
-		if (mode == 0)
+
+        if (numbers.size() <= index)
         {
-            if (numbers.size() > index)
-                ContactUtils.call(numbers.get(index), getService());
+            Timber.d("Number out of bounds!");
+            return;
+        }
+
+        if (mode == 0)
+        {
+            ContactUtils.call(numbers.get(index), getService());
         }
         else
         {
