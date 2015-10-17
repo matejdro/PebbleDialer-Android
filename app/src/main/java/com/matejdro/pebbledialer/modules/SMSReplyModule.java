@@ -109,7 +109,6 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
         Timber.d("StartSMSProcess %s", number);
         this.number = number;
 
-        number = null;
         if (number == null)
         {
             Crashlytics.logException(new NullPointerException("Number is null!"));
