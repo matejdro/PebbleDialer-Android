@@ -1,9 +1,12 @@
 package com.matejdro.pebbledialer.modules;
 
+import android.app.NotificationManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 
@@ -19,6 +22,7 @@ import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
 import com.matejdro.pebblecommons.userprompt.NativePebbleUserPrompter;
 import com.matejdro.pebblecommons.util.ListSerialization;
 import com.matejdro.pebblecommons.util.TextUtil;
+import com.matejdro.pebbledialer.R;
 import com.matejdro.pebbledialer.callactions.EndCallAction;
 
 import java.util.ArrayList;
@@ -105,6 +109,14 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
         Timber.d("StartSMSProcess %s", number);
         this.number = number;
 
+        number = null;
+        if (number == null)
+        {
+            Crashlytics.logException(new NullPointerException("Number is null!"));
+            sendFailNotification();
+            return;
+        }
+
         tertiaryTextMode = false;
 
         SharedPreferences settings = getService().getGlobalSettings();
@@ -178,6 +190,16 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
     {
         Timber.d("SendingMessage %s %s", text, number);
 
+        if (number == null || text == null)
+        {
+            Crashlytics.setBool("numberNull", number == null);
+            Crashlytics.setBool("textNull", text == null);
+
+            Crashlytics.logException(new NullPointerException("gotText Null!"));
+            sendFailNotification();
+            return;
+        }
+
         EndCallAction.get(CallModule.get(getService())).executeAction();
 
         SmsManager.getDefault().sendTextMessage(number, null, text, null, null);
@@ -198,6 +220,19 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
                 Crashlytics.logException(e);
             }
         }
+    }
+
+    private void sendFailNotification()
+    {
+        NotificationManager mNotificationManager = (NotificationManager) getService().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(getService())
+                        .setSmallIcon(R.drawable.icon)
+                        .setContentTitle("Dialer for Pebble") //TODO use app_name resource
+                        .setContentText(getService().getString(R.string.sms_failed));
+        mNotificationManager.notify(1000, mBuilder.build());
+
     }
 
     public void gotMessageActionItemPicked(PebbleDictionary message)
