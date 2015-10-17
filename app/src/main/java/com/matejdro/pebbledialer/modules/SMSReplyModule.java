@@ -1,8 +1,13 @@
 package com.matejdro.pebbledialer.modules;
 
+import android.content.ContentValues;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.telephony.SmsManager;
+import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.getpebble.android.kit.util.PebbleDictionary;
 import com.matejdro.pebblecommons.messages.MessageTextProvider;
 import com.matejdro.pebblecommons.messages.MessageTextProviderListener;
@@ -97,6 +102,7 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
 
     public void startSMSProcess(String number)
     {
+        Timber.d("StartSMSProcess %s", number);
         this.number = number;
 
         tertiaryTextMode = false;
@@ -170,9 +176,28 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
     @Override
     public void gotText(String text)
     {
+        Timber.d("SendingMessage %s %s", text, number);
+
         EndCallAction.get(CallModule.get(getService())).executeAction();
 
         SmsManager.getDefault().sendTextMessage(number, null, text, null, null);
+
+        //Pre-Kitkat Android versions do not automatically insert sent SMS to system's SMS provider.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+        {
+            ContentValues values = new ContentValues();
+            values.put("address", number);
+            values.put("body", text);
+            try
+            {
+                getService().getContentResolver().insert(Uri.parse("content://sms/sent"), values);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                Crashlytics.logException(e);
+            }
+        }
     }
 
     public void gotMessageActionItemPicked(PebbleDictionary message)
