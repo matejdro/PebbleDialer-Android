@@ -27,6 +27,8 @@ public class EndCallAction extends CallAction
         try {
             getITelephonyMethod = TelephonyManager.class.getDeclaredMethod("getITelephony", (Class[]) null);
             getITelephonyMethod.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            Timber.e(e, "iTelephony end not supported on your phone!");
         } catch (Exception e) {
             Timber.e(e, "Error while acquiring iTelephony");
             Crashlytics.logException(e);
@@ -66,15 +68,20 @@ public class EndCallAction extends CallAction
             }
         }
 
-        Timber.d("Ending call using generic iTelephony method...");
-        try {
-            ITelephony iTelephony = (ITelephony) getITelephonyMethod.invoke(getCallModule().getService().getSystemService(Context.TELEPHONY_SERVICE), (Object[]) null);
-            iTelephony.endCall();
-        } catch (Exception e) {
-            Timber.e(e, "Error while invoking iTelephony.endCall()");
-            Crashlytics.logException(e);
+        if (getITelephonyMethod != null)
+        {
+            Timber.d("Ending call using generic iTelephony method...");
+            try {
+                ITelephony iTelephony = (ITelephony) getITelephonyMethod.invoke(getCallModule().getService().getSystemService(Context.TELEPHONY_SERVICE), (Object[]) null);
+                iTelephony.endCall();
+                return;
+            } catch (Exception e) {
+                Timber.e(e, "Error while invoking iTelephony.endCall()");
+                Crashlytics.logException(e);
+            }
         }
 
+        Timber.e("All end call options failed! Nothing is supported.");
     }
 
     @Override
