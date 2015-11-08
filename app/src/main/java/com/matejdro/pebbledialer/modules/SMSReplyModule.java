@@ -121,7 +121,7 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
         SharedPreferences settings = getService().getGlobalSettings();
 
         actionList = new ArrayList<>();
-        if (settings.getBoolean("timeVoice", true) && getService().getPebbleCommunication().getConnectedPebblePlatform() == PebbleCommunication.PEBBLE_PLATFORM_BASSALT)
+        if (settings.getBoolean("timeVoice", true) && getService().getPebbleCommunication().getConnectedPebblePlatform().hasColors())
         {
             actionList.add("Time Voice");
             timeVoiceIndex = actionList.size() - 1;

@@ -336,7 +336,7 @@ public class CallModule extends CommModule
         data.addUint8(999, (byte) 1);
 
         callerImageNextByte = -1;
-        if (getService().getPebbleCommunication().getConnectedPebblePlatform() == PebbleCommunication.PEBBLE_PLATFORM_BASSALT)
+        if (getService().getPebbleCommunication().getConnectedPebblePlatform().hasColors())
         {
             int imageSize = 0;
 

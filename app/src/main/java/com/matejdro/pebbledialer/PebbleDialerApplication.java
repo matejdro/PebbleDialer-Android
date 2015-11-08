@@ -25,7 +25,7 @@ public class PebbleDialerApplication extends PebbleCompanionApplication
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Timber.setAppTag("PebbleDialer");
         Timber.plant(new Timber.AppTaggedDebugTree());
-        LogWriter.init(preferences, "PebbleDialer");
+        LogWriter.init(preferences, "PebbleDialer", this);
 
         boolean isDebuggable =  ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
         if (!isDebuggable)
