@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="openInPebbleAppStore">Open NC in Pebble App Store</string>
+    <string name="openInPebbleAppStore">Open in Pebble App Store</string>
     <string name="pebbleAppInstallDialog">
         Do you want to open Pebble App Store to install Pebble Dialer to your Pebble?
     </string>
