@@ -1,12 +1,17 @@
 package com.matejdro.pebbledialer.modules;
 
+import android.Manifest;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 
@@ -187,7 +192,20 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
     @Override
     public void gotText(String text)
     {
+
         Timber.d("SendingMessage %s %s", text, number);
+
+        if (ContextCompat.checkSelfPermission(getService(), Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED)
+        {
+            Notification notification = new NotificationCompat.Builder(getService())
+                    .setSmallIcon(R.drawable.icon)
+                    .setContentTitle("SMS Sending failed")
+                    .setContentText("No permission")
+                    .build();
+
+            NotificationManagerCompat.from(getService()).notify(123, notification);
+            return;
+        }
 
         if (number == null || text == null)
         {

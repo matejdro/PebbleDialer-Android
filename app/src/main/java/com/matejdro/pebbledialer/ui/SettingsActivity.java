@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -20,11 +24,15 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.matejdro.pebblecommons.util.LogWriter;
 import com.matejdro.pebbledialer.R;
 import com.matejdro.pebbledialer.pebble.WatchappHandler;
 
@@ -188,7 +196,63 @@ public class SettingsActivity extends PreferenceActivity {
 				return true;
 			}
 		});
-    }
+
+		findPreference(LogWriter.SETTING_ENABLE_LOG_WRITING).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+		{
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue)
+			{
+				if (((Boolean) newValue) && ContextCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+				{
+					ActivityCompat.requestPermissions(SettingsActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+					return false;
+				}
+				return true;
+			}
+		});
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+			checkPermissions();
+	}
+
+	@TargetApi(Build.VERSION_CODES.M)
+	private void checkPermissions()
+	{
+		List<String> wantedPermissions = new ArrayList<>();
+
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED)
+			wantedPermissions.add(Manifest.permission.RECORD_AUDIO);
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_DENIED)
+			wantedPermissions.add(Manifest.permission.BLUETOOTH);
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_DENIED)
+			wantedPermissions.add(Manifest.permission.READ_CONTACTS);
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED)
+			wantedPermissions.add(Manifest.permission.CALL_PHONE);
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED)
+			wantedPermissions.add(Manifest.permission.READ_PHONE_STATE);
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.PROCESS_OUTGOING_CALLS) == PackageManager.PERMISSION_DENIED)
+			wantedPermissions.add(Manifest.permission.PROCESS_OUTGOING_CALLS);
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_DENIED)
+			wantedPermissions.add(Manifest.permission.READ_CALL_LOG);
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_DENIED)
+			wantedPermissions.add(Manifest.permission.READ_SMS);
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED)
+			wantedPermissions.add(Manifest.permission.SEND_SMS);
+
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+		//Log writer needs to access external storage
+		if (preferences.getBoolean(LogWriter.SETTING_ENABLE_LOG_WRITING, false) &&
+				ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+		{
+			wantedPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+		}
+
+
+		if (!wantedPermissions.isEmpty())
+			ActivityCompat.requestPermissions(this, wantedPermissions.toArray(new String[wantedPermissions.size()]), 0);
+	}
+
 
 	protected void initSuper()
 	{

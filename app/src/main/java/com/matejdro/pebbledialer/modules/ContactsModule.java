@@ -1,9 +1,12 @@
 package com.matejdro.pebbledialer.modules;
 
+import android.Manifest;
 import android.content.ContentResolver;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.support.v4.content.ContextCompat;
 
 import com.getpebble.android.kit.util.PebbleDictionary;
 import com.matejdro.pebblecommons.pebble.CommModule;
@@ -93,6 +96,9 @@ public class ContactsModule extends CommModule
 
 	private void refreshContacts()
 	{
+        if (ContextCompat.checkSelfPermission(getService(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_DENIED)
+            return;
+
 		ContentResolver resolver = getService().getContentResolver();
 
 		String selection = "( " + buildSelection() + " )";

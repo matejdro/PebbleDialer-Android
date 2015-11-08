@@ -1,10 +1,13 @@
 package com.matejdro.pebbledialer.modules;
 
+import android.Manifest;
 import android.content.ContentResolver;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
+import android.support.v4.content.ContextCompat;
 
 import com.getpebble.android.kit.util.PebbleDictionary;
 import com.matejdro.pebblecommons.pebble.CommModule;
@@ -157,6 +160,9 @@ public class CallLogModule extends CommModule
         numberTypes.clear();
         numbers.clear();
         numberSet.clear();
+
+        if (ContextCompat.checkSelfPermission(getService(), Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_DENIED)
+            return;
 
         ContentResolver resolver = getService().getContentResolver();
         String sortOrder = CallLog.Calls.DEFAULT_SORT_ORDER + " LIMIT 1000";

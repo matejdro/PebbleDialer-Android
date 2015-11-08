@@ -1,8 +1,11 @@
 package com.matejdro.pebbledialer.modules;
 
+import android.Manifest;
 import android.content.ContentResolver;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.support.v4.content.ContextCompat;
 
 import com.getpebble.android.kit.util.PebbleDictionary;
 import com.matejdro.pebblecommons.pebble.CommModule;
@@ -36,21 +39,29 @@ public class NumberPickerModule extends CommModule
     public void showNumberPicker(int contactId) {
         phoneNumbers.clear();
 
-        ContentResolver resolver = getService().getContentResolver();
-        Cursor cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC LIMIT 2000");
-
-        while (cursor.moveToNext())
+        if (ContextCompat.checkSelfPermission(getService(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
         {
-            int typeId = cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
-            String label = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.LABEL));
-            String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            ContentResolver resolver = getService().getContentResolver();
+            Cursor cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC LIMIT 2000");
 
-            String type = ContactUtils.convertNumberType(typeId, label);
+            while (cursor.moveToNext())
+            {
+                int typeId = cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+                String label = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.LABEL));
+                String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-            phoneNumbers.add(new PebbleNumberEntry(number, type));
+                String type = ContactUtils.convertNumberType(typeId, label);
+
+                phoneNumbers.add(new PebbleNumberEntry(number, type));
+            }
+
+            cursor.close();
+        }
+        else
+        {
+            phoneNumbers.add(new PebbleNumberEntry("No permission", "ERROR"));
         }
 
-        cursor.close();
 
         int initialAmount = phoneNumbers.size();
 
