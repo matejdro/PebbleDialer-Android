@@ -65,7 +65,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.LicenseActivity" />
 
         <activity
             android:name=".tasker.TaskerSettingsActivity"

@@ -28,6 +28,8 @@ import android.widget.Toast;
 import com.matejdro.pebbledialer.R;
 import com.matejdro.pebbledialer.pebble.WatchappHandler;
 
+import de.psdev.licensesdialog.LicensesDialog;
+
 public class SettingsActivity extends PreferenceActivity {
 	private SharedPreferences settings;
 	private SharedPreferences.Editor editor;
@@ -114,8 +116,11 @@ public class SettingsActivity extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference)
 			{
 
-				Intent intent = new Intent(SettingsActivity.this, LicenseActivity.class);
-				startActivity(intent);
+				new LicensesDialog.Builder(SettingsActivity.this)
+						.setNotices(R.raw.notices)
+						.setIncludeOwnLicense(true)
+						.build()
+						.show();
 				return true;
 			}
 		});
