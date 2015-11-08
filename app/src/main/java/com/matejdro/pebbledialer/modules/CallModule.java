@@ -156,6 +156,10 @@ public class CallModule extends CommModule
 
         for (int i = 0; i < actions.size(); i++)
             actions.valueAt(i).onCallEnd();
+
+        updateRequired = false;
+        callerNameUpdateRequired = false;
+        callerImageNextByte = 0;
     }
 
     private void callEstablished()
