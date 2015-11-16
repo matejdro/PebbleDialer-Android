@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notices>
+    <notice>
+        <name>Java Websocket</name>
+        <url>https://github.com/TooTallNate/Java-WebSocket</url>
+        <copyright>Copyright (c) 2010-2012 Nathan Rajlich</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>PNGJ</name>
+        <url>https://github.com/leonbloy/pngj/</url>
+        <license>Apache Software License 2.0</license>
+    </notice>
+</notices>
