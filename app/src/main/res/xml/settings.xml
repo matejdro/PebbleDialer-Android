@@ -158,7 +158,7 @@
             android:key="cat_fonts"
             android:title="Fonts">
             <ListPreference
-                android:defaultValue="4"
+                android:defaultValue="2"
                 android:entries="@array/pebbleFonts"
                 android:entryValues="@array/fontValues"
                 android:key="fontTimer"
@@ -170,13 +170,13 @@
                 android:key="fontName"
                 android:title="Caller name font"/>
             <ListPreference
-                android:defaultValue="4"
+                android:defaultValue="2"
                 android:entries="@array/pebbleFonts"
                 android:entryValues="@array/fontValues"
                 android:key="fontNumberType"
                 android:title="Caller number type font"/>
             <ListPreference
-                android:defaultValue="4"
+                android:defaultValue="3"
                 android:entries="@array/pebbleFonts"
                 android:entryValues="@array/fontValues"
                 android:key="fontNumber"
