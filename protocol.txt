@@ -102,9 +102,12 @@ Phone --> Pebble
 						Third bit (0x04) = Should I skip filtering with contact groups (1 or 0)		
                         Fourth bit (0x08) = Should I turn on backlight when call window loads	
                         Fifth bit (0x10) = Should I disable vibration when Pebble is charging
-				[3] = Number of contact groups displayed in the menu				
-			
-				
+				[3] = Number of contact groups displayed in the menu
+				[4] = Timer font (0-17)
+				[5] = Calee name font (0-17)
+				[6] = Calee number type font (0-17)
+				[7] = Calee number font (0-17)
+
 		Packet 1 - Menu groups data
 		Names of contact groups displayed in dialer menu. It can transfer up to 3 names. 
 		Additional data:

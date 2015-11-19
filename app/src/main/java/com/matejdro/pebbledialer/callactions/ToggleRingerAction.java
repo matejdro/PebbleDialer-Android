@@ -30,6 +30,8 @@ public class ToggleRingerAction extends CallAction
 
         AudioManager audioManager = (AudioManager) getCallModule().getService().getSystemService(Context.AUDIO_SERVICE);
 
+        getCallModule().setVibration(false);
+
         if (!isMutedViaAudioManager)
         {
             if (getCallModule().getService().getGlobalSettings().getBoolean("rootMode", false))
@@ -50,7 +52,6 @@ public class ToggleRingerAction extends CallAction
 
                 audioManager.setStreamSolo(AudioManager.STREAM_MUSIC, true);
                 audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                getCallModule().setVibration(false);
             }
         }
         else
@@ -58,7 +59,6 @@ public class ToggleRingerAction extends CallAction
             isMutedViaAudioManager = false;
             audioManager.setStreamSolo(AudioManager.STREAM_MUSIC, false);
             audioManager.setRingerMode(prevRingerMode);
-            getCallModule().setVibration(true);
         }
 
         getCallModule().updatePebble();
@@ -81,9 +81,9 @@ public class ToggleRingerAction extends CallAction
             isMutedViaAudioManager = false;
             audioManager.setStreamSolo(AudioManager.STREAM_MUSIC, false);
             audioManager.setRingerMode(prevRingerMode);
-            getCallModule().setVibration(true);
         }
 
+        getCallModule().setVibration(true);
     }
 
     @Override
