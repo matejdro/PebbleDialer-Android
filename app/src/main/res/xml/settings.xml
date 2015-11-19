@@ -154,6 +154,34 @@
                 android:summary="Action that will be performing when you shake your Pebble while there is call established."
                 android:title="Shake when call is established"/>
         </PreferenceScreen>
+        <PreferenceScreen
+            android:key="cat_fonts"
+            android:title="Fonts">
+            <ListPreference
+                android:defaultValue="4"
+                android:entries="@array/pebbleFonts"
+                android:entryValues="@array/fontValues"
+                android:key="fontTimer"
+                android:title="Timer font"/>
+            <ListPreference
+                android:defaultValue="7"
+                android:entries="@array/pebbleFonts"
+                android:entryValues="@array/fontValues"
+                android:key="fontName"
+                android:title="Caller name font"/>
+            <ListPreference
+                android:defaultValue="4"
+                android:entries="@array/pebbleFonts"
+                android:entryValues="@array/fontValues"
+                android:key="fontNumberType"
+                android:title="Caller number type font"/>
+            <ListPreference
+                android:defaultValue="4"
+                android:entries="@array/pebbleFonts"
+                android:entryValues="@array/fontValues"
+                android:key="fontNumber"
+                android:title="Caller number font"/>
+        </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Decline with SMS">

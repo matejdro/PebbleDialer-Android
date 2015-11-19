@@ -103,7 +103,7 @@ public class SystemModule extends CommModule
         List<Integer> pickedGroupIds = ListSerialization.loadIntegerList(getService().getGlobalSettings(), "displayedGroupsListNew");
         pickedContactGroups = ContactGroupsPickerDialog.getSpecificContactGroups(getService(), pickedGroupIds);
 
-        byte[] configBytes = new byte[13];
+        byte[] configBytes = new byte[8];
         configBytes[0] = (byte) (WatchappHandler.SUPPORTED_PROTOCOL >>> 0x08);
         configBytes[1] = (byte) WatchappHandler.SUPPORTED_PROTOCOL;
 
@@ -118,6 +118,11 @@ public class SystemModule extends CommModule
 
         configBytes[2] = flags;
         configBytes[3] = (byte) pickedContactGroups.size();
+
+        configBytes[4] = Byte.parseByte(getService().getGlobalSettings().getString("fontTimer", "4"));
+        configBytes[5] = Byte.parseByte(getService().getGlobalSettings().getString("fontName", "7"));
+        configBytes[6] = Byte.parseByte(getService().getGlobalSettings().getString("fontNumberType", "4"));
+        configBytes[7] = Byte.parseByte(getService().getGlobalSettings().getString("fontNumber", "4"));
 
         data.addUint8(0, (byte) 0);
         data.addUint8(1, (byte) 0);
