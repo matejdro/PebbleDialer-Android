@@ -159,7 +159,7 @@ public class CallModule extends CommModule
 
         updateRequired = false;
         callerNameUpdateRequired = false;
-        callerImageNextByte = 0;
+        callerImageNextByte = -1;
     }
 
     private void callEstablished()
