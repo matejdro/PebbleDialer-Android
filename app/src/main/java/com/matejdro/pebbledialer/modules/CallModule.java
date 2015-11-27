@@ -184,7 +184,6 @@ public class CallModule extends CommModule
         vibrating = true;
 
         updateRequired = true;
-        callerNameUpdateRequired = true;
 
         updateNumberData();
         updatePebble();
