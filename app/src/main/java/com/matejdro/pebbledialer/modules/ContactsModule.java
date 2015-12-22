@@ -127,29 +127,33 @@ public class ContactsModule extends CommModule
 		ids.clear();
 		idSet.clear();
 
-		while (cursor.moveToNext())
-		{
-			String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-			int id = cursor.getInt(cursor.getColumnIndex(idIndex));
+        if (cursor != null)
+        {
+            while (cursor.moveToNext())
+            {
+                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                int id = cursor.getInt(cursor.getColumnIndex(idIndex));
 
-			if (idSet.contains(id))
-				continue;
+                if (idSet.contains(id))
+                    continue;
 
-            if (name == null)
-                continue;
+                if (name == null)
+                    continue;
 
-			names.add(TextUtil.prepareString(name));
+                names.add(TextUtil.prepareString(name));
 
-			ids.add(id);
-			idSet.add(id);
+                ids.add(id);
+                idSet.add(id);
 
-			if (ids.size() > (filterMode ? 7 : 2000))
-				break;
-		}
+                if (ids.size() > (filterMode ? 7 : 2000))
+                    break;
+            }
+
+            cursor.close();
+        }
 
         Timber.d("Loaded " + names.size() + " contacts.");
 
-		cursor.close();
 	}
 
 	public void filterContacts(int buttonId)
