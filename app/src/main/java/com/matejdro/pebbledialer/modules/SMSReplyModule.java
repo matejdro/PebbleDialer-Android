@@ -209,10 +209,6 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
 
         if (number == null || text == null)
         {
-            Crashlytics.setBool("numberNull", number == null);
-            Crashlytics.setBool("textNull", text == null);
-
-            Crashlytics.logException(new NullPointerException("gotText Null!"));
             sendFailNotification();
             return;
         }
