@@ -261,6 +261,13 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
             showWritingList();
         else
         {
+            if (index >= actionList.size())
+            {
+                Timber.e("Action out of bounds!");
+                sendFailNotification();
+                return;
+            }
+
             gotText(actionList.get(index));
         }
 
