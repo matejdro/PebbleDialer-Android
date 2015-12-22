@@ -168,27 +168,31 @@ public class CallLogModule extends CommModule
         String sortOrder = CallLog.Calls.DEFAULT_SORT_ORDER + " LIMIT 1000";
         Cursor cursor = resolver.query(CallLog.Calls.CONTENT_URI, null, null, null, sortOrder);
 
-        while (cursor.moveToNext())
+        if (cursor != null)
         {
-            String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
-            if (numberSet.contains(number))
-                continue;
+            while (cursor.moveToNext())
+            {
+                String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
+                if (numberSet.contains(number))
+                    continue;
 
-            String name = TextUtil.prepareString(cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME)), 16);
-            int type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
-            long date = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE));
-            int numberType = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.CACHED_NUMBER_TYPE));
-            String customLabel = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NUMBER_LABEL));
+                String name = TextUtil.prepareString(cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME)), 16);
+                int type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
+                long date = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE));
+                int numberType = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.CACHED_NUMBER_TYPE));
+                String customLabel = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NUMBER_LABEL));
 
-            names.add(name);
-            dates.add(getFormattedDate(date));
-            logTypes.add(type);
-            numbers.add(number);
-            numberTypes.add(TextUtil.prepareString(ContactUtils.convertNumberType(numberType, customLabel)));
-            numberSet.add(number);
+                names.add(name);
+                dates.add(getFormattedDate(date));
+                logTypes.add(type);
+                numbers.add(number);
+                numberTypes.add(TextUtil.prepareString(ContactUtils.convertNumberType(numberType, customLabel)));
+                numberSet.add(number);
+            }
+
+            cursor.close();
         }
 
-        cursor.close();
     }
 
     public String getFormattedDate(long date)
@@ -211,9 +215,14 @@ public class CallLogModule extends CommModule
         Cursor cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup._ID},null,  null, ContactsContract.PhoneLookup._ID + " LIMIT 1");
         int id = -1;
 
-        if (cursor.moveToNext())
+        if (cursor != null)
         {
-            id = cursor.getInt(cursor.getColumnIndex(ContactsContract.PhoneLookup._ID));
+            if (cursor.moveToNext())
+            {
+                id = cursor.getInt(cursor.getColumnIndex(ContactsContract.PhoneLookup._ID));
+            }
+
+            cursor.close();
         }
 
         return id;
