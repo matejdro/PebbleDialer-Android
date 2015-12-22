@@ -123,14 +123,21 @@ public class ContactGroupsPickerDialog
 
         Cursor cursor = resolver.query(ContactsContract.Groups.CONTENT_SUMMARY_URI, new String[] { ContactsContract.Groups._ID, ContactsContract.Groups.TITLE, ContactsContract.Groups.SUMMARY_COUNT}, ContactsContract.Groups.SUMMARY_COUNT + " > 0 AND " + ContactsContract.Groups._ID + " IN (" + picksCommaSeparated + ")", null, null);
 
-        while (cursor.moveToNext())
+        if (cursor != null)
         {
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            groups.add(new ContactGroup(id, name));
+            while (cursor.moveToNext())
+            {
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                if (name == null)
+                    continue;
+
+                groups.add(new ContactGroup(id, name));
+            }
+
+            cursor.close();
         }
 
-        cursor.close();
 
         return groups;
     }
