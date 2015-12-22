@@ -1,15 +1,19 @@
 package com.matejdro.pebbledialer.modules;
 
+import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.SparseArray;
 
+import com.crashlytics.android.Crashlytics;
 import com.getpebble.android.kit.util.PebbleDictionary;
 import com.matejdro.pebblecommons.pebble.CommModule;
 import com.matejdro.pebblecommons.pebble.PebbleCommunication;
@@ -237,11 +241,19 @@ public class CallModule extends CommModule
         Cursor cursor = null;
         try
         {
-            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(null));
             cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.TYPE, ContactsContract.PhoneLookup.LABEL, ContactsContract.PhoneLookup.PHOTO_URI}, null, null, "contacts_view.last_time_contacted DESC");
         } catch (IllegalArgumentException e)
         {
             //This is sometimes thrown when number is in invalid format, so phone cannot recognize it.
+        }
+        catch (SecurityException e)
+        {
+            //Attempt to debug this exception
+
+            Crashlytics.setBool("Is number empty", number.trim().isEmpty());
+            Crashlytics.setInt("Do I have contacts permission", ContextCompat.checkSelfPermission(getService(), Manifest.permission.READ_CONTACTS));
+            Crashlytics.logException(e);
         }
 
         name = null;
