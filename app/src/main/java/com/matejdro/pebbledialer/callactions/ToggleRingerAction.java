@@ -39,7 +39,6 @@ public class ToggleRingerAction extends CallAction
                 Timber.d("Muting using root method...");
                 try {
                     Runtime.getRuntime().exec(new String[] {"su", "-c", "input keyevent " + KeyEvent.KEYCODE_VOLUME_DOWN});
-                    return;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
