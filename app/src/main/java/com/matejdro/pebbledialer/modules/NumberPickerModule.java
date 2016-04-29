@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
+import android.telephony.PhoneNumberUtils;
 
 import com.getpebble.android.kit.util.PebbleDictionary;
 import com.matejdro.pebblecommons.pebble.CommModule;
@@ -52,7 +53,9 @@ public class NumberPickerModule extends CommModule
 
                 String type = ContactUtils.convertNumberType(typeId, label);
 
-                phoneNumbers.add(new PebbleNumberEntry(number, type));
+                PebbleNumberEntry numberEntry = new PebbleNumberEntry(number, type);
+                if (!phoneNumbers.contains(numberEntry))
+                    phoneNumbers.add(numberEntry);
             }
 
             cursor.close();
@@ -186,6 +189,27 @@ public class NumberPickerModule extends CommModule
             this.numberType = numberType;
 
             this.numberAction = NUMBER_ACTION_CALL;
+        }
+
+        @Override
+        public boolean equals(Object o)
+        {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            PebbleNumberEntry that = (PebbleNumberEntry) o;
+
+            if (numberAction != that.numberAction) return false;
+            return !(number != null ? !PhoneNumberUtils.compare(number, that.number) : that.number != null);
+
+        }
+
+        @Override
+        public int hashCode()
+        {
+            int result = number != null ? number.hashCode() : 0;
+            result = 31 * result + numberAction;
+            return result;
         }
     }
 }
