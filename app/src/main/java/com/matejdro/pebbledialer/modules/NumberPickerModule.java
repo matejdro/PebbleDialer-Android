@@ -178,14 +178,14 @@ public class NumberPickerModule extends CommModule
 
         public PebbleNumberEntry(String number, String numberType, int numberAction)
         {
-            this.number = number;
+            this.number = PhoneNumberUtils.formatNumber(number);
             this.numberType = numberType;
             this.numberAction = numberAction;
         }
 
         public PebbleNumberEntry(String number, String numberType)
         {
-            this.number = number;
+            this.number = PhoneNumberUtils.formatNumber(number);
             this.numberType = numberType;
 
             this.numberAction = NUMBER_ACTION_CALL;
@@ -200,14 +200,14 @@ public class NumberPickerModule extends CommModule
             PebbleNumberEntry that = (PebbleNumberEntry) o;
 
             if (numberAction != that.numberAction) return false;
-            return !(number != null ? !PhoneNumberUtils.compare(number, that.number) : that.number != null);
+            return number.equals(that.number);
 
         }
 
         @Override
         public int hashCode()
         {
-            int result = number != null ? number.hashCode() : 0;
+            int result = number.hashCode();
             result = 31 * result + numberAction;
             return result;
         }
