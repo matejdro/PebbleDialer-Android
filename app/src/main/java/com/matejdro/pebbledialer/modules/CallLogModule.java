@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
+import android.telecom.Call;
+import android.telephony.PhoneNumberUtils;
 
 import com.getpebble.android.kit.util.PebbleDictionary;
 import com.matejdro.pebblecommons.pebble.CommModule;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 import timber.log.Timber;
 import com.matejdro.pebblecommons.util.ContactUtils;
@@ -28,12 +31,7 @@ public class CallLogModule extends CommModule
 {
     public static int MODULE_CALL_LOG = 2;
 
-    private List<String> names;
-    private List<String> dates;
-    private List<Integer> logTypes;
-    private List<String> numberTypes;
-    private List<String> numbers;
-    private HashSet<String> numberSet;
+    private List<CallLogEntry> entries;
 
     private int nextToSend = -1;
     private boolean openWindow = false;
@@ -41,12 +39,7 @@ public class CallLogModule extends CommModule
     public CallLogModule(PebbleTalkerService service) {
         super(service);
 
-        names = new ArrayList<String>();
-        dates = new ArrayList<String>();
-        logTypes = new ArrayList<Integer>();
-        numberTypes = new ArrayList<String>();
-        numbers = new ArrayList<String>();
-        numberSet = new HashSet<String>();
+        entries = new ArrayList<CallLogEntry>();
     }
 
     public void beginSending()
@@ -67,29 +60,29 @@ public class CallLogModule extends CommModule
 
 	public void sendEntriesPacket(int offset)
 	{
-        if (logTypes.size() <= offset)
+        if (entries.size() <= offset)
             return;
+
+        CallLogEntry callLogEntry = entries.get(offset);
 
 		PebbleDictionary data = new PebbleDictionary();
 
 		data.addUint8(0, (byte) 2);
         data.addUint8(1, (byte) 0);
         data.addUint16(2, (short) offset);
-		data.addUint16(3, (short) names.size());
+		data.addUint16(3, (short) entries.size());
 
-		data.addUint8(4, logTypes.get(offset).byteValue());
-		data.addString(6, dates.get(offset));
+		data.addUint8(4, (byte) callLogEntry.eventType);
+		data.addString(6, callLogEntry.date);
 
-		String name = names.get(offset);
-		if (name == null)
-			name = TextUtil.prepareString(numbers.get(offset));
+		if (callLogEntry.name == null)
+            callLogEntry.name = TextUtil.prepareString(callLogEntry.number);
 
-		data.addString(5, name);
+		data.addString(5, callLogEntry.name);
 
-		String numType = numberTypes.get(offset);
-		if (numType == null)
-			numType = "";
-		data.addString(7, numType);
+		if (callLogEntry.numberType == null)
+            callLogEntry.numberType = "";
+		data.addString(7, callLogEntry.numberType);
 
         if (openWindow)
             data.addUint8(999, (byte) 1);
@@ -118,7 +111,7 @@ public class CallLogModule extends CommModule
         int mode = message.getUnsignedIntegerAsLong(3).intValue();
         Timber.d("Picked %d %d", index, mode);
 
-        if (numbers.size() <= index)
+        if (entries.size() <= index)
         {
             Timber.d("Number out of bounds!");
             return;
@@ -126,11 +119,11 @@ public class CallLogModule extends CommModule
 
         if (mode == 0)
         {
-            ContactUtils.call(numbers.get(index), getService());
+            ContactUtils.call(entries.get(index).number, getService());
         }
         else
         {
-            int contactId = getContactId(numbers.get(index));
+            int contactId = getContactId(entries.get(index).number);
             NumberPickerModule.get(getService()).showNumberPicker(contactId);
         }
     }
@@ -154,12 +147,7 @@ public class CallLogModule extends CommModule
 
     private void refreshCallLog()
     {
-        names.clear();
-        dates.clear();
-        logTypes.clear();
-        numberTypes.clear();
-        numbers.clear();
-        numberSet.clear();
+        entries.clear();
 
         if (ContextCompat.checkSelfPermission(getService(), Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_DENIED)
             return;
@@ -173,21 +161,17 @@ public class CallLogModule extends CommModule
             while (cursor.moveToNext())
             {
                 String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
-                if (numberSet.contains(number))
-                    continue;
-
                 String name = TextUtil.prepareString(cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME)), 16);
                 int type = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE));
                 long date = cursor.getLong(cursor.getColumnIndex(CallLog.Calls.DATE));
                 int numberType = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.CACHED_NUMBER_TYPE));
                 String customLabel = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NUMBER_LABEL));
 
-                names.add(name);
-                dates.add(getFormattedDate(date));
-                logTypes.add(type);
-                numbers.add(number);
-                numberTypes.add(TextUtil.prepareString(ContactUtils.convertNumberType(numberType, customLabel)));
-                numberSet.add(number);
+                CallLogEntry callLogEntry = new CallLogEntry(name, number, ContactUtils.convertNumberType(numberType, customLabel), getFormattedDate(date), type);
+                if (!entries.contains(callLogEntry))
+                {
+                    entries.add(callLogEntry);
+                }
             }
 
             cursor.close();
@@ -228,6 +212,46 @@ public class CallLogModule extends CommModule
         return id;
     }
 
+    private static class CallLogEntry
+    {
+
+        public String name;
+        public String number;
+        public String numberType;
+        public String date;
+        public int eventType;
+
+        public CallLogEntry(String name, String number, String numberType, String date, int eventType)
+        {
+            this.name = name;
+            this.number = PhoneNumberUtils.formatNumber(number);
+            this.numberType = numberType;
+            this.date = date;
+            this.eventType = eventType;
+        }
+
+        @Override
+        public boolean equals(Object o)
+        {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            CallLogEntry that = (CallLogEntry) o;
+
+            return PhoneNumberUtils.compare(number, that.number);
+
+        }
+
+        @Override
+        public int hashCode()
+        {
+            // Number is not used in hashcode, because it involves complicated comparing method that
+            // cannot be boiled down to hash.
+            // Because of this, we can't use hashcode for comparison.
+
+            return 0;
+        }
+    }
 
     public static CallLogModule get(PebbleTalkerService service)
     {
