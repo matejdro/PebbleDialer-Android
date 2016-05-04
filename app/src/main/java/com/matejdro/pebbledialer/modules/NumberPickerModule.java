@@ -200,16 +200,16 @@ public class NumberPickerModule extends CommModule
             PebbleNumberEntry that = (PebbleNumberEntry) o;
 
             if (numberAction != that.numberAction) return false;
-            return !(number != null ? !PhoneNumberUtils.compare(number, that.number) : that.number != null);
-
+            return PhoneNumberUtils.compare(number, that.number);
         }
 
         @Override
         public int hashCode()
         {
-            int result = number != null ? number.hashCode() : 0;
-            result = 31 * result + numberAction;
-            return result;
+            // Number is not used in hashcode, because it involves complicated comparing method that
+            // cannot be boiled down to hash.
+
+            return numberAction;
         }
     }
 }
