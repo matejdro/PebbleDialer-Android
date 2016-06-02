@@ -249,11 +249,8 @@ public class CallModule extends CommModule
         }
         catch (SecurityException e)
         {
-            //Attempt to debug this exception
-
-            Crashlytics.setBool("Is number empty", number.trim().isEmpty());
-            Crashlytics.setInt("Do I have contacts permission", ContextCompat.checkSelfPermission(getService(), Manifest.permission.READ_CONTACTS));
-            Crashlytics.logException(e);
+            name = "No contacts permission";
+            return;
         }
 
         name = null;
