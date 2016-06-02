@@ -167,6 +167,9 @@ public class CallLogModule extends CommModule
                 int numberType = cursor.getInt(cursor.getColumnIndex(CallLog.Calls.CACHED_NUMBER_TYPE));
                 String customLabel = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NUMBER_LABEL));
 
+                if (number == null)
+                    continue;
+
                 CallLogEntry callLogEntry = new CallLogEntry(name, number, ContactUtils.convertNumberType(numberType, customLabel), getFormattedDate(date), type);
                 if (!entries.contains(callLogEntry))
                 {
