@@ -153,7 +153,7 @@ public class CallLogModule extends CommModule
             return;
 
         ContentResolver resolver = getService().getContentResolver();
-        String sortOrder = CallLog.Calls.DEFAULT_SORT_ORDER + " LIMIT 1000";
+        String sortOrder = CallLog.Calls.DEFAULT_SORT_ORDER + " LIMIT 100";
         Cursor cursor = resolver.query(CallLog.Calls.CONTENT_URI, null, null, null, sortOrder);
 
         if (cursor != null)
