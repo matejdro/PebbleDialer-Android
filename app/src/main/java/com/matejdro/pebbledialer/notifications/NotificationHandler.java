@@ -40,9 +40,9 @@ public class NotificationHandler {
             {
                 Timber.d("Found action %s", action.title);
 
-                if (action.title.equals(answerText))
+                if (action.title.toString().equalsIgnoreCase(answerText))
                     answerIntent = action.actionIntent;
-                else if (action.title.equals(declineText))
+                else if (action.title.toString().equalsIgnoreCase(declineText))
                     declineIntent = action.actionIntent;
             }
 
