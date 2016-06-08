@@ -71,11 +71,17 @@ public class EndCallAction extends CallAction
         if (getITelephonyMethod != null)
         {
             Timber.d("Ending call using generic iTelephony method...");
-            try {
+            try
+            {
                 ITelephony iTelephony = (ITelephony) getITelephonyMethod.invoke(getCallModule().getService().getSystemService(Context.TELEPHONY_SERVICE), (Object[]) null);
                 iTelephony.endCall();
                 return;
-            } catch (Exception e) {
+            }
+            catch (SecurityException e)
+            {
+                Timber.e("Cannot decline call, no CALL_PHONE permission.");
+            }
+            catch (Exception e) {
                 Timber.e(e, "Error while invoking iTelephony.endCall()");
                 Crashlytics.logException(e);
             }
