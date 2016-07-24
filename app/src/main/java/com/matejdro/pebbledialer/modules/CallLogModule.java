@@ -117,13 +117,18 @@ public class CallLogModule extends CommModule
             return;
         }
 
+        CallLogEntry pickedEntry = entries.get(index);
+
         if (mode == 0)
         {
-            ContactUtils.call(entries.get(index).number, getService());
+            ContactUtils.call(pickedEntry.number, getService());
         }
         else
         {
-            int contactId = getContactId(entries.get(index).number);
+            Integer contactId = pickedEntry.contactId;
+            if (contactId == null)
+                contactId = getContactId(pickedEntry.number);
+
             NumberPickerModule.get(getService()).showNumberPicker(contactId);
         }
     }
@@ -170,9 +175,14 @@ public class CallLogModule extends CommModule
                 if (number == null)
                     continue;
 
-                CallLogEntry callLogEntry = new CallLogEntry(name, number, ContactUtils.convertNumberType(numberType, customLabel), getFormattedDate(date), type);
+                String numberTypeText = TextUtil.prepareString(ContactUtils.convertNumberType(numberType, customLabel));
+
+                CallLogEntry callLogEntry = new CallLogEntry(name, number, numberTypeText, getFormattedDate(date), type);
                 if (!entries.contains(callLogEntry))
                 {
+                    if (name == null)
+                        lookupContactInfo(callLogEntry);
+
                     entries.add(callLogEntry);
                 }
             }
@@ -215,9 +225,44 @@ public class CallLogModule extends CommModule
         return id;
     }
 
+    private void lookupContactInfo(CallLogEntry callLogEntry)
+    {
+        Cursor cursor = null;
+        try
+        {
+            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(callLogEntry.number));
+            cursor = getService().getContentResolver().query(uri, new String[]{ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.TYPE, ContactsContract.PhoneLookup.LABEL}, null, null, "contacts_view.last_time_contacted DESC");
+        } catch (IllegalArgumentException e)
+        {
+            //This is sometimes thrown when number is in invalid format, so phone cannot recognize it.
+        }
+        catch (SecurityException e)
+        {
+            return;
+        }
+
+        if (cursor != null)
+        {
+            if (cursor.moveToNext())
+            {
+                callLogEntry.contactId = cursor.getInt(cursor.getColumnIndex(ContactsContract.PhoneLookup._ID));
+                callLogEntry.name = TextUtil.prepareString(cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME)));
+                String label = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.LABEL));
+                int typeId = cursor.getInt(cursor.getColumnIndex(ContactsContract.PhoneLookup.TYPE));
+
+                callLogEntry.numberType = TextUtil.prepareString(ContactUtils.convertNumberType(typeId, label));
+                if (callLogEntry.numberType == null)
+                    callLogEntry.numberType = "Other";
+            }
+
+            cursor.close();
+        }
+    }
+
+
     private static class CallLogEntry
     {
-
+        public Integer contactId;
         public String name;
         public String number;
         public String numberType;
