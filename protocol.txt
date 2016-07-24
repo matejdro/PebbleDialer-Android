@@ -140,15 +140,16 @@ Phone --> Pebble
 				[4] = Bottom action bar icon ID
 				[5] = Should I vibrate on incoming call screen (1 = yes, 0 = no)
 			6 = Elapsed seconds. Only sent when in call, not when ringing. (uint16)
-			7 = Size of the caller image in bytes (only for Basalt platform. If value is 0, no image will be displayed. uint16).
+			7 = Size of the caller image in bytes (only for color watches. If value is 0, no image will be displayed. uint16).
             
 		Packet 1 - Caller name
 		Sent after Call info packet
 		Additional data:
 			2 = Name (cstring - up to 100 characters)
             
-        Packet 2 - Caller image part (Only for Basalt)
-            2 = Image data (byte array, part of PNG image format. Up to 116 bytes.)
+        Packet 2 - Caller image part (Only for color watches)
+            2 = Size of the data in this packet (uint16)
+            3 = Image data (byte array, part of PNG image format.)
 
 	MODULE 2 - CALL LOG
 			

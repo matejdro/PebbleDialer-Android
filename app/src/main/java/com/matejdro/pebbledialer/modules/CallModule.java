@@ -19,6 +19,7 @@ import com.matejdro.pebblecommons.pebble.CommModule;
 import com.matejdro.pebblecommons.pebble.PebbleCommunication;
 import com.matejdro.pebblecommons.pebble.PebbleImageToolkit;
 import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
+import com.matejdro.pebblecommons.pebble.PebbleUtil;
 import com.matejdro.pebblecommons.util.ContactUtils;
 import com.matejdro.pebblecommons.util.TextUtil;
 import com.matejdro.pebbledialer.callactions.AnswerCallAction;
@@ -42,7 +43,6 @@ public class CallModule extends CommModule
 
     public static final int MAX_CALLER_IMAGE_WIDTH = 144 - 30;
     public static final int MAX_CALLER_IMAGE_HEIGHT = 168 - 16;
-    public static final int CALLER_IMAGE_BYTES_PER_MESSAGE = 124 - 8;
 
     public static int MODULE_CALL = 1;
 
@@ -390,16 +390,20 @@ public class CallModule extends CommModule
 
     private void sendImagePacket()
     {
-        int bytesToSend = Math.min(callerImageBytes.length - callerImageNextByte, CALLER_IMAGE_BYTES_PER_MESSAGE);
-        byte[] bytes = new byte[bytesToSend];
-        System.arraycopy(callerImageBytes, callerImageNextByte, bytes, 0, bytesToSend);
-
         PebbleDictionary data = new PebbleDictionary();
 
         data.addUint8(0, (byte) 1);
         data.addUint8(1, (byte) 2);
+        data.addUint16(2, (short) 0); //Image size placeholder
 
-        data.addBytes(2, bytes);
+        int maxBytesToSend = PebbleUtil.getBytesLeft(data, getService().getPebbleCommunication().getConnectedWatchCapabilities());
+
+        int bytesToSend = Math.min(callerImageBytes.length - callerImageNextByte, maxBytesToSend);
+        byte[] bytes = new byte[bytesToSend];
+        System.arraycopy(callerImageBytes, callerImageNextByte, bytes, 0, bytesToSend);
+
+        data.addUint16(2, (short) bytesToSend); //Image size placeholder
+        data.addBytes(3, bytes);
 
         getService().getPebbleCommunication().sendToPebble(data);
         Timber.d("Sent image packet %d / %d", callerImageNextByte, callerImageBytes.length);
