@@ -1,12 +1,20 @@
 package com.matejdro.pebbledialer.callactions;
 
+import android.annotation.TargetApi;
 import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.media.session.MediaController;
+import android.media.session.MediaSessionManager;
+import android.os.Build;
 import android.view.KeyEvent;
 
 import com.matejdro.pebbledialer.modules.CallModule;
+import com.matejdro.pebbledialer.notifications.JellybeanNotificationListener;
 
 import java.io.IOException;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -55,11 +63,41 @@ public class AnswerCallAction extends CallAction
             }
         }
 
-        Timber.d("Answering using generic headset hook method...");
-        Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
-        getCallModule().getService().sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            answerUsingMediaServer();
+        }
+        else
+        {
+            Timber.d("Answering using generic headset hook method...");
+            Intent buttonUp = new Intent(Intent.ACTION_MEDIA_BUTTON);
+            buttonUp.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
+            getCallModule().getService().sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
+        }
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void answerUsingMediaServer()
+    {
+        Timber.d("Answering using media server method...");
+
+        MediaSessionManager mediaSessionManager =  (MediaSessionManager) getCallModule().getService().getSystemService(Context.MEDIA_SESSION_SERVICE);
+
+        try {
+            List<MediaController> mediaControllerList = mediaSessionManager.getActiveSessions
+                    (new ComponentName(getCallModule().getService(), JellybeanNotificationListener.class));
+
+            for (MediaController m : mediaControllerList) {
+                if ("com.android.server.telecom".equals(m.getPackageName())) {
+                    Timber.d("Found telephony media controller!");
+                    m.dispatchMediaButtonEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_HEADSETHOOK));
+                    break;
+                }
+            }
+        } catch (SecurityException e) {
+            Timber.e("Notification service not running!");
+        }
     }
 
     @Override
