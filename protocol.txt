@@ -15,6 +15,8 @@ Pebble --> Phone
 			 Bit 3 (0x08) - Does watch support smartstraps
 			 Bit 4 (0x10) - Does watch support Pebble Health
 			 Bits 15-31 - Unsigned 16-bit integer representing number of maximum bytes that can fit into one appmessage
+		 4 = Full screen image width (uint16)
+		 5 = Full screen image height (uint16)
 
 		Packet 1 - Menu item picked
 		Sent when user picks entry in main menu

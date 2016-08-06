@@ -8,6 +8,7 @@ import com.matejdro.pebblecommons.pebble.CommModule;
 import com.matejdro.pebblecommons.pebble.PebbleCommunication;
 import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
 import com.matejdro.pebblecommons.util.ListSerialization;
+import com.matejdro.pebblecommons.util.Size;
 import com.matejdro.pebbledialer.PebbleDialerApplication;
 import com.matejdro.pebbledialer.ui.ContactGroupsPickerDialog;
 import com.matejdro.pebbledialer.pebble.WatchappHandler;
@@ -26,6 +27,8 @@ public class SystemModule extends CommModule
 
     public static final UUID UNKNOWN_UUID = new UUID(0, 0);
     public static final UUID MAIN_MENU_UUID = UUID.fromString("dec0424c-0625-4878-b1f2-147e57e83688");
+    private static final int FALLBACK_CALLER_IMAGE_WIDTH = 144 - 30;
+    private static final int FALLBACK_CALLER_IMAGE_HEIGHT = 168 - 16;
 
     private Callable<Boolean> runOnNext;
     private UUID currentRunningApp;
@@ -34,6 +37,9 @@ public class SystemModule extends CommModule
     private int nextGroupNameToSend = -1;
 
     private int closeTries = 0;
+
+    private Integer fullscreenImageWidth;
+    private Integer fullscreenImageHeight;
 
     public SystemModule(PebbleTalkerService service)
     {
@@ -232,6 +238,9 @@ public class SystemModule extends CommModule
             int pebbleCapabilities = message.getUnsignedIntegerAsLong(3).intValue();
             getService().getPebbleCommunication().setConnectedWatchCapabilities(pebbleCapabilities);
 
+            fullscreenImageWidth = message.getUnsignedIntegerAsLong(4).intValue();
+            fullscreenImageHeight = message.getUnsignedIntegerAsLong(5).intValue();
+
             SparseArray<CommModule> modules = getService().getAllModules();
             for (int i = 0 ; i < modules.size(); i++)
                 modules.valueAt(i).pebbleAppOpened();
@@ -260,7 +269,6 @@ public class SystemModule extends CommModule
                 }
             };
         }
-
 
         PebbleCommunication communication = getService().getPebbleCommunication();
         communication.queueModulePriority(this);
@@ -328,6 +336,14 @@ public class SystemModule extends CommModule
     public UUID getCurrentRunningApp()
     {
         return currentRunningApp;
+    }
+
+    public Size getFullscreenImageSize()
+    {
+        if (fullscreenImageWidth == null || fullscreenImageHeight == null)
+            return new Size(FALLBACK_CALLER_IMAGE_WIDTH, FALLBACK_CALLER_IMAGE_HEIGHT);
+        else
+            return new Size(fullscreenImageWidth, fullscreenImageHeight);
     }
 
     public void openApp()

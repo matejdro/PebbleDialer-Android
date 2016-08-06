@@ -21,6 +21,7 @@ import com.matejdro.pebblecommons.pebble.PebbleImageToolkit;
 import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
 import com.matejdro.pebblecommons.pebble.PebbleUtil;
 import com.matejdro.pebblecommons.util.ContactUtils;
+import com.matejdro.pebblecommons.util.Size;
 import com.matejdro.pebblecommons.util.TextUtil;
 import com.matejdro.pebbledialer.callactions.AnswerCallAction;
 import com.matejdro.pebbledialer.callactions.AnswerCallWithSpeakerAction;
@@ -40,9 +41,6 @@ public class CallModule extends CommModule
 {
     public static final String INTENT_CALL_STATUS = "CallStatus";
     public static final String INTENT_ACTION_FROM_NOTIFICATION = "ActionFromNotification";
-
-    public static final int MAX_CALLER_IMAGE_WIDTH = 144 - 30;
-    public static final int MAX_CALLER_IMAGE_HEIGHT = 168 - 16;
 
     public static int MODULE_CALL = 1;
 
@@ -270,10 +268,11 @@ public class CallModule extends CommModule
                 if (photoUri != null && getService().getGlobalSettings().getBoolean("displayCallerImage", true))
                 {
                     try
-
                     {
+                        Size imageSize = SystemModule.get(getService()).getFullscreenImageSize();
+
                         callerImage = MediaStore.Images.Media.getBitmap(getService().getContentResolver(), Uri.parse(photoUri));
-                        callerImage = PebbleImageToolkit.resizePreservingRatio(callerImage, MAX_CALLER_IMAGE_WIDTH, MAX_CALLER_IMAGE_HEIGHT);
+                        callerImage = PebbleImageToolkit.resizeAndCrop(callerImage, imageSize.width, imageSize.height, true);
                     }
                     catch (IOException e)
                     {
