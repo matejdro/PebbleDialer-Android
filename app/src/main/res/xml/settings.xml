@@ -3,250 +3,250 @@
     android:title="Skip filtering contact groups"/>
     <Preference
         android:key="help"
-        android:title="Help and FAQ"/>
+        android:title="@string/setting_help_and_faq"/>
 
     <PreferenceCategory
         android:key="cat_dialer"
-        android:title="Dialer">
+        android:title="@string/setting_category_dialer">
         <Preference
             android:key="displayedGroups"
-            android:summary="Select which contact groups will be displayed on Pebble"
-            android:title="Displayed contact groups"/>
+            android:summary="@string/setting_displayed_groups"
+            android:title="@string/setting_displayed_groups_description"/>
         <CheckBoxPreference
-            android:title="Skip filtering in groups"
+            android:title="@string/setting_skip_group_filtering"
             android:key="skipGroupFiltering"
-            android:summary="Should dialer skip filtering when you pick group instead of all contacts" />
+            android:summary="@string/setting_skip_group_filtering_description" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="cat_call"
-        android:title="Call screen">
+        android:title="@string/setting_category_call_screen">
         <CheckBoxPreference
             android:key="popupOnIncoming"
-            android:title="Popup call notification on incoming call"
-            android:summary="Automatically display call notification on your Pebble when call comes. Disabling this effectively disables call notification, but you can still answer call or perform other actions by opening Dialer manually."
+            android:title="@string/setting_enable_incoming_popup"
+            android:summary="@string/setting_enable_incoming_popup_description"
             android:defaultValue="true"/>
         <CheckBoxPreference
             android:key="popupOnOutgoing"
-            android:title="Popup call notification on outgoing call"
-            android:summary="Automatically display call notification on your Pebble when you call someone. Even when disabled, you can still hangup call or perform other actions by opening Dialer manually."
+            android:title="@string/setting_enable_outgoing_popup"
+            android:summary="@string/setting_enable_outgoing_popup_description"
             android:defaultValue="true"/>
         <CheckBoxPreference
             android:key="closeToLastApp"
-            android:summary="When call ends, close to last used app on Pebble. NEEDS DEVELOPER CONNECTION ENABLED INSIDE PEBBLE APP!"
-            android:title="Close to last app"/>
+            android:summary="@string/setting_close_to_last_app_description"
+            android:title="@string/setting_close_to_last_app"/>
         <CheckBoxPreference
             android:key="rootMode"
-            android:summary="Check this if some in-call features (like answer or mic mute) do not work for you. NEEDS ROOT!"
-            android:title="Root mode"/>
+            android:summary="@string/setting_root_mode_description"
+            android:title="@string/setting_root_mode"/>
         <CheckBoxPreference
-            android:title="Turn on light on call"
+            android:title="@string/setting_light_screen_on_call"
             android:key="lightOnCallWindow"
-            android:summary="Should I turn backlight on when you receive a call?" />
+            android:summary="@string/setting_light_screen_on_call_descripton" />
         <CheckBoxPreference
             android:key="enableCallTimer"
-            android:summary="Show call timer when call is established. Disabling this can improve watch's battery life on longer calls."
-            android:title="Show call timer"
+            android:summary="@string/setting_call_timer_description"
+            android:title="@string/setting_call_timer"
             android:defaultValue="true"/>
         <CheckBoxPreference
-            android:title="Do not vibrate when charging"
+            android:title="@string/setting_no_vibrate_when_charging"
             android:key="dontVibrateWhenCharging"
             android:defaultValue="true"/>
         <CheckBoxPreference
-            android:title="Display caller image"
+            android:title="@string/setting_caller_image"
             android:key="displayCallerImage"
-            android:summary="Display image of the caller on the watch. Only for Pebble Time."
+            android:summary="@string/setting_caller_image_description"
             android:defaultValue="true"/>
         <CheckBoxPreference
-            android:title="Show caller name at the bottom"
+            android:title="@string/setting_caller_name_bottom"
             android:key="bottomCallerName"
-            android:summary="Display caller name at the bottom instead of in the center when image is displayed to not cover caller's face in the middle of the image."
+            android:summary="@string/setting_caller_name_bottom_description"
             android:defaultValue="true"/>
         <PreferenceScreen
             android:key="cat_buttons"
-            android:title="Call screen buttons"
-            android:summary="Set what buttons on Pebble do on call screen.">
+            android:title="@string/category_call_buttons"
+            android:summary="@string/category_call_buttons_description">
             <ListPreference
                 android:defaultValue="2"
                 android:entries="@array/actionsRingingNames"
                 android:entryValues="@array/actionsRingingValues"
                 android:key="callButtonRingUp"
-                android:summary="Action that will be performing when you press UP button on Pebble while there is incoming call."
-                android:title="UP button press while ringing"/>
+                android:summary="@string/button_ring_up_description"
+                android:title="@string/button_ring_up"/>
             <ListPreference
                 android:defaultValue="0"
                 android:entries="@array/actionsRingingNames"
                 android:entryValues="@array/actionsRingingValues"
                 android:key="callButtonRingSelect"
-                android:summary="Action that will be performing when you press SELECT button on Pebble while there is incoming call."
-                android:title="SELECT button press while ringing"/>
+                android:summary="@string/button_ring_select"
+                android:title="@string/button_ring_select_description"/>
             <ListPreference
                 android:defaultValue="1"
                 android:entries="@array/actionsRingingNames"
                 android:entryValues="@array/actionsRingingValues"
                 android:key="callButtonRingDown"
-                android:summary="Action that will be performing when you press DOWN button on Pebble while there is incoming call."
-                android:title="DOWN button press while ringing"/>
+                android:summary="@string/button_ring_down_description"
+                android:title="@string/button_ring_down"/>
             <ListPreference
                 android:defaultValue="999"
                 android:entries="@array/actionsRingingNames"
                 android:entryValues="@array/actionsRingingValues"
                 android:key="callButtonRingUpHold"
-                android:summary="Action that will be performing when you hold UP button on Pebble while there is incoming call."
-                android:title="UP button hold when ringing"/>
+                android:summary="@string/button_ring_up_hold_description"
+                android:title="@string/button_ring_up_hold"/>
             <ListPreference
                 android:defaultValue="5"
                 android:entries="@array/actionsRingingNames"
                 android:entryValues="@array/actionsRingingValues"
                 android:key="callButtonRingSelectHold"
-                android:summary="Action that will be performing when you hold SELECT button on Pebble while there is incoming call."
-                android:title="SELECT button hold when ringing"/>
+                android:summary="@string/button_ring_select_hold_description"
+                android:title="@string/button_ring_select_hold"/>
             <ListPreference
                 android:defaultValue="6"
                 android:entries="@array/actionsRingingNames"
                 android:entryValues="@array/actionsRingingValues"
                 android:key="callButtonRingDownHold"
-                android:summary="Action that will be performing when you hold DOWN button on Pebble while there is incoming call."
-                android:title="DOWN button hold when ringing"/>
+                android:summary="@string/button_ring_down_hold_description"
+                android:title="@string/button_ring_down_hold"/>
             <ListPreference
                 android:defaultValue="2"
                 android:entries="@array/actionsRingingNames"
                 android:entryValues="@array/actionsRingingValues"
                 android:key="callButtonRingShake"
-                android:summary="Action that will be performing when you shake your Pebble while there is incoming call."
-                android:title="Shake when ringing"/>
+                android:summary="@string/button_ring_shake_description"
+                android:title="@string/button_ring_shake"/>
             <ListPreference
                 android:defaultValue="3"
                 android:entries="@array/actionsCallEstablishedNames"
                 android:entryValues="@array/actionsCallEstablishedValues"
                 android:key="callButtonEstablishedUp"
-                android:summary="Action that will be performing when you press UP button on Pebble while there is call established."
-                android:title="UP button press while call is established"/>
+                android:summary="@string/button_established_up_description"
+                android:title="@string/button_established_up"/>
             <ListPreference
                 android:defaultValue="4"
                 android:entries="@array/actionsCallEstablishedNames"
                 android:entryValues="@array/actionsCallEstablishedValues"
                 android:key="callButtonEstablishedSelect"
-                android:summary="Action that will be performing when you press SELECT button on Pebble while there is call established."
-                android:title="SELECT button press while call is established"/>
+                android:summary="@string/button_established_select_description"
+                android:title="@string/button_established_select"/>
             <ListPreference
                 android:defaultValue="1"
                 android:entries="@array/actionsCallEstablishedNames"
                 android:entryValues="@array/actionsCallEstablishedValues"
                 android:key="callButtonEstablishedDown"
-                android:summary="Action that will be performing when you press DOWN button on Pebble while there is call established."
-                android:title="DOWN button press while call is established"/>
+                android:summary="@string/button_established_down_description"
+                android:title="@string/button_established_down"/>
             <ListPreference
                 android:defaultValue="999"
                 android:entries="@array/actionsCallEstablishedNames"
                 android:entryValues="@array/actionsCallEstablishedValues"
                 android:key="callButtonEstablishedUpHold"
-                android:summary="Action that will be performing when you hold UP button on Pebble while there is call established."
-                android:title="UP button hold when call is established"/>
+                android:summary="@string/button_established_up_hold_description"
+                android:title="@string/button_established_up_hold"/>
             <ListPreference
                 android:defaultValue="999"
                 android:entries="@array/actionsCallEstablishedNames"
                 android:entryValues="@array/actionsCallEstablishedValues"
                 android:key="callButtonEstablishedSelectHold"
-                android:summary="Action that will be performing when you hold SELECT button on Pebble while there is call established."
-                android:title="SELECT button hold when call is established"/>
+                android:summary="@string/button_established_select_hold_description"
+                android:title="@string/button_established_select_hold"/>
             <ListPreference
                 android:defaultValue="999"
                 android:entries="@array/actionsCallEstablishedNames"
                 android:entryValues="@array/actionsCallEstablishedValues"
                 android:key="callButtonEstablishedDownHold"
-                android:summary="Action that will be performing when you hold DOWN button on Pebble while there is call established."
-                android:title="DOWN button hold when call is established"/>
+                android:summary="@string/button_established_down_hold_description"
+                android:title="@string/button_established_down_hold"/>
             <ListPreference
                 android:defaultValue="999"
                 android:entries="@array/actionsCallEstablishedNames"
                 android:entryValues="@array/actionsCallEstablishedValues"
                 android:key="callButtonEstablishedShake"
-                android:summary="Action that will be performing when you shake your Pebble while there is call established."
-                android:title="Shake when call is established"/>
+                android:summary="@string/button_established_shake_description"
+                android:title="@string/button_established_shake"/>
         </PreferenceScreen>
         <PreferenceScreen
             android:key="cat_fonts"
-            android:title="Fonts">
+            android:title="@string/category_fonts">
             <ListPreference
                 android:defaultValue="2"
                 android:entries="@array/pebbleFonts"
                 android:entryValues="@array/fontValues"
                 android:key="fontTimer"
-                android:title="Timer font"/>
+                android:title="@string/font_timer"/>
             <ListPreference
                 android:defaultValue="7"
                 android:entries="@array/pebbleFonts"
                 android:entryValues="@array/fontValues"
                 android:key="fontName"
-                android:title="Caller name font"/>
+                android:title="@string/font_caller_name"/>
             <ListPreference
                 android:defaultValue="2"
                 android:entries="@array/pebbleFonts"
                 android:entryValues="@array/fontValues"
                 android:key="fontNumberType"
-                android:title="Caller number type font"/>
+                android:title="@string/font_number_type"/>
             <ListPreference
                 android:defaultValue="3"
                 android:entries="@array/pebbleFonts"
                 android:entryValues="@array/fontValues"
                 android:key="fontNumber"
-                android:title="Caller number font"/>
+                android:title="@string/font_number"/>
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Decline with SMS">
+        android:title="@string/category_sms">
         <Preference android:key="smsCannedResponsesDialog"
-                    android:title="Canned Responses"
-                    android:summary="Here you can define list of canned responses that you can send as SMS when declining a call."/>
+                    android:title="@string/setting_canned_responses"
+                    android:summary="@string/setting_canned_responses_description"/>
         <CheckBoxPreference android:key="timeVoice"
-                            android:title="Enable Pebble Time voice reply"
+                            android:title="@string/setting_time_voice"
                             android:defaultValue="true"
-                            android:summary="When this setting is enabled, you can dictate SMS using microphone on Pebble Time (does not work for regular Pebble)" />
+                            android:summary="@string/setting_time_voice_description" />
         <CheckBoxPreference android:key="phoneVoice"
-                            android:title="Enable phone voice reply"
+                            android:title="@string/setting_phone_voice"
                             android:defaultValue="true"
-                            android:summary="When this setting is enabled, you can dictate SMS using microphone on the phone or one connected to the phone (BT headset for example)." />
+                            android:summary="@string/setting_phone_voice_description" />
         <CheckBoxPreference android:key="enableSMSWriting"
-                            android:title="Enable SMS Writing"
+                            android:title="@string/setting_sms_writing"
                             android:defaultValue="true"
-                            android:summary="When this setting is enabled, you can write SMS from scratch on the Pebble." />
+                            android:summary="@string/setting_sms_writing_description" />
         <Preference android:key="smsWritingPhrasesDialog"
-                    android:title="Writing Phrases"
-                    android:summary="When writing messages on your Pebble you can type letter-by-letter or you can paste whole phrases in. Here you define which phrases will be available to you (You can define up to 19 phrases. Every phrase is limited to 17 characters)." />
+                    android:title="@string/setting_writing_phrases"
+                    android:summary="@string/setting_writing_phrases_description" />
 
 
     </PreferenceCategory>
     <PreferenceCategory
         android:key="cat_notify"
-        android:title="Notification answer">
+        android:title="@string/category_notification_answer">
         <Preference
             android:key="enableServiceButton"
-            android:summary="Notification answer function allows you to gain rootless answer/decline ability by hooking into call notification. Use help option above for more info."
-            android:title="Enable notification service"/>
+            android:summary="@string/setting_notification_service_button_description"
+            android:title="@string/setting_notification_service_button"/>
         <EditTextPreference
             android:defaultValue="Answer"
             android:key="callNotificationAnswerButton"
-            android:title="Answer button text"/>
+            android:title="@string/setting_answer_button"/>
         <EditTextPreference
             android:defaultValue="Dismiss"
             android:key="callNotificationDeclineButton"
-            android:title="Decline button text"/>
+            android:title="@string/setting_decline_button"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="About">
+    <PreferenceCategory android:title="@string/category_about">
         <Preference
             android:key="version"
-            android:title="Installed version"/>
+            android:title="@string/setting_installed_version"/>
         <CheckBoxPreference
             android:key="enableLogWriter"
-            android:summary="Enable logging to PebbleDialer\\log.txt. Use when debugging."
-            android:title="Enable debug logging"/>
+            android:summary="@string/setting_log_writer_description"
+            android:title="@string/setting_log_writer"/>
         <Preference
             android:key="license"
-            android:title="Open source Licenses"/>
+            android:title="@string/setting_open_source_licenses"/>
         <Preference
             android:key="donateButton"
-            android:summary="Buy me a Coke if you really like my app!"
-            android:title="Donate"/>
+            android:summary="@string/setting_donate_description"
+            android:title="@string/setting_donate"/>
     </PreferenceCategory>
 </PreferenceScreen>
