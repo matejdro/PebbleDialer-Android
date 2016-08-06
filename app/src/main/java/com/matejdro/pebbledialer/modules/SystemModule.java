@@ -115,6 +115,7 @@ public class SystemModule extends CommModule
         flags |= (byte) (getService().getGlobalSettings().getBoolean("skipGroupFiltering", false) ? 0x04 : 0);
         flags |= (byte) (getService().getGlobalSettings().getBoolean("lightOnCallWindow", false) ? 0x08 : 0);
         flags |= (byte) (getService().getGlobalSettings().getBoolean("dontVibrateWhenCharging", true) ? 0x10 : 0);
+        flags |= (byte) (getService().getGlobalSettings().getBoolean("enableCallTimer", true) ? 0x20 : 0);
 
         configBytes[2] = flags;
         configBytes[3] = (byte) pickedContactGroups.size();

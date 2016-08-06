@@ -43,6 +43,11 @@
             android:key="lightOnCallWindow"
             android:summary="Should I turn backlight on when you receive a call?" />
         <CheckBoxPreference
+            android:key="enableCallTimer"
+            android:summary="Show call timer when call is established. Disabling this can improve watch's battery life on longer calls."
+            android:title="Show call timer"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
             android:title="Do not vibrate when charging"
             android:key="dontVibrateWhenCharging"
             android:defaultValue="true"/>
