@@ -51,6 +51,11 @@
             android:key="displayCallerImage"
             android:summary="Display image of the caller on the watch. Only for Pebble Time."
             android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:title="Show caller name at the bottom"
+            android:key="bottomCallerName"
+            android:summary="Display caller name at the bottom instead of in the center when image is displayed to not cover caller's face in the middle of the image."
+            android:defaultValue="true"/>
         <PreferenceScreen
             android:key="cat_buttons"
             android:title="Call screen buttons"

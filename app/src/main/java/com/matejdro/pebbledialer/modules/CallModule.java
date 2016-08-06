@@ -323,17 +323,24 @@ public class CallModule extends CommModule
         data.addUint8(0, (byte) 1);
         data.addUint8(1, (byte) 0);
 
+        boolean nameAtBottomWhenImageDisplayed = callerImage != null && getService().getGlobalSettings().getBoolean("bottomCallerName", true);
+
         if (name != null)
         {
             data.addString(2, TextUtil.prepareString(type, 30));
-            callerNameUpdateRequired = true;
+            data.addString(3, TextUtil.prepareString(number, 30));
+        }
+        else
+        {
+            data.addString(2, "");
+            data.addString(3, "");
         }
 
-        data.addString(3, TextUtil.prepareString(number, 30));
+
 
         byte[] parameters = new byte[6];
         parameters[0] = (byte) (callState == CallState.ESTABLISHED ? 1 : 0);
-        parameters[1] = (byte) (name != null ? 1 : 0);
+        parameters[1] = (byte) (nameAtBottomWhenImageDisplayed ? 1 : 0);
         parameters[5] = (byte) (vibrating ? 1 : 0);
 
         parameters[2] = (byte) getCallAction(getUserSelectedAction(getExtendedButtonId("Up"))).getIcon();
@@ -369,6 +376,7 @@ public class CallModule extends CommModule
         getService().getPebbleCommunication().sendToPebble(data);
         Timber.d("Sent Call update packet...");
 
+        callerNameUpdateRequired = true;
         updateRequired = false;
     }
 
@@ -380,7 +388,7 @@ public class CallModule extends CommModule
         data.addUint8(1, (byte) 1);
 
         String name = TextUtil.prepareString(this.name, 100);
-        data.addString(2, name == null ? "" : name);
+        data.addString(2, name == null ? number : name);
 
         getService().getPebbleCommunication().sendToPebble(data);
         Timber.d("Sent Caller name packet...");

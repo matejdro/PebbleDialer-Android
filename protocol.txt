@@ -134,7 +134,7 @@ Phone --> Pebble
 			3 = Number (cstring - up to 30 characters)
 			4 = Various flags (byte array, 4 bytes)
 				[0] = If in call (0 = incoming call, 1 = call connected)
-				[1] = Is contact name known. If this is 0, contact number will be displayed instead of its name in the center.
+				[1] = Name display position (0 = center, 1 = bottom (replaces number)
 				[2] = Top action bar icon ID
 				[3] = Middle action bar icon If
 				[4] = Bottom action bar icon ID
