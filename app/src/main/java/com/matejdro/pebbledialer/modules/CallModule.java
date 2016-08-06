@@ -49,6 +49,7 @@ public class CallModule extends CommModule
     private SparseArray<CallAction> actions = new SparseArray<CallAction>();
 
     private boolean updateRequired;
+    private boolean identityUpdateRequired;
     private boolean callerNameUpdateRequired;
     private int callerImageNextByte = -1;
 
@@ -187,8 +188,6 @@ public class CallModule extends CommModule
         number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
         vibrating = true;
 
-        updateRequired = true;
-
         updateNumberData();
         updatePebble();
 
@@ -228,6 +227,7 @@ public class CallModule extends CommModule
     private void updateNumberData()
     {
         Timber.d("Updating number...");
+        identityUpdateRequired = true;
 
         callerImage = null;
 
@@ -336,12 +336,11 @@ public class CallModule extends CommModule
             data.addString(3, "");
         }
 
-
-
-        byte[] parameters = new byte[6];
+        byte[] parameters = new byte[7];
         parameters[0] = (byte) (callState == CallState.ESTABLISHED ? 1 : 0);
         parameters[1] = (byte) (nameAtBottomWhenImageDisplayed ? 1 : 0);
         parameters[5] = (byte) (vibrating ? 1 : 0);
+        parameters[6] = (byte) (identityUpdateRequired ? 1 : 0);
 
         parameters[2] = (byte) getCallAction(getUserSelectedAction(getExtendedButtonId("Up"))).getIcon();
         parameters[3] = (byte) getCallAction(getUserSelectedAction(getExtendedButtonId("Select"))).getIcon();
@@ -355,7 +354,7 @@ public class CallModule extends CommModule
         data.addUint8(999, (byte) 1);
 
         callerImageNextByte = -1;
-        if (getService().getPebbleCommunication().getConnectedWatchCapabilities().hasColorScreen())
+        if (identityUpdateRequired && getService().getPebbleCommunication().getConnectedWatchCapabilities().hasColorScreen())
         {
             int imageSize = 0;
 
@@ -376,8 +375,9 @@ public class CallModule extends CommModule
         getService().getPebbleCommunication().sendToPebble(data);
         Timber.d("Sent Call update packet...");
 
-        callerNameUpdateRequired = true;
+        callerNameUpdateRequired = identityUpdateRequired;
         updateRequired = false;
+        identityUpdateRequired = false;
     }
 
     private void sendCallerName()
@@ -455,6 +455,7 @@ public class CallModule extends CommModule
     public void pebbleAppOpened() {
         if (callState != CallState.NO_CALL)
         {
+            identityUpdateRequired = true;
             updateRequired = true;
 
             PebbleCommunication communication = getService().getPebbleCommunication();

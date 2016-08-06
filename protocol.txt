@@ -140,6 +140,8 @@ Phone --> Pebble
 				[3] = Middle action bar icon If
 				[4] = Bottom action bar icon ID
 				[5] = Should I vibrate on incoming call screen (1 = yes, 0 = no)
+				[6] = Should I prepare to update caller image (1 = yes, 0 = no)
+
 			6 = Elapsed seconds. Only sent when in call, not when ringing. (uint16)
 			7 = Size of the caller image in bytes (only for color watches. If value is 0, no image will be displayed. uint16).
             
