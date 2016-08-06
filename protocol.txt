@@ -109,6 +109,7 @@ Phone --> Pebble
                         Fourth bit (0x08) = Should I turn on backlight when call window loads	
                         Fifth bit (0x10) = Should I disable vibration when Pebble is charging
 						Sixth bit (0x20) = Enable call timer
+						Seventh bit (0x40) = Enable outgoing call popup
 				[3] = Number of contact groups displayed in the menu
 				[4] = Timer font (0-17)
 				[5] = Calee name font (0-17)
