@@ -7,4 +7,4 @@ See http://forums.getpebble.com/discussion/5767/android-pebbledialer-new-call-co
 
 ## Building
 
-To build this project properly, you will also need [PebbleAndroidCommons](https://github.com/matejdro/PebbleAndroidCommons) directory next to PebbleDialer one. Latest release at this moment (2.57) requires [version r8](https://github.com/matejdro/PebbleAndroidCommons/tree/r8).  Then you just open PebbleDialer directory with Android Studio and it should automatically resolve all dependencies.
+To build this project, just pull the repo and open it in Android Studio. If it starts complaining about missing `PebbleAndroidCommons`, make sure you also pulled the submodules.
