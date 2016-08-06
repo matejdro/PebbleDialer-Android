@@ -24,7 +24,8 @@
         android:name=".PebbleDialerApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="Dialer for Pebble" >
+        android:label="Dialer for Pebble"
+        android:theme="@style/AppTheme">
         <receiver android:name=".CallStatusReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
