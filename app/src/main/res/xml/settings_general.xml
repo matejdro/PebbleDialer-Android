@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">/>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">/>
     <PreferenceCategory
         android:key="cat_dialer"
         android:title="@string/setting_category_dialer">
@@ -37,13 +38,18 @@
     <PreferenceCategory
         android:key="cat_notify"
         android:title="@string/category_notification_answer">
+        <Preference
+            app:summary="@string/notification_answer_category_description"
+            />
         <EditTextPreference
             android:defaultValue="Answer"
             android:key="callNotificationAnswerButton"
-            android:title="@string/setting_answer_button"/>
+            android:title="@string/setting_answer_button"
+            android:summary="@string/setting_answer_button_description"/>
         <EditTextPreference
             android:defaultValue="Dismiss"
             android:key="callNotificationDeclineButton"
-            android:title="@string/setting_decline_button"/>
+            android:title="@string/setting_decline_button"
+            android:summary="@string/setting_decline_button_description"/>
     </PreferenceCategory>
 </PreferenceScreen>

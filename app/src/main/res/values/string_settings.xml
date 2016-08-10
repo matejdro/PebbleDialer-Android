@@ -70,10 +70,13 @@
     <string name="setting_sms_writing">Enable SMS Writing</string>
     <string name="setting_sms_writing_description">When this setting is enabled, you can write SMS from scratch on the Pebble.</string>
     <string name="category_notification_answer">Notification answer</string>
+    <string name="notification_answer_category_description">Set below settings if answering calls from the watch does not work.</string>
     <string name="setting_notification_service_button">Enable notification service</string>
     <string name="setting_notification_service_button_description">Notification answer function allows you to gain rootless answer/decline ability by hooking into call notification. Use help option above for more info.</string>
     <string name="setting_answer_button">Answer button text</string>
+    <string name="setting_answer_button_description">Set that to the exact text of the notification button that you press to answer the call on the phone (Usually \"Answer\" or your language\'s equivalent).</string>
     <string name="setting_decline_button">Decline button text</string>
+    <string name="setting_decline_button_description">Set that to the exact text of the notification button that you press to decline the call on the phone (Usually \"Decline\" or your language\'s equivalent).</string>
     <string name="setting_log_writer_description">Enable logging to PebbleDialer\\log.txt. Use when debugging.</string>
     <string name="setting_open_source_licenses">Open source Licenses</string>
     <string name="setting_installed_version">Installed version</string>
