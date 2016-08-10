@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.matejdro.pebbledialer.R;
-import com.matejdro.pebbledialer.notifications.AccesibilityNotificationListener;
 import com.matejdro.pebbledialer.notifications.JellybeanNotificationListener;
 
 public class HomeFragment extends Fragment
@@ -26,8 +25,8 @@ public class HomeFragment extends Fragment
     {
         super.onResume();
 
-        boolean serviceActive = JellybeanNotificationListener.isActive() || AccesibilityNotificationListener.isActive();
-        notificationServiceWarningCard.setVisibility(serviceActive ? View.GONE : View.VISIBLE);
+        boolean hideServiceWarning = JellybeanNotificationListener.isActive() || Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2;
+        notificationServiceWarningCard.setVisibility(hideServiceWarning ? View.GONE : View.VISIBLE);
     }
 
     @Nullable
