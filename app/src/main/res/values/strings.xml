@@ -32,7 +32,7 @@
     <string name="filtering_tip_name">Contact filtering</string>
     <string name="filtering_tip_description">Before you start scrolling through your contact list, you will be put into filtering mode first. Filtering allows you to quickly find wanted contact without long scrolling. \n\nWhen in filtering mode, simply press buttons corresponding to the letters:</string>
     <string name="filtering_tip_example">To filter for \'Michael\' for example, you would press SELECT, SELECT, UP, SELECT, UP, UP, SELECT.</string>
-    <string name="tip_filtering_finish">When you are finished with filtering hold down SELECT button to switch into scrolling mode.</string>
+    <string name="tip_filtering_finish">When you are finished with filtering, hold down SELECT button to switch into scrolling mode.</string>
     <string name="tip_call_history_title">Open contact from call history</string>
     <string name="tip_call_history_body">When scrolling through call history, you can call the number back by pressing SELECT button or access all numbers of this contact by holding SELECT button</string>
     <string name="tip_disable_pebble_notification_title">Disable \'Phone Calls\' in Pebble Time app</string>
