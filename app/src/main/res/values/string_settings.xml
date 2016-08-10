@@ -63,12 +63,12 @@
     <string name="setting_canned_responses_description">Here you can define list of canned responses that you can send as SMS when declining a call.</string>
     <string name="setting_writing_phrases">Writing Phrases</string>
     <string name="setting_writing_phrases_description">When writing messages on your Pebble you can type letter-by-letter or you can paste whole phrases in. Here you define which phrases will be available to you (You can define up to 19 phrases. Every phrase is limited to 17 characters).</string>
-    <string name="setting_time_voice">Enable Pebble Time voice reply</string>
-    <string name="setting_time_voice_description">When this setting is enabled, you can dictate SMS using microphone on Pebble Time (does not work for regular Pebble)</string>
+    <string name="setting_time_voice">Enable watch voice reply</string>
+    <string name="setting_time_voice_description">When this setting is enabled, you can dictate SMS using microphone on your watch (does not work for original Pebble or Pebble Steel due to the lack of the on-watch microphone)</string>
     <string name="setting_phone_voice">Enable phone voice reply</string>
-    <string name="setting_phone_voice_description">When this setting is enabled, you can dictate SMS using microphone on the phone or one connected to the phone (BT headset for example).</string>
+    <string name="setting_phone_voice_description">When this setting is enabled, you can dictate SMS using microphone on the phone or one connected to the phone (for example Bluetooth headset).</string>
     <string name="setting_sms_writing">Enable SMS Writing</string>
-    <string name="setting_sms_writing_description">When this setting is enabled, you can write SMS from scratch on the Pebble.</string>
+    <string name="setting_sms_writing_description">When this setting is enabled, you can write SMS from scratch on the Pebble. See \"Writing SMS from the watch\" on the tips screen for more info.</string>
     <string name="category_notification_answer">Notification answer</string>
     <string name="notification_answer_category_description">Set below settings if answering calls from the watch does not work.</string>
     <string name="setting_notification_service_button">Enable notification service</string>
