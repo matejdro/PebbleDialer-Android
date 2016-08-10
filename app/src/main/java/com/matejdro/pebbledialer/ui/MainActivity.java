@@ -21,6 +21,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.matejdro.pebblecommons.util.LogWriter;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    WatchappHandler.install(MainActivity.this, settings.edit());
+                    WatchappHandler.openPebbleStore(MainActivity.this);
                 }
             }).show();
         }
@@ -105,6 +106,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     {
         super.onPostCreate(savedInstanceState);
         actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if (item.getItemId() == R.id.pebble_store)
+        {
+            WatchappHandler.openPebbleStore(this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

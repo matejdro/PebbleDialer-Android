@@ -39,7 +39,7 @@ public class WatchappHandler extends BroadcastReceiver {
         return firstRun;
 	}
 
-	public static void install(Context context, Editor editor)
+	public static void openPebbleStore(Context context)
 	{
         Intent intent = new Intent(Intent.ACTION_VIEW);
 
