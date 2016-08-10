@@ -15,7 +15,7 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:key="cat_call"
-        android:title="@string/setting_category_call_screen">
+        android:title="@string/setting_category_call_popup">
         <CheckBoxPreference
             android:key="popupOnIncoming"
             android:title="@string/setting_enable_incoming_popup"
