@@ -37,10 +37,6 @@
     <PreferenceCategory
         android:key="cat_notify"
         android:title="@string/category_notification_answer">
-        <Preference
-            android:key="enableServiceButton"
-            android:summary="@string/setting_notification_service_button_description"
-            android:title="@string/setting_notification_service_button"/>
         <EditTextPreference
             android:defaultValue="Answer"
             android:key="callNotificationAnswerButton"

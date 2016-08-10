@@ -57,25 +57,6 @@ public class GeneralSettingsFragment extends CustomStoragePreferenceFragment
                 return true;
             }
         });
-
-        findPreference("enableServiceButton").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-        {
-            @Override
-            public boolean onPreferenceClick(Preference preference)
-            {
-                try
-                {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                        startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
-                    else
-                        startActivity(new Intent("android.settings.ACTION_ACCESSIBILITY_SETTINGS"));
-                } catch (ActivityNotFoundException e)
-                {
-                    Toast.makeText(getContext(), getString(R.string.openSettingsError), Toast.LENGTH_LONG).show();
-                }
-                return true;
-            }
-        });
     }
 
     private static boolean hasRoot()
