@@ -9,15 +9,27 @@ import timber.log.Timber;
 
 @TargetApi(value = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class JellybeanNotificationListener extends NotificationListenerService {
+	private static boolean active = false;
+
 	@Override
 	public void onDestroy() {
         Timber.d("Notification Listener stopped...");
+		super.onDestroy();
+
+		active = false;
 	}
 
 	@Override
 	public void onCreate() {
         Timber.d("Creating Notification Listener...");
         super.onCreate();
+
+		active = true;
+	}
+
+	public static boolean isActive()
+	{
+		return active;
 	}
 
 	@Override

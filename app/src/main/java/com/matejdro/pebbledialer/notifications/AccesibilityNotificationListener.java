@@ -9,14 +9,23 @@ import timber.log.Timber;
 
 public class AccesibilityNotificationListener extends AccessibilityService {
 
+	private static boolean active = false;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		active = true;
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		active = false;
+	}
+
+	public static boolean isActive()
+	{
+		return active;
 	}
 
 	@Override

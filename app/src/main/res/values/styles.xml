@@ -36,4 +36,9 @@
         <item name="android:paddingBottom">10dp</item>
     </style>
 
+    <style name="TipCard">
+        <item name="cardElevation">3dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
 </resources>

@@ -26,6 +26,23 @@
     <string name="general_settings">General settings</string>
     <string name="messaging">Messaging</string>
     <string name="about">About</string>
-    <string name="home">Home</string>
+    <string name="home">Tips and tricks</string>
+    <string name="notification_service_is_not_running">Notification service is not running</string>
+    <string name="notification_service_not_running_description">Some features (such as call answering) may not be working</string>
+    <string name="tap_card_to_fix_it">Tap this card to fix it</string>
+    <string name="filtering_tip_name">Contact filtering</string>
+    <string name="filtering_tip_description">Before you start scrolling through your contact list, you will be put into filtering mode first. Filtering allows you to quickly find wanted contact without long scrolling. \n\nWhen in filtering mode, simply press buttons corresponding to the letters:</string>
+    <string name="filtering_tip_example">To filter for \'Michael\' for example, you would press SELECT, SELECT, UP, SELECT, UP, UP, SELECT.</string>
+    <string name="tip_filtering_finish">When you are finished with filtering hold down SELECT button to switch into scrolling mode.</string>
+    <string name="tip_call_history_title">Open contact from call history</string>
+    <string name="tip_call_history_body">When scrolling through call history, you can call the number back by pressing SELECT button or access all numbers of this contact by holding SELECT button</string>
+    <string name="tip_disable_pebble_notification_title">Disable \'Phone Calls\' in Pebble Time app</string>
+    <string name="tip_disable_pebble_notification_body">In order to not get duplicate call notifications, you must disable native call notifications.\n\nIn Pebble Time app, slide over to notifications tab (bell icon) and uncheck \'Phone Calls\'.</string>
+    <string name="tip_tertiary_text_title">Writing SMS from the watch</string>
+    <string name="tip_tertiary_text_body">Tap on this card to open Tertiary Text manual.</string>
+    <string name="tip_faq_title">Frequently Asked Questions</string>
+    <string name="tip_faq_body">Tap on this card to open full manual, including list of other Frequently Asked Questions.</string>
+    <string name="notification_service_enabling_instructions">Enable Dialer for Pebble on the list</string>
+    <string name="error_no_web_browser">Could not open the webpage. Do you have any web browser installed?</string>
 
 </resources>

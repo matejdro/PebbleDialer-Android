@@ -127,6 +127,16 @@ public class ContactsModule extends CommModule
 		ids.clear();
 		idSet.clear();
 
+        names.add("Contact 1");
+        names.add("Contact 2");
+        names.add("Contact 3");
+        names.add("Contact 4");
+        names.add("Contact 5");
+        names.add("Contact 6");
+        names.add("Contact 7");
+        names.add("Contact 8");
+
+
         if (cursor != null)
         {
             while (cursor.moveToNext())
