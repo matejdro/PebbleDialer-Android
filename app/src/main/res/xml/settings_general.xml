@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">/>
-    <Preference
-        android:key="help"
-        android:title="@string/setting_help_and_faq"/>
-
     <PreferenceCategory
         android:key="cat_dialer"
         android:title="@string/setting_category_dialer">

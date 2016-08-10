@@ -82,11 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }).show();
         }
-        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && isFirstLollipopRun(settings))
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.lollipopNotice).setPositiveButton("OK", null).show();
-        }
     }
 
     @Override
@@ -211,18 +206,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (!wantedPermissions.isEmpty())
             ActivityCompat.requestPermissions(this, wantedPermissions.toArray(new String[wantedPermissions.size()]), 0);
-    }
-
-    public static boolean isFirstLollipopRun(SharedPreferences settings)
-    {
-        boolean firstRun = settings.getBoolean("FirstLollipopRun", true);
-
-        if (firstRun)
-        {
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("FirstLollipopRun", false);
-            editor.apply();
-        }
-        return firstRun;
     }
 }
