@@ -59,7 +59,6 @@
     <string name="font_caller_name">Caller name font</string>
     <string name="font_number_type">Caller number type font</string>
     <string name="font_number">Caller number font</string>
-    <string name="category_sms">Decline with SMS</string>
     <string name="setting_canned_responses">Canned Responses</string>
     <string name="setting_canned_responses_description">Here you can define list of canned responses that you can send as SMS when declining a call.</string>
     <string name="setting_writing_phrases">Writing Phrases</string>
@@ -75,7 +74,6 @@
     <string name="setting_notification_service_button_description">Notification answer function allows you to gain rootless answer/decline ability by hooking into call notification. Use help option above for more info.</string>
     <string name="setting_answer_button">Answer button text</string>
     <string name="setting_decline_button">Decline button text</string>
-    <string name="category_about">About</string>
     <string name="setting_log_writer_description">Enable logging to PebbleDialer\\log.txt. Use when debugging.</string>
     <string name="setting_open_source_licenses">Open source Licenses</string>
     <string name="setting_installed_version">Installed version</string>

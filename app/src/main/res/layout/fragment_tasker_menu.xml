@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:padding="10dp">
+
+    <Button
+        android:id="@+id/general_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/general_settings"
+        android:drawableLeft="@drawable/ic_general_settings_black"
+        android:drawableStart="@drawable/ic_general_settings_black"
+        android:drawablePadding="10dp"
+        />
+
+    <Button
+        android:id="@+id/customize_callscreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/customize_call_screen"
+        android:drawableLeft="@drawable/ic_customize_black"
+        android:drawableStart="@drawable/ic_customize_black"
+        android:drawablePadding="10dp"
+        />
+
+    <Button
+        android:id="@+id/sms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/messaging"
+        android:drawableLeft="@drawable/ic_messages_black"
+        android:drawableStart="@drawable/ic_messages_black"
+        android:drawablePadding="10dp"
+        />
+
+</LinearLayout>

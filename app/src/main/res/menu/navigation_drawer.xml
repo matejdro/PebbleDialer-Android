@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group
+        android:id="@+id/home_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:title="@string/home"
+            android:icon="@drawable/ic_home"
+            android:checked="false"/>
+    </group>
+
+
+    <group
+        android:id="@+id/group"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/general_settings"
+            android:title="@string/general_settings"
+            android:icon="@drawable/ic_general_settings"
+            android:checked="false"/>
+
+        <item
+            android:id="@+id/customize_callscreen"
+            android:title="@string/customize_call_screen"
+            android:icon="@drawable/ic_customize"
+            android:checked="false"/>
+
+        <item
+            android:id="@+id/sms"
+            android:title="@string/messaging"
+            android:icon="@drawable/ic_messages"
+            android:checked="false"/>
+
+    </group>
+
+    <group
+        android:id="@+id/about_group"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/about"
+            android:title="@string/about"
+            android:icon="@drawable/ic_about"
+            android:checked="false"/>
+    </group>
+</menu>

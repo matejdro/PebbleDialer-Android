@@ -60,9 +60,11 @@
         </service>
 
         <activity android:name=".ui.SettingsActivity" >
+        </activity>
+
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -70,7 +72,8 @@
         <activity
             android:name=".tasker.TaskerSettingsActivity"
             android:exported="true"
-            android:label="@string/tasker_change_settings_long" >
+            android:label="@string/tasker_change_settings_long"
+            android:theme="@style/AppTheme.ActionBar">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
             </intent-filter>

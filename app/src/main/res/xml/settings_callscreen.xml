@@ -1,43 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    android:title="Skip filtering contact groups"/>
-    <Preference
-        android:key="help"
-        android:title="@string/setting_help_and_faq"/>
-
-    <PreferenceCategory
-        android:key="cat_dialer"
-        android:title="@string/setting_category_dialer">
-        <Preference
-            android:key="displayedGroups"
-            android:summary="@string/setting_displayed_groups"
-            android:title="@string/setting_displayed_groups_description"/>
-        <CheckBoxPreference
-            android:title="@string/setting_skip_group_filtering"
-            android:key="skipGroupFiltering"
-            android:summary="@string/setting_skip_group_filtering_description" />
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:key="cat_call"
-        android:title="@string/setting_category_call_screen">
-        <CheckBoxPreference
-            android:key="popupOnIncoming"
-            android:title="@string/setting_enable_incoming_popup"
-            android:summary="@string/setting_enable_incoming_popup_description"
-            android:defaultValue="true"/>
-        <CheckBoxPreference
-            android:key="popupOnOutgoing"
-            android:title="@string/setting_enable_outgoing_popup"
-            android:summary="@string/setting_enable_outgoing_popup_description"
-            android:defaultValue="true"/>
-        <CheckBoxPreference
-            android:key="closeToLastApp"
-            android:summary="@string/setting_close_to_last_app_description"
-            android:title="@string/setting_close_to_last_app"/>
-        <CheckBoxPreference
-            android:key="rootMode"
-            android:summary="@string/setting_root_mode_description"
-            android:title="@string/setting_root_mode"/>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">/>
         <CheckBoxPreference
             android:title="@string/setting_light_screen_on_call"
             android:key="lightOnCallWindow"
@@ -192,61 +154,4 @@
                 android:key="fontNumber"
                 android:title="@string/font_number"/>
         </PreferenceScreen>
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="@string/category_sms">
-        <Preference android:key="smsCannedResponsesDialog"
-                    android:title="@string/setting_canned_responses"
-                    android:summary="@string/setting_canned_responses_description"/>
-        <CheckBoxPreference android:key="timeVoice"
-                            android:title="@string/setting_time_voice"
-                            android:defaultValue="true"
-                            android:summary="@string/setting_time_voice_description" />
-        <CheckBoxPreference android:key="phoneVoice"
-                            android:title="@string/setting_phone_voice"
-                            android:defaultValue="true"
-                            android:summary="@string/setting_phone_voice_description" />
-        <CheckBoxPreference android:key="enableSMSWriting"
-                            android:title="@string/setting_sms_writing"
-                            android:defaultValue="true"
-                            android:summary="@string/setting_sms_writing_description" />
-        <Preference android:key="smsWritingPhrasesDialog"
-                    android:title="@string/setting_writing_phrases"
-                    android:summary="@string/setting_writing_phrases_description" />
-
-
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:key="cat_notify"
-        android:title="@string/category_notification_answer">
-        <Preference
-            android:key="enableServiceButton"
-            android:summary="@string/setting_notification_service_button_description"
-            android:title="@string/setting_notification_service_button"/>
-        <EditTextPreference
-            android:defaultValue="Answer"
-            android:key="callNotificationAnswerButton"
-            android:title="@string/setting_answer_button"/>
-        <EditTextPreference
-            android:defaultValue="Dismiss"
-            android:key="callNotificationDeclineButton"
-            android:title="@string/setting_decline_button"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/category_about">
-        <Preference
-            android:key="version"
-            android:title="@string/setting_installed_version"/>
-        <CheckBoxPreference
-            android:key="enableLogWriter"
-            android:summary="@string/setting_log_writer_description"
-            android:title="@string/setting_log_writer"/>
-        <Preference
-            android:key="license"
-            android:title="@string/setting_open_source_licenses"/>
-        <Preference
-            android:key="donateButton"
-            android:summary="@string/setting_donate_description"
-            android:title="@string/setting_donate"/>
-    </PreferenceCategory>
 </PreferenceScreen>

@@ -21,5 +21,11 @@
     <string name="tasker_change_settings">Change Settings</string>
     <string name="tasker_change_settings_long">Change Dialer for Pebble Settings</string>
     <string name="sms_failed">Failed to send SMS. Please try again.</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
+    <string name="general_settings">General settings</string>
+    <string name="messaging">Messaging</string>
+    <string name="about">About</string>
+    <string name="home">Home</string>
 
 </resources>

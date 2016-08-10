@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">/>
+        <Preference
+            android:key="version"
+            android:title="@string/setting_installed_version"/>
+        <CheckBoxPreference
+            android:key="enableLogWriter"
+            android:summary="@string/setting_log_writer_description"
+            android:title="@string/setting_log_writer"/>
+        <Preference
+            android:key="license"
+            android:title="@string/setting_open_source_licenses"/>
+        <Preference
+            android:key="donateButton"
+            android:summary="@string/setting_donate_description"
+            android:title="@string/setting_donate"/>
+</PreferenceScreen>

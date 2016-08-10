@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">/>
+
+        <Preference android:key="smsCannedResponsesDialog"
+                    android:title="@string/setting_canned_responses"
+                    android:summary="@string/setting_canned_responses_description"/>
+        <CheckBoxPreference android:key="timeVoice"
+                            android:title="@string/setting_time_voice"
+                            android:defaultValue="true"
+                            android:summary="@string/setting_time_voice_description" />
+        <CheckBoxPreference android:key="phoneVoice"
+                            android:title="@string/setting_phone_voice"
+                            android:defaultValue="true"
+                            android:summary="@string/setting_phone_voice_description" />
+        <CheckBoxPreference android:key="enableSMSWriting"
+                            android:title="@string/setting_sms_writing"
+                            android:defaultValue="true"
+                            android:summary="@string/setting_sms_writing_description" />
+        <Preference android:key="smsWritingPhrasesDialog"
+                    android:title="@string/setting_writing_phrases"
+                    android:summary="@string/setting_writing_phrases_description" />
+
+</PreferenceScreen>

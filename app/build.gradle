@@ -35,6 +35,9 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:design:23.1.0'
+    compile 'com.android.support:preference-v14:23.1.0'
+
     compile 'com.crashlytics.android:crashlytics:1.+'
     compile project(':PebbleAndroidCommons')
     compile('de.psdev.licensesdialog:licensesdialog:1.8.0')
