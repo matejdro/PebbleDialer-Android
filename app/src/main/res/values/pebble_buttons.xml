@@ -21,12 +21,16 @@
         <item>Nothing</item>
         <item>Toggle microphone</item>
         <item>Toggle speakerphone</item>
+        <item>Reduce call volume</item>
+        <item>Increase call volume</item>
         <item>End call</item>
     </string-array>
     <string-array name="actionsCallEstablishedValues">
         <item>999</item>
         <item>3</item>
         <item>4</item>
+        <item>7</item>
+        <item>8</item>
         <item>1</item>
     </string-array>
 </resources>

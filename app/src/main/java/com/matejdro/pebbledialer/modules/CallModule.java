@@ -32,6 +32,8 @@ import com.matejdro.pebbledialer.callactions.SMSReplyAction;
 import com.matejdro.pebbledialer.callactions.ToggleMicrophoneAction;
 import com.matejdro.pebbledialer.callactions.ToggleRingerAction;
 import com.matejdro.pebbledialer.callactions.ToggleSpeakerAction;
+import com.matejdro.pebbledialer.callactions.VolumeDownAction;
+import com.matejdro.pebbledialer.callactions.VolumeUpAction;
 
 import java.io.IOException;
 
@@ -79,6 +81,8 @@ public class CallModule extends CommModule
 
         registerCallAction(new ToggleSpeakerAction(this), ToggleSpeakerAction.TOGGLE_SPEAKER_ACTION_ID);
         registerCallAction(new AnswerCallWithSpeakerAction(this), AnswerCallWithSpeakerAction.ANSWER_WITH_SPEAKER_ACTION_ID);
+        registerCallAction(new VolumeDownAction(this), VolumeDownAction.VOLUME_DOWN_ACTION_ID);
+        registerCallAction(new VolumeUpAction(this), VolumeUpAction.VOLUME_UP_ACTION_ID);
 
         registerCallAction(new DummyAction(this), DummyAction.DUMMY_ACTION_ID);
 
