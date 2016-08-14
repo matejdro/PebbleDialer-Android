@@ -27,6 +27,11 @@
             android:summary="@string/setting_enable_outgoing_popup_description"
             android:defaultValue="true"/>
         <CheckBoxPreference
+            android:key="respectDoNotInterrupt"
+            android:title="@string/setting_respect_do_not_interrupt"
+            android:summary="@string/setting_respect_do_not_interrupt_description"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
             android:key="closeToLastApp"
             android:summary="@string/setting_close_to_last_app_description"
             android:title="@string/setting_close_to_last_app"/>

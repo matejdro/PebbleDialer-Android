@@ -34,6 +34,7 @@ import com.matejdro.pebbledialer.callactions.ToggleRingerAction;
 import com.matejdro.pebbledialer.callactions.ToggleSpeakerAction;
 import com.matejdro.pebbledialer.callactions.VolumeDownAction;
 import com.matejdro.pebbledialer.callactions.VolumeUpAction;
+import com.matejdro.pebbledialer.notifications.JellybeanNotificationListener;
 
 import java.io.IOException;
 
@@ -193,13 +194,19 @@ public class CallModule extends CommModule
         updateNumberData();
         updatePebble();
 
-        if (getService().getGlobalSettings().getBoolean("popupOnIncoming", true))
+        if (canPopupIncomingCall())
             SystemModule.get(getService()).openApp();
 
         for (int i = 0; i < actions.size(); i++)
             actions.valueAt(i).onCallRinging();
 
         closeAutomaticallyAfterThisCall = true;
+    }
+
+    private boolean canPopupIncomingCall()
+    {
+        return getService().getGlobalSettings().getBoolean("popupOnIncoming", true) &&
+               (!getService().getGlobalSettings().getBoolean("respectDoNotInterrupt", false) || !JellybeanNotificationListener.isPhoneInDoNotInterrupt());
     }
 
     public void updatePebble()

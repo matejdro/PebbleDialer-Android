@@ -11,6 +11,8 @@
     <string name="setting_enable_incoming_popup_description">Automatically display call notification on your Pebble when call comes. Disabling this effectively disables call notification, but you can still answer call or perform other actions by opening Dialer manually.</string>
     <string name="setting_enable_outgoing_popup">Popup call notification on outgoing call</string>
     <string name="setting_enable_outgoing_popup_description">Automatically display call notification on your Pebble when you call someone. Even when disabled, you can still hangup call or perform other actions by opening Dialer manually.</string>
+    <string name="setting_respect_do_not_interrupt">Respect phone\'s do not disturb mode.</string>
+    <string name="setting_respect_do_not_interrupt_description">Do not popup incoming call screen on the watch when phone is put into do not disturb mode.</string>
     <string name="setting_close_to_last_app">Close to last app</string>
     <string name="setting_close_to_last_app_description">When call ends, close to last used app on Pebble. NEEDS DEVELOPER CONNECTION ENABLED INSIDE PEBBLE APP!</string>
     <string name="setting_root_mode">Root mode</string>
