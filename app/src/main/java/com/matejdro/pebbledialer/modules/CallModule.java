@@ -3,6 +3,7 @@ package com.matejdro.pebbledialer.modules;
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -37,6 +38,7 @@ import com.matejdro.pebbledialer.callactions.VolumeUpAction;
 import com.matejdro.pebbledialer.notifications.JellybeanNotificationListener;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import timber.log.Timber;
 
@@ -205,8 +207,49 @@ public class CallModule extends CommModule
 
     private boolean canPopupIncomingCall()
     {
-        return getService().getGlobalSettings().getBoolean("popupOnIncoming", true) &&
-               (!getService().getGlobalSettings().getBoolean("respectDoNotInterrupt", false) || !JellybeanNotificationListener.isPhoneInDoNotInterrupt());
+        if (!getService().getGlobalSettings().getBoolean("popupOnIncoming", true))
+        {
+            Timber.d("Call popup failed - popup disabled");
+            return false;
+        }
+
+        if (getService().getGlobalSettings().getBoolean("respectDoNotInterrupt", false) && JellybeanNotificationListener.isPhoneInDoNotInterrupt())
+        {
+            Timber.d("Call popup failed - do not interrupt");
+            return false;
+        }
+
+        if (isInQuietTime())
+        {
+            Timber.d("call popup failed - quiet time");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isInQuietTime()
+    {
+        SharedPreferences preferences = getService().getGlobalSettings();
+        if (!preferences.getBoolean("enableQuietTime", false))
+            return false;
+
+        int startHour = preferences.getInt("quiteTimeStartHour", 0);
+        int startMinute = preferences.getInt("quiteTimeStartMinute", 0);
+        int startTime = startHour * 60 + startMinute;
+
+        int endHour = preferences.getInt("quiteTimeEndHour", 23);
+        int endMinute = preferences.getInt("quiteTimeEndMinute", 59);
+        int endTime = endHour * 60 + endMinute;
+
+        Calendar calendar = Calendar.getInstance();
+        int curHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int curMinute = calendar.get(Calendar.MINUTE);
+        int curTime = curHour * 60 + curMinute;
+
+
+        return (endTime > startTime && curTime <= endTime && curTime >= startTime) || (endTime < startTime && (curTime <= endTime || curTime >= startTime));
+
     }
 
     public void updatePebble()

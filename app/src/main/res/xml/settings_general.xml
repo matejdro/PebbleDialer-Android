@@ -41,6 +41,23 @@
             android:title="@string/setting_root_mode"/>
     </PreferenceCategory>
     <PreferenceCategory
+        android:key="cat_quiet_time"
+        android:title="@string/category_quiet_time">
+        <CheckBoxPreference
+            android:key="enableQuietTime"
+            android:title="@string/enable_quiet_time"
+            android:summary="@string/enable_quiet_time_description"
+            android:defaultValue="false" />
+        <Preference
+            android:key="quietTimeStart"
+            android:title="@string/quiet_time_start"
+            android:dependency="enableQuietTime" />
+            <Preference
+                android:key="quietTimeEnd"
+                android:title="@string/quiet_time_end"
+                android:dependency="enableQuietTime" />
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="cat_notify"
         android:title="@string/category_notification_answer">
         <Preference

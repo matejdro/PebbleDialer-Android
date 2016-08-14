@@ -85,4 +85,9 @@
     <string name="setting_log_writer">Enable debug logging</string>
     <string name="setting_donate">Donate</string>
     <string name="setting_donate_description">Buy me a Coke if you really like my app!</string>
+    <string name="category_quiet_time">Quiet time</string>
+    <string name="enable_quiet_time">Enable quiet time</string>
+    <string name="enable_quiet_time_description">When this setting is enabled, call popup won\'t activate in the time range specified below.</string>
+    <string name="quiet_time_start">Quiet time start</string>
+    <string name="quiet_time_end">Quiet time end</string>
 </resources>

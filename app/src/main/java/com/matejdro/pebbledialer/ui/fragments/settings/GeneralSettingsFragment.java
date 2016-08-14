@@ -1,18 +1,14 @@
 package com.matejdro.pebbledialer.ui.fragments.settings;
 
-import android.Manifest;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
+import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
+import android.text.format.DateFormat;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.matejdro.pebblecommons.util.LogWriter;
 import com.matejdro.pebbledialer.R;
 import com.matejdro.pebbledialer.ui.ContactGroupsPickerDialog;
 
@@ -20,12 +16,22 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class GeneralSettingsFragment extends CustomStoragePreferenceFragment
 {
+    private java.text.DateFormat dateFormat;
+    private SharedPreferences sharedPreferences;
+
     @Override
     public void onCreatePreferencesEx(Bundle bundle, String s)
     {
+        dateFormat = DateFormat.getTimeFormat(getContext());
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        sharedPreferences = getPreferenceManager().getSharedPreferences();
+
         addPreferencesFromResource(R.xml.settings_general);
 
         Preference displayedGroups = findPreference("displayedGroups");
@@ -57,6 +63,69 @@ public class GeneralSettingsFragment extends CustomStoragePreferenceFragment
                 return true;
             }
         });
+
+        setupQuietTimePreferences();
+    }
+
+    private void setupQuietTimePreferences()
+    {
+        final Preference quietFrom = findPreference("quietTimeStart");
+        int startHour = sharedPreferences.getInt("quiteTimeStartHour", 0);
+        int startMinute = sharedPreferences.getInt("quiteTimeStartMinute", 0);
+        quietFrom.setSummary(formatTime(startHour, startMinute));
+        quietFrom.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                int startHour = sharedPreferences.getInt("quiteTimeStartHour", 0);
+                int startMinute = sharedPreferences.getInt("quiteTimeStartMinute", 0);
+
+                TimePickerDialog dialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt("quiteTimeStartHour", hourOfDay);
+                        editor.putInt("quiteTimeStartMinute", minute);
+                        editor.apply();
+
+                        quietFrom.setSummary(formatTime(hourOfDay, minute));
+                    }
+                }, startHour, startMinute, DateFormat.is24HourFormat(getContext()));
+                dialog.show();
+
+                return true;
+            }
+        });
+
+        final Preference quietTo = findPreference("quietTimeEnd");
+        int endHour = sharedPreferences.getInt("quiteTimeEndHour", 23);
+        int endMinute = sharedPreferences.getInt("quiteTimeEndMinute", 59);
+        quietTo.setSummary(formatTime(endHour, endMinute));
+        quietTo.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                int startHour = sharedPreferences.getInt("quiteTimeEndHour", 0);
+                int startMinute = sharedPreferences.getInt("quiteTimeEndMinute", 0);
+
+                TimePickerDialog dialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt("quiteTimeEndHour", hourOfDay);
+                        editor.putInt("quiteTimeEndMinute", minute);
+                        editor.apply();
+
+                        quietTo.setSummary(formatTime(hourOfDay, minute));
+                    }
+                }, startHour, startMinute, DateFormat.is24HourFormat(getContext()));
+                dialog.show();
+
+                return true;
+            }
+        });
     }
 
     private static boolean hasRoot()
@@ -76,5 +145,12 @@ public class GeneralSettingsFragment extends CustomStoragePreferenceFragment
         } catch (IOException e) {
             return false;
         }
+    }
+
+    public String formatTime(int hours, int minutes)
+    {
+        long datestampMs = (hours * 60 + minutes) * 60 * 1000;
+        Date date = new Date(datestampMs);
+        return dateFormat.format(date);
     }
 }
