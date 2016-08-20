@@ -24,6 +24,7 @@ import com.matejdro.pebblecommons.pebble.PebbleUtil;
 import com.matejdro.pebblecommons.util.ContactUtils;
 import com.matejdro.pebblecommons.util.Size;
 import com.matejdro.pebblecommons.util.TextUtil;
+import com.matejdro.pebblecommons.vibration.PebbleVibrationPattern;
 import com.matejdro.pebbledialer.callactions.AnswerCallAction;
 import com.matejdro.pebbledialer.callactions.AnswerCallWithSpeakerAction;
 import com.matejdro.pebbledialer.callactions.CallAction;
@@ -39,6 +40,7 @@ import com.matejdro.pebbledialer.notifications.JellybeanNotificationListener;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -389,15 +391,30 @@ public class CallModule extends CommModule
             data.addString(3, "");
         }
 
-        byte[] parameters = new byte[7];
+        List<Byte> vibrationPattern;
+        if (vibrating)
+        {
+            String vibrationPatternString = getService().getGlobalSettings().getString("vibrationPattern", "100, 100, 100, 1000");
+            vibrationPattern = PebbleVibrationPattern.parseVibrationPattern(vibrationPatternString);
+        }
+        else
+        {
+            vibrationPattern = PebbleVibrationPattern.EMPTY_VIBRATION_PATTERN;
+        }
+
+
+        byte[] parameters = new byte[8 + vibrationPattern.size()];
         parameters[0] = (byte) (callState == CallState.ESTABLISHED ? 1 : 0);
         parameters[1] = (byte) (nameAtBottomWhenImageDisplayed ? 1 : 0);
-        parameters[5] = (byte) (vibrating ? 1 : 0);
         parameters[6] = (byte) (identityUpdateRequired ? 1 : 0);
 
         parameters[2] = (byte) getCallAction(getUserSelectedAction(getExtendedButtonId("Up"))).getIcon();
         parameters[3] = (byte) getCallAction(getUserSelectedAction(getExtendedButtonId("Select"))).getIcon();
         parameters[4] = (byte) getCallAction(getUserSelectedAction(getExtendedButtonId("Down"))).getIcon();
+
+        parameters[7] = (byte) vibrationPattern.size();
+        for (int i = 0; i < vibrationPattern.size(); i++)
+            parameters[8 + i] = vibrationPattern.get(i);
 
         data.addBytes(4, parameters);
 

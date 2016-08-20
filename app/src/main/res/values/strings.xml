@@ -43,5 +43,5 @@
     <string name="tip_faq_body">Tap on this card to open full manual, including list of other Frequently Asked Questions.</string>
     <string name="notification_service_enabling_instructions">Enable Dialer for Pebble on the list</string>
     <string name="error_no_web_browser">Could not open the webpage. Do you have any web browser installed?</string>
-
+    <string name="customize_call_screen">Customize call screen</string>
 </resources>

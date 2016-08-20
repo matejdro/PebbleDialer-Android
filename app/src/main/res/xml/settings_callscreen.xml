@@ -23,6 +23,10 @@
             android:key="bottomCallerName"
             android:summary="@string/setting_caller_name_bottom_description"
             android:defaultValue="true"/>
+        <Preference
+            android:title="@string/setting_vibration_pattern"
+            android:key="vibrationPatternButton"
+            android:summary="@string/setting_vibration_pattern_description" />
         <PreferenceScreen
             android:key="cat_buttons"
             android:title="@string/category_call_buttons"

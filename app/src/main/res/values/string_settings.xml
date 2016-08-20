@@ -61,6 +61,10 @@
     <string name="font_caller_name">Caller name font</string>
     <string name="font_number_type">Caller number type font</string>
     <string name="font_number">Caller number font</string>
+    <string name="setting_vibration_pattern">Vibration pattern</string>
+    <string name="setting_vibration_pattern_description">Define how your watch will vibrate on incoming call.</string>
+    <string name="setting_vibration_pattern_dialog_description" >Pattern is in format \n\'vibrateTime, pauseTime, vibrateTime, pauseTime …\', where times are in milliseconds. \n\nFor example \'100, 200, 300\' will vibrate for 100 ms, then wait 200 ms and then again vibrate for 300 ms. \n\nLimit is 20 total numbers (so 10 vibrations and 10 pauses). Maximum total duration is 10 seconds.\n\nMake sure to add pause on the end of the pattern, otherwise watch won\'t pause between pattern repeats.
+    </string>
     <string name="setting_canned_responses">Canned Responses</string>
     <string name="setting_canned_responses_description">Here you can define list of canned responses that you can send as SMS when declining a call.</string>
     <string name="setting_writing_phrases">Writing Phrases</string>

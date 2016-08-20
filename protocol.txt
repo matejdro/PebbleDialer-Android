@@ -136,18 +136,19 @@ Phone --> Pebble
 		Additional data:
 			2 = Number Type (cstring - up to 30 characters)
 			3 = Number (cstring - up to 30 characters)
-			4 = Various flags (byte array, 4 bytes)
+			4 = Various flags (byte array, 10+ bytes)
 				[0] = If in call (0 = incoming call, 1 = call connected)
 				[1] = Name display position (0 = center, 1 = bottom (replaces number)
 				[2] = Top action bar icon ID
 				[3] = Middle action bar icon If
 				[4] = Bottom action bar icon ID
-				[5] = Should I vibrate on incoming call screen (1 = yes, 0 = no)
 				[6] = Should I prepare to update caller image (1 = yes, 0 = no)
+                [7] = Number of bytes in vibration pattern
+                [8, 9, ...] = Vibration pattern (up to 40 bytes, two bytes make uint16)
 
 			6 = Elapsed seconds. Only sent when in call, not when ringing. (uint16)
 			7 = Size of the caller image in bytes (only for color watches. If value is 0, no image will be displayed. uint16).
-            
+
 		Packet 1 - Caller name
 		Sent after Call info packet
 		Additional data:
