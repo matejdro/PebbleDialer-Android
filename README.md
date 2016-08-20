@@ -1,9 +1,11 @@
 PebbleDialer-Android
 ====================
 
-Android part of the PebbleDialer app.
+Android part of the Dialer for Pebble app.
 
-See http://forums.getpebble.com/discussion/5767/android-pebbledialer-new-call-controls-for-your-pebble
+Watch counterpart: https://github.com/matejdro/PebbleDialer-Watchapp  
+Google Play Store entry: https://play.google.com/store/apps/details?id=com.matejdro.pebbledialer  
+Discussion forums: https://plus.google.com/communities/105292167808840816317
 
 ## Building
 
