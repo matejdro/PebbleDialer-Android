@@ -198,7 +198,7 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
         if (ContextCompat.checkSelfPermission(getService(), Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED)
         {
             Notification notification = new NotificationCompat.Builder(getService())
-                    .setSmallIcon(R.drawable.icon)
+                    .setSmallIcon(R.drawable.ic_notification)
                     .setContentTitle("SMS Sending failed")
                     .setContentText("No permission")
                     .build();
@@ -241,8 +241,8 @@ public class SMSReplyModule extends CommModule implements MessageTextProviderLis
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(getService())
-                        .setSmallIcon(R.drawable.icon)
-                        .setContentTitle("Dialer for Pebble") //TODO use app_name resource
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setContentTitle(getService().getString(R.string.app_name))
                         .setContentText(getService().getString(R.string.sms_failed));
         mNotificationManager.notify(1000, mBuilder.build());
 

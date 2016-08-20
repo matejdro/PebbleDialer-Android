@@ -59,7 +59,7 @@ public class WatchappHandler extends BroadcastReceiver {
     public static void showUpdateNotification(Context context)
     {
         Notification.Builder mBuilder =
-                new Notification.Builder(context).setSmallIcon(R.drawable.icon)
+                new Notification.Builder(context).setSmallIcon(R.drawable.ic_notification)
                         .setContentTitle("Pebble Dialer watchapp update").setContentText("Click on this notiifcation to update Pebble Dialer watchapp on Pebble")
                         .setContentIntent(PendingIntent.getBroadcast(context, 1, new Intent(INTENT_UPDATE_WATCHAPP), PendingIntent.FLAG_CANCEL_CURRENT));
 
