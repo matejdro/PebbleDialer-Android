@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.matejdro.pebbledialer"
-    android:versionCode="34"
-    android:versionName="2.6b1" >
+    android:versionCode="35"
+    android:versionName="2.6b2" >
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
