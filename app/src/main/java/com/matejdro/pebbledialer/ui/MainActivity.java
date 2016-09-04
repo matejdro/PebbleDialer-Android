@@ -87,10 +87,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart()
     {
+        super.onStart();
+
         navigationView.setCheckedItem(R.id.home);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.home));
-
-        super.onStart();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkPermissions();
