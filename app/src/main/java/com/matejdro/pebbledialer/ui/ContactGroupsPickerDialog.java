@@ -1,17 +1,22 @@
 package com.matejdro.pebbledialer.ui;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.matejdro.pebblecommons.util.ListSerialization;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ContactGroupsPickerDialog
@@ -89,6 +94,12 @@ public class ContactGroupsPickerDialog
 
     public static List<ContactGroup> getAllContactGroups(Context context)
     {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+        {
+            ContactGroup dummyGroup = new ContactGroup(-1, "No permission");
+            return Collections.singletonList(dummyGroup);
+        }
+
         List<ContactGroup> groups = new ArrayList<ContactGroup>();
 
         ContentResolver resolver = context.getContentResolver();
