@@ -9,6 +9,7 @@ import com.matejdro.pebblecommons.PebbleCompanionApplication;
 import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
 import com.matejdro.pebblecommons.util.LogWriter;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.UUID;
 
 import timber.log.Timber;
@@ -22,6 +23,8 @@ public class PebbleDialerApplication extends PebbleCompanionApplication
 
     @Override
     public void onCreate() {
+        super.onCreate();
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Timber.setAppTag("PebbleDialer");
         Timber.plant(new Timber.AppTaggedDebugTree());
@@ -29,9 +32,8 @@ public class PebbleDialerApplication extends PebbleCompanionApplication
 
         boolean isDebuggable =  ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
         if (!isDebuggable)
-            Crashlytics.start(this);
+            Fabric.with(this, new Crashlytics());
 
-        super.onCreate();
     }
 
     @Override
