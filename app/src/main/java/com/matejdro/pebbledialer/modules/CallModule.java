@@ -134,6 +134,7 @@ public class CallModule extends CommModule
             Timber.d("Outgoing intent");
             number =  intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
             updateNumberData();
+            updatePebble();
 
             if (getService().getGlobalSettings().getBoolean("popupOnOutgoing", true))
                 SystemModule.get(getService()).openApp();
