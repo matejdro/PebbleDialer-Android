@@ -11,6 +11,14 @@ import com.matejdro.pebbledialer.modules.SystemModule;
 public class DialerTalkerService extends PebbleTalkerService
 {
     @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // Disable until properly tested
+        setEnableDeveloperConnectionRefreshing(false);
+    }
+
+    @Override
     public void registerModules()
     {
         addModule(new SystemModule(this), SystemModule.MODULE_SYSTEM);
