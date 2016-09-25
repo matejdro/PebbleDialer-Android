@@ -326,10 +326,7 @@ public class CallModule extends CommModule
                 {
                     try
                     {
-                        Size imageSize = SystemModule.get(getService()).getFullscreenImageSize();
-
                         callerImage = MediaStore.Images.Media.getBitmap(getService().getContentResolver(), Uri.parse(photoUri));
-                        callerImage = PebbleImageToolkit.resizeAndCrop(callerImage, imageSize.width, imageSize.height, true);
                     }
                     catch (IOException e)
                     {
@@ -344,8 +341,11 @@ public class CallModule extends CommModule
 
     private void processContactImage()
     {
-        callerImage = PebbleImageToolkit.ditherToPebbleTimeColors(callerImage);
-        callerImageBytes = PebbleImageToolkit.getIndexedPebbleImageBytes(callerImage);
+        Size imageSize = SystemModule.get(getService()).getFullscreenImageSize();
+
+        Bitmap processedCallerImage = PebbleImageToolkit.resizeAndCrop(callerImage, imageSize.width, imageSize.height, true);
+        processedCallerImage = PebbleImageToolkit.ditherToPebbleTimeColors(processedCallerImage);
+        callerImageBytes = PebbleImageToolkit.getIndexedPebbleImageBytes(processedCallerImage);
     }
 
     @Override
