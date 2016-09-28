@@ -344,6 +344,7 @@ public class CallModule extends CommModule
         Size imageSize = SystemModule.get(getService()).getFullscreenImageSize();
 
         Bitmap processedCallerImage = PebbleImageToolkit.resizeAndCrop(callerImage, imageSize.width, imageSize.height, true);
+        processedCallerImage = PebbleImageToolkit.multiplyBrightness(processedCallerImage, 0.5f);
         processedCallerImage = PebbleImageToolkit.ditherToPebbleTimeColors(processedCallerImage);
         callerImageBytes = PebbleImageToolkit.getIndexedPebbleImageBytes(processedCallerImage);
     }
