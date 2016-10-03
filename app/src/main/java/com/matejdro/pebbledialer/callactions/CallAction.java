@@ -12,6 +12,7 @@ public abstract class CallAction
     public static final int ICON_BUTTON_SPEAKER_OFF = 5;
     public static final int ICON_BUTTON_VOLUME_DOWN = 6;
     public static final int ICON_BUTTON_VOLUME_UP = 7;
+    public static final int ICON_BLANK = 0xFF;
 
     private CallModule callModule;
 

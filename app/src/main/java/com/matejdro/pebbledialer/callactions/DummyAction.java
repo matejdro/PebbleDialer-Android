@@ -21,7 +21,7 @@ public class DummyAction extends CallAction
     @Override
     public int getIcon()
     {
-        return CallAction.ICON_BUTTON_ANSWER;
+        return CallAction.ICON_BLANK;
     }
 
     public static DummyAction get(CallModule callModule)

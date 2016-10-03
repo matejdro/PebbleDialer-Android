@@ -140,7 +140,7 @@ Phone --> Pebble
 				[0] = If in call (0 = incoming call, 1 = call connected)
 				[1] = Name display position (0 = center, 1 = bottom (replaces number)
 				[2] = Top action bar icon ID
-				[3] = Middle action bar icon If
+				[3] = Middle action bar icon ID
 				[4] = Bottom action bar icon ID
 				[6] = Should I prepare to update caller image (1 = yes, 0 = no)
                 [7] = Number of bytes in vibration pattern
