@@ -21,7 +21,7 @@ import android.net.Uri;
 import com.matejdro.pebbledialer.R;
 
 public class WatchappHandler extends BroadcastReceiver {
-    public static final int SUPPORTED_PROTOCOL = 10;
+    public static final int SUPPORTED_PROTOCOL = 11;
     public static final String INTENT_UPDATE_WATCHAPP = "com.matejdro.pebbledialer.UPDATE_WATCHAPP";
 
     public static final String WATCHAPP_URL = "https://dl.dropboxusercontent.com/u/6999250/dialer/PebbleDialer.pbw";
