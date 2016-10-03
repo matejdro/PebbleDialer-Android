@@ -74,7 +74,7 @@
                 android:summary="@string/button_ring_down_hold_description"
                 android:title="@string/button_ring_down_hold"/>
             <ListPreference
-                android:defaultValue="2"
+                android:defaultValue="999"
                 android:entries="@array/actionsRingingNames"
                 android:entryValues="@array/actionsRingingValues"
                 android:key="callButtonRingShake"
