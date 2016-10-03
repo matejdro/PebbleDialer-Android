@@ -145,6 +145,8 @@ public class CallModule extends CommModule
         Timber.d("phone state intent " + intent.getStringExtra(TelephonyManager.EXTRA_STATE));
 
         String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+        if (state == null)
+            return;
 
         if (state.equals(TelephonyManager.EXTRA_STATE_RINGING))
         {
