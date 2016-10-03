@@ -305,6 +305,7 @@ public class CallModule extends CommModule
         catch (SecurityException e)
         {
             name = "No contacts permission";
+            type = "Error";
             return;
         }
 
@@ -382,7 +383,7 @@ public class CallModule extends CommModule
 
         boolean nameAtBottomWhenImageDisplayed = callerImage != null && getService().getGlobalSettings().getBoolean("bottomCallerName", true);
 
-        if (name != null)
+        if (name != null && type != null)
         {
             data.addString(2, TextUtil.prepareString(type, 30));
             data.addString(3, TextUtil.prepareString(number, 30));
