@@ -124,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
     {
-        Log.d("MA", "onNavigationItemSelected() called with: " + "item = [" + item + "]");
-
         if (item.getItemId() == R.id.home)
         {
             switchToFragment(new HomeFragment());
