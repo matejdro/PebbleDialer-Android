@@ -25,7 +25,12 @@ public class HomeFragment extends Fragment
     {
         super.onResume();
 
-        boolean hideServiceWarning = JellybeanNotificationListener.isActive() || Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2;
+        boolean hideServiceWarning = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+        {
+            hideServiceWarning = JellybeanNotificationListener.isActive() || Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2;
+        }
+
         notificationServiceWarningCard.setVisibility(hideServiceWarning ? View.GONE : View.VISIBLE);
     }
 
