@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,13 @@ public class DialogVibrationPatternPicker extends DialogFragment
         vibrationPatternPicker.setCurrentPattern(currentPattern);
         vibrationPatternPicker.setAddedPause(1000);
 
+        view.findViewById(R.id.button_help).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showHelp();
+            }
+        });
+
         view.findViewById(R.id.button_ok).setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -62,6 +70,15 @@ public class DialogVibrationPatternPicker extends DialogFragment
                 onCancelPressed();
             }
         });
+    }
+
+    private void showHelp()
+    {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.setting_vibration_pattern)
+                .setMessage(R.string.setting_vibration_pattern_dialog_description)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     private void onCancelPressed()
