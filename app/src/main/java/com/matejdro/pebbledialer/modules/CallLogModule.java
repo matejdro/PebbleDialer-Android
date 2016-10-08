@@ -154,7 +154,7 @@ public class CallLogModule extends CommModule
     {
         entries.clear();
 
-        if (ContextCompat.checkSelfPermission(getService(), Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_DENIED)
+        if (ContextCompat.checkSelfPermission(getService(), Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED)
             return;
 
         ContentResolver resolver = getService().getContentResolver();
