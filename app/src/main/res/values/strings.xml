@@ -45,4 +45,6 @@
     <string name="error_no_web_browser">Could not open the webpage. Do you have any web browser installed?</string>
     <string name="customize_call_screen">Customize call screen</string>
     <string name="app_name">Dialer for Pebble</string>
+    <string name="do_not_disturb_access_is_not_granted">DO NOT DISTURB ACCESS IS NOT GRANTED</string>
+    <string name="do_not_disturb_access_is_not_granted_description">Some features (such as mute ringer action) may not be working.</string>
 </resources>

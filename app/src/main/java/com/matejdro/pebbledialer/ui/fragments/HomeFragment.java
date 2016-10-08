@@ -1,5 +1,6 @@
 package com.matejdro.pebbledialer.ui.fragments;
 
+import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +15,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.matejdro.pebbledialer.R;
+import com.matejdro.pebbledialer.callactions.ToggleRingerAction;
 import com.matejdro.pebbledialer.notifications.JellybeanNotificationListener;
+
+import timber.log.Timber;
 
 public class HomeFragment extends Fragment
 {
     private View notificationServiceWarningCard;
+    private View ringerMuteAccessWarningCard;
 
     @Override
     public void onResume()
@@ -32,6 +37,7 @@ public class HomeFragment extends Fragment
         }
 
         notificationServiceWarningCard.setVisibility(hideServiceWarning ? View.GONE : View.VISIBLE);
+        ringerMuteAccessWarningCard.setVisibility(ToggleRingerAction.canMuteRinger(getContext()) ? View.GONE : View.VISIBLE);
     }
 
     @Nullable
@@ -52,6 +58,15 @@ public class HomeFragment extends Fragment
                     startActivity(new Intent("android.settings.ACTION_ACCESSIBILITY_SETTINGS"));
 
                 Toast.makeText(getContext(), R.string.notification_service_enabling_instructions, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ringerMuteAccessWarningCard = view.findViewById(R.id.tip_no_ringer_mute_access);
+        ringerMuteAccessWarningCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @TargetApi(Build.VERSION_CODES.N)
+            public void onClick(View view) {
+                startActivity(new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS));
             }
         });
 

@@ -1,7 +1,9 @@
 package com.matejdro.pebbledialer.callactions;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Build;
 import android.view.KeyEvent;
 
 import com.matejdro.pebbledialer.modules.CallModule;
@@ -44,7 +46,7 @@ public class ToggleRingerAction extends CallAction
                 }
 
             }
-            else
+            else if (canMuteRinger(getCallModule().getService()))
             {
                 isMutedViaAudioManager = true;
                 prevRingerMode = audioManager.getRingerMode();
@@ -53,7 +55,7 @@ public class ToggleRingerAction extends CallAction
                 audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
             }
         }
-        else
+        else if (canMuteRinger(getCallModule().getService()))
         {
             isMutedViaAudioManager = false;
             audioManager.setStreamSolo(AudioManager.STREAM_MUSIC, false);
@@ -69,12 +71,18 @@ public class ToggleRingerAction extends CallAction
             executeAction();
     }
 
+    public static boolean canMuteRinger(Context context)
+    {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            return true;
 
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        return notificationManager.isNotificationPolicyAccessGranted();
+    }
 
     @Override
     public void onCallEnd()
-    {
-        if (isMutedViaAudioManager)
+    {        if (isMutedViaAudioManager && canMuteRinger(getCallModule().getService()))
         {
             AudioManager audioManager = (AudioManager) getCallModule().getService().getSystemService(Context.AUDIO_SERVICE);
             isMutedViaAudioManager = false;

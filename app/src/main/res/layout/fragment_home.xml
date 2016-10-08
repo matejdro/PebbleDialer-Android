@@ -17,6 +17,11 @@
             layout="@layout/tip_no_notification_service"/>
 
         <include
+            android:id="@+id/tip_no_ringer_mute_access"
+            layout="@layout/tip_no_ringer_mute_access"/>
+
+
+        <include
             layout="@layout/tip_disable_pebble_notification"/>
         <include
             layout="@layout/tip_filtering"/>
