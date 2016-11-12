@@ -36,7 +36,7 @@ public class JellybeanNotificationListener extends NotificationListenerService {
 	@TargetApi(value = Build.VERSION_CODES.LOLLIPOP)
 	public static boolean isPhoneInDoNotInterrupt()
 	{
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || instance == null)
+		if (instance == null)
 			return false;
 
 		int interruptionFilter = instance.getCurrentInterruptionFilter();

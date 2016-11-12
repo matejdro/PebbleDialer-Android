@@ -1,20 +1,18 @@
 package com.matejdro.pebbledialer.modules;
 
-import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
+import android.service.notification.NotificationListenerService;
 import android.telephony.TelephonyManager;
 import android.util.SparseArray;
 
-import com.crashlytics.android.Crashlytics;
 import com.getpebble.android.kit.util.PebbleDictionary;
 import com.matejdro.pebblecommons.pebble.CommModule;
 import com.matejdro.pebblecommons.pebble.PebbleCommunication;
@@ -133,6 +131,7 @@ public class CallModule extends CommModule
         {
             Timber.d("Outgoing intent");
             number =  intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+            callState = CallState.ESTABLISHED;
             updateNumberData();
             updatePebble();
 
@@ -218,7 +217,7 @@ public class CallModule extends CommModule
             return false;
         }
 
-        if (getService().getGlobalSettings().getBoolean("respectDoNotInterrupt", false) && JellybeanNotificationListener.isPhoneInDoNotInterrupt())
+        if (getService().getGlobalSettings().getBoolean("respectDoNotInterrupt", false) && isPhoneInDoNotInterrupt())
         {
             Timber.d("Call popup failed - do not interrupt");
             return false;
@@ -448,7 +447,7 @@ public class CallModule extends CommModule
         }
 
         getService().getPebbleCommunication().sendToPebble(data);
-        Timber.d("Sent Call update packet...");
+        Timber.d("Sent Call update packet. New identity: %b", identityUpdateRequired);
 
         callerNameUpdateRequired = identityUpdateRequired;
         updateRequired = false;
@@ -643,4 +642,13 @@ public class CallModule extends CommModule
         RINGING,
         ESTABLISHED
     }
+
+    public static boolean isPhoneInDoNotInterrupt()
+    {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            return false;
+
+        return JellybeanNotificationListener.isPhoneInDoNotInterrupt();
+    }
+
 }
