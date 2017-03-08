@@ -24,7 +24,7 @@ public class WatchappHandler extends BroadcastReceiver {
     public static final int SUPPORTED_PROTOCOL = 11;
     public static final String INTENT_UPDATE_WATCHAPP = "com.matejdro.pebbledialer.UPDATE_WATCHAPP";
 
-    public static final String WATCHAPP_URL = "https://dl.dropboxusercontent.com/u/6999250/dialer/PebbleDialer.pbw";
+    public static final String WATCHAPP_URL = "https://github.com/matejdro/PebbleDialer-Watchapp/releases/latest";
 
     public static boolean isFirstRun(SharedPreferences settings)
 	{
@@ -59,7 +59,7 @@ public class WatchappHandler extends BroadcastReceiver {
     {
         Notification.Builder mBuilder =
                 new Notification.Builder(context).setSmallIcon(R.drawable.ic_notification)
-                        .setContentTitle("Pebble Dialer watchapp update").setContentText("Click on this notiifcation to update Pebble Dialer watchapp on Pebble")
+                        .setContentTitle("Pebble Dialer watchapp update").setContentText("Click on this notiifcation to open link to the download")
                         .setContentIntent(PendingIntent.getBroadcast(context, 1, new Intent(INTENT_UPDATE_WATCHAPP), PendingIntent.FLAG_CANCEL_CURRENT));
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
