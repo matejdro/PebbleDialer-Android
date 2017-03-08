@@ -101,7 +101,6 @@ public class TaskerSettingsActivity extends AppCompatActivity implements Prefere
 
     private void saveTaskerIntent()
     {
-        LogWriter.dumpBundle(settingStorageBundle);
         Intent intent = new Intent();
 
         String description = getString(R.string.tasker_change_settings);
