@@ -192,6 +192,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED)
             wantedPermissions.add(Manifest.permission.SEND_SMS);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ANSWER_PHONE_CALLS) == PackageManager.PERMISSION_DENIED)
+                wantedPermissions.add(Manifest.permission.ANSWER_PHONE_CALLS);
+        }
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         //Log writer needs to access external storage

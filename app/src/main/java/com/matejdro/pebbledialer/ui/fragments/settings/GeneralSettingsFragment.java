@@ -9,6 +9,7 @@ import android.text.format.DateFormat;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.matejdro.pebblecommons.util.RTLUtility;
 import com.matejdro.pebbledialer.R;
 import com.matejdro.pebbledialer.ui.ContactGroupsPickerDialog;
 
@@ -33,6 +34,15 @@ public class GeneralSettingsFragment extends CustomStoragePreferenceFragment
         sharedPreferences = getPreferenceManager().getSharedPreferences();
 
         addPreferencesFromResource(R.xml.settings_general);
+
+        Preference rtlEnabled = findPreference("EnableRTL");
+        rtlEnabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                RTLUtility.getInstance().setEnabled((Boolean) newValue);
+                return true;
+            }
+        });
 
         Preference displayedGroups = findPreference("displayedGroups");
         displayedGroups.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

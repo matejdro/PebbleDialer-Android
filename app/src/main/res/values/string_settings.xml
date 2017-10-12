@@ -6,6 +6,8 @@
     <string name="setting_displayed_groups_description">Displayed contact groups</string>
     <string name="setting_skip_group_filtering">Skip filtering in groups</string>
     <string name="setting_skip_group_filtering_description">Should dialer skip filtering when you pick group instead of all contacts</string>
+    <string name="setting_enable_rtl">Enable RTL conversion</string>
+    <string name="setting_enable_rtl_description">When enabled, Dialer will try to reverse RTL strings for display on Pebble</string>
     <string name="setting_category_call_popup">Call popup</string>
     <string name="setting_enable_incoming_popup">Popup call notification on incoming call</string>
     <string name="setting_enable_incoming_popup_description">Automatically display call notification on your Pebble when call comes. Disabling this effectively disables call notification, but you can still answer call or perform other actions by opening Dialer manually.</string>

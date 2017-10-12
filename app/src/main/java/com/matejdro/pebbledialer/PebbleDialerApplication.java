@@ -8,6 +8,8 @@ import com.crashlytics.android.Crashlytics;
 import com.matejdro.pebblecommons.PebbleCompanionApplication;
 import com.matejdro.pebblecommons.pebble.PebbleTalkerService;
 import com.matejdro.pebblecommons.util.LogWriter;
+import com.matejdro.pebblecommons.util.RTLUtility;
+import com.matejdro.pebblecommons.util.TextUtil;
 
 import io.fabric.sdk.android.Fabric;
 import java.util.UUID;
@@ -34,6 +36,8 @@ public class PebbleDialerApplication extends PebbleCompanionApplication
         if (!isDebuggable)
             Fabric.with(this, new Crashlytics());
 
+        boolean rtlEnabled = preferences.getBoolean("EnableRTL", true);
+        RTLUtility.getInstance().setEnabled(rtlEnabled);
     }
 
     @Override

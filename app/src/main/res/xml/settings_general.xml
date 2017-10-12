@@ -12,6 +12,12 @@
             android:title="@string/setting_skip_group_filtering"
             android:key="skipGroupFiltering"
             android:summary="@string/setting_skip_group_filtering_description" />
+        <CheckBoxPreference
+            android:title="@string/setting_enable_rtl"
+            android:summary="@string/setting_enable_rtl_description"
+            android:defaultValue="true"
+            android:key="EnableRTL"
+             />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="cat_call"

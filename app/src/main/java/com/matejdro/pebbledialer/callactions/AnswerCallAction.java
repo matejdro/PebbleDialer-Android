@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.media.session.MediaController;
 import android.media.session.MediaSessionManager;
 import android.os.Build;
+import android.telecom.TelecomManager;
+import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 
 import com.matejdro.pebbledialer.modules.CallModule;
@@ -63,7 +65,11 @@ public class AnswerCallAction extends CallAction
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            answerNativelyOreo();
+        }
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             answerUsingMediaServer();
         }
@@ -75,6 +81,20 @@ public class AnswerCallAction extends CallAction
             getCallModule().getService().sendOrderedBroadcast(buttonUp, "android.permission.CALL_PRIVILEGED");
         }
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void answerNativelyOreo() {
+        TelecomManager telecomManager
+                = (TelecomManager) getCallModule().getService().getSystemService(Context.TELECOM_SERVICE);
+
+        Timber.d("Answering natively with Oreo.");
+
+        try {
+            telecomManager.acceptRingingCall();
+        } catch (SecurityException e) {
+            Timber.e("No accept call permission!");
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
