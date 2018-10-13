@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting_help_and_faq">Ayuda y preguntas frecuentes</string>
+    <string name="setting_category_dialer">Marcador</string>
+    <string name="setting_displayed_groups_description">Grupos de contatos mostrados</string>
+    <string name="setting_category_call_popup">Ventana emergente de llamada</string>
+    <string name="setting_root_mode">Modo root</string>
+    <string name="setting_light_screen_on_call">Encender luz durante la llamada</string>
+    <string name="setting_call_timer">Mostrar cronómetro de llamada</string>
+    <string name="setting_no_vibrate_when_charging">No vibrar mientras esté cargando</string>
+    <string name="button_ring_shake">Agitar cuando suene</string>
+    <string name="button_established_shake">Agitar cuando la llamada esté en curso</string>
+    <string name="button_established_shake_description">Acción que será ejecutada cuando agite su Pebble mientras la llamada está en curso.</string>
+    <string name="category_fonts">Fuentes</string>
+    <string name="font_timer">Fuente de cronómetro</string>
+    <string name="setting_vibration_pattern">Patrón de vibración</string>
+    <string name="setting_canned_responses">Respuestas predefinidas</string>
+    <string name="setting_canned_responses_description">Aquí puede definir una lista de respuestas predefinidas que puede enviar en un SMS al rechazar la llamada.</string>
+    <string name="setting_notification_service_button">Activar servicio de notificaciones</string>
+    <string name="setting_answer_button">Texto del botón Contestar</string>
+    <string name="setting_decline_button">Texto del botón Rechazar</string>
+    <string name="setting_open_source_licenses">Licencias de código abierto</string>
+    <string name="setting_installed_version">Versión instalada</string>
+    <string name="setting_donate">Donar</string>
+    <string name="setting_donate_description">¡Cómprame una Coca si en verdad te gustó mi aplicación!</string>
+    <string name="category_quiet_time">Tiempo silencioso</string>
+    <string name="enable_quiet_time">Activar tiempo silencioso</string>
+    <string name="quiet_time_start">Inicio tiempo silencioso</string>
+    <string name="quiet_time_end">Fin tiempo silencioso</string>
+</resources>

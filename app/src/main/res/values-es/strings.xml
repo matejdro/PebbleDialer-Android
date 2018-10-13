@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openInPebbleAppStore">Abrir en la tienda de aplicaciones de Pebble</string>
+
+    <string name="noEntries">No hay registros</string>
+    <string name="add">Agregar</string>
+    <string name="close">Cerrar</string>
+    <string name="settingCannedResponses">Respuestas predefinidas</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Eliminar</string>
+    <string name="save">Guardar</string>
+    <string name="edit">Editar</string>
+    <string name="tasker_change_settings">Cambiar ajustes</string>
+    <string name="sms_failed">Error al enviar SMS. Por favor intente de nuevo.</string>
+    <string name="general_settings">Ajustes generales</string>
+    <string name="messaging">Mensajería</string>
+    <string name="about">Acerca de</string>
+    <string name="home">Tips y trucos</string>
+    <string name="notification_service_is_not_running">El servicio de notificaciones no se está ejecutando.</string>
+    <string name="filtering_tip_name">Filtro de contactos</string>
+    <string name="tip_call_history_title">Abrir contacto del historial de llamadas</string>
+    <string name="tip_tertiary_text_title">Escribir SMS desde el reloj</string>
+    <string name="tip_faq_title">Preguntas frecuentes</string>
+    <string name="error_no_web_browser">No se pudo abrir la página web. ¿Tiene algún explorador web instalado?</string>
+    <string name="app_name">Marcador para Pebble</string>
+    <string name="do_not_disturb_access_is_not_granted">NO MOLESTAR ACCESO NO AUTORIZADO</string>
+</resources>
