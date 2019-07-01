@@ -356,10 +356,15 @@ public class SystemModule extends CommModule
     {
         Timber.d("CloseApp %s", currentRunningApp);
 
-        if (getService().getGlobalSettings().getBoolean("closeToLastApp", false) && canCloseToApp(currentRunningApp) && closeTries < 2)
+        boolean closeToLastApp = getService().getGlobalSettings()
+                .getBoolean("closeToLastApp", false);
+
+        if (closeToLastApp && canCloseToApp(currentRunningApp) && closeTries < 2)
             PebbleKit.startAppOnPebble(getService(), currentRunningApp);
-        else
-            PebbleKit.closeAppOnPebble(getService(), PebbleDialerApplication.WATCHAPP_UUID);
+        else {
+            PebbleKit.closeAppOnPebble(getService(), PebbleDialerApplication.WATCHAPP_UUID, closeToLastApp);
+        }
+
 
         closeTries++;
     }

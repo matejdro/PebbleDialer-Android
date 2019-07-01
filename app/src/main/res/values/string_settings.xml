@@ -16,7 +16,7 @@
     <string name="setting_respect_do_not_interrupt">Respect phone\'s do not disturb mode.</string>
     <string name="setting_respect_do_not_interrupt_description">Do not popup incoming call screen on the watch when phone is put into do not disturb mode.</string>
     <string name="setting_close_to_last_app">Close to last app</string>
-    <string name="setting_close_to_last_app_description">When call ends, close to last used app on Pebble. NEEDS DEVELOPER CONNECTION ENABLED INSIDE PEBBLE APP!</string>
+    <string name="setting_close_to_last_app_description">When call ends, close to last used app on Pebble. This option works if you are using Gadget Bridge or if you enable developer connection in official Pebble app.</string>
     <string name="setting_root_mode">Root mode</string>
     <string name="setting_root_mode_description">Check this if some in-call features (like answer or mic mute) do not work for you. NEEDS ROOT!</string>
     <string name="setting_light_screen_on_call">Turn on light on call</string>
